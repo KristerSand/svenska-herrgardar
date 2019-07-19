@@ -1,0 +1,34 @@
+.header {
+  text-align: center;
+  padding:0;
+  margin:0;
+
+  .site-name {
+    margin-left: 2rem;
+    font-size: 2.5rem;
+    font-weight: 500;
+    font-family: Poppins, "Times New Roman", Times, serif;
+    color: #000;
+    color: #854993;
+    color :#5363a8;
+    color :#5363a8;
+    color: #a85363;
+  }
+
+  #sidebarCollapse.btn {
+    background: #63a853; 
+    color: #ffffff;
+    margin-left: 1rem;
+  }
+
+  @media (max-width: 768px) {
+    .site-name  {
+      margin-left: 0.5rem;
+      font-size: 1.4rem;
+    }
+
+    #sidebarCollapse.btn {
+      margin-left: 0rem;
+    }
+  }
+}

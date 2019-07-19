@@ -1,0 +1,31 @@
+description = "Site sidebar"
+
+[viewBag]
+==
+<ul class="{{ class }}" id={{ id }}>
+
+    {% for item in items %}
+
+        {% if item.items %}
+            {% set submenu_id = item.url|split('/') %}
+            {% set submenu_id = submenu_id[3:] %}
+            {% set submenu_id = submenu_id|join('-') %}
+            {% set url = '#' ~ submenu_id %}
+        {% else %}
+            {% set submenu_id = '' %}
+            {% set url = item.url %}
+        {% endif %}
+
+        <li class="{{ item.isActive or item.isChildActive ? 'active' : '' }}">
+            <a {% if item.items %}data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"{% endif %} href="{{ url }}">
+                {{ item.title }}
+
+                {% if item.items %}<span class="caret"></span>{% endif %}
+            </a>
+
+            {% if item.items %}
+                {% partial 'site/menu-items' items=item.items class='collapse list-unstyled' id=submenu_id %}
+            {% endif %}
+        </li>
+    {% endfor %}
+</ul>

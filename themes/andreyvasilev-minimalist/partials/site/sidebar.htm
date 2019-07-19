@@ -1,0 +1,15 @@
+description = "Site sidebar"
+
+[viewBag]
+
+[staticMenu]
+code = "sidmeny"
+==
+<nav id="sidebar">
+    <div class="sidebar-header">
+        <!--<h3>{{ this.theme.site_name }}</h3>-->
+    </div>
+    
+   {% partial 'site/menu-items' items=staticMenu.menuItems class='list-unstyled components' %}
+
+</nav>

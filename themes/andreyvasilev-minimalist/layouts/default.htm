@@ -1,0 +1,41 @@
+description = "Default layout"
+
+[staticPage]
+useContent = 1
+default = 1
+
+[staticMenu]
+code = "sidmeny"
+
+[staticBreadcrumbs]
+==
+<!doctype html>
+<html lang="en">
+    <head>
+        {% partial 'layout/head' %}
+    </head>
+    <body class="layout-{{ this.layout.id }} page-{{ this.page.id }}">
+        <div class="wrapper">
+
+            <!-- Sidebar -->
+            {% partial 'site/sidebar' %}
+
+            <div id="content" class="px-3 px-md-4">
+
+                {% partial 'site/topbar' %}
+
+               <!-- {% partial 'site/breadcrumbs' %}  -->
+                <h3>
+                {{ this.page.title }}
+            </h3>
+                <div class="row">
+                    <div class="col-sm-8">
+                        {% page %}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% partial 'layout/js' %}
+    </body>
+</html>

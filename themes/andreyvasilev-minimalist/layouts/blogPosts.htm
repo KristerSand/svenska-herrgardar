@@ -1,0 +1,55 @@
+description = "Layout for blog posts"
+
+[blogPosts]
+pageNumber = "{{ :page }}"
+postsPerPage = 10
+noPostsMessage = "No posts found"
+sortOrder = "published_at desc"
+categoryPage = 404
+postPage = "blogg/post"
+
+[staticBreadcrumbs]
+
+[staticMenu]
+
+[staticPage]
+useContent = 1
+default = 0
+==
+<!doctype html>
+<html lang="en">
+    <head>
+        {% partial 'layout/head' %}
+    </head>
+    <body class="layout-{{ this.layout.id }} page-{{ this.page.id }}">
+        <div class="wrapper">
+
+            <!-- Sidebar -->
+            {% partial 'site/sidebar' %}
+
+            <div id="content" class="px-3 px-md-4">
+
+                {% partial 'site/topbar' %}
+                {% partial 'site/breadcrumbs' %} 
+
+                <div class="row">
+                    <div class="col-sm-7">
+                       
+                        {% component 'blogPosts' %}
+                        
+                    </div>
+                    <div class="col-sm-5 d-none d-sm-block">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Om bloggarna</h5>
+                                <p class="card-text">{% page %}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        {% partial 'layout/js' %}
+    </body>
+</html>

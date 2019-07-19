@@ -1,0 +1,7 @@
+name: Minimalist
+description: 'This is an OctoberCMS Minimalist theme.'
+previewImage: 'assets/images/theme-preview.png'
+author: Andrey Vasilev
+homepage: 'https://vaslv.ru'
+code: ''
+form: configs/fields.yaml

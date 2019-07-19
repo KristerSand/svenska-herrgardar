@@ -1,0 +1,24 @@
+static-pages:
+    index: {  }
+    herrgardsdatabasen:
+        herrgardsdatabasen-sok: {  }
+        vad-ar-en-herrgard:
+            definition-av-herrgard: {  }
+            vad-ar-en-herrgard-definition-av-standsgard: {  }
+            definition-av-bondgard: {  }
+            definition-av-gods: {  }
+            definition-av-inkorporerad-herrgard: {  }
+        sokvagar:
+            agare-och-brukare: {  }
+            herrgardars-och-godsens-storlek: {  }
+            godsens-sammansattning: {  }
+        att-forsta-informationen-i-databasen:
+            att-forsta-informationen-i-databasen-agare-och-brukare: {  }
+            att-forsta-informationen-i-databasen-herrgardars-och-godsens-storlek: {  }
+            att-forsta-informationen-i-databasen-godsens-sammansattning: {  }
+    litteraturdatabasen: {  }
+    herrgardsnytt: {  }
+    blogg: {  }
+    finansiarer-och-medarbetare: {  }
+    att-bidra-till-databasen: {  }
+    lankar: {  }

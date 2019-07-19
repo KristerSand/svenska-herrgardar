@@ -1,0 +1,80 @@
+description = "Start layout"
+
+[staticPage]
+useContent = 1
+default = 1
+
+[staticMenu]
+code = "sidmeny"
+
+[staticBreadcrumbs]
+==
+<!doctype html>
+<html lang="en">
+    <head>
+        {% partial 'layout/head' %}
+    </head>
+    <body class="layout-{{ this.layout.id }} page-{{ this.page.id }}">
+        <div class="wrapper">
+
+            <!-- Sidebar -->
+            {% partial 'site/sidebar' %}
+
+            <div id="content" class="px-3 px-md-4">
+
+              <!-- {% partial 'site/menu-button' %} -->
+              {% partial 'site/topbar' %}
+
+                  <div class="row" style="margin-top: 3.5em">
+                    <div class="col-sm-6">
+                      <div class="card">
+                        <img class="card-img-top" src="/storage/app/media/startbild.jpg" alt="">
+                      </div>
+                    </div>
+                    <div class="col-sm-6">
+                      <div class="card">
+                        <div class="card-body">
+                          <h5 class="card-title">Välkommen till Svenska Herrgårdar</h5>
+                          <p class="card-text">{% page %}</p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            
+                <div class="card-group" style="margin-top: 2em">
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Konferenser</h5>
+                      <p class="card-text">{% placeholder conferences title="Konferenser" %}</p>
+                      <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Böcker och artiklar</h5>
+                      <p class="card-text">{% placeholder books title="Böcker" %}</p>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Utställningar</h5>
+                      <p class="card-text">{% placeholder exhibitions title="Utställningar" %}</p>
+                    </div>
+                  </div>
+                  <div class="card">
+                    <div class="card-body">
+                      <h5 class="card-title">Övrigt</h5>
+                      <p class="card-text">{% placeholder other title="Övrigt" %}</p>
+                    </div>
+                  </div>
+                </div>
+
+              </div>          
+            </div>
+          </div>
+        </div>
+
+        {% partial 'layout/js' %}
+
+    </body>
+</html>

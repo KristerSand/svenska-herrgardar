@@ -1,0 +1,66 @@
+tabs:
+    fields:
+        site_name:
+            tab: Site
+            label: Site Name
+            type: text
+            span: left
+            default: Minimalist
+
+        site_description:
+            tab: Site
+            label: Site description
+            type: text
+            span: right
+            default: This is an OctoberCMS Minimalist theme.
+
+        site_logo:
+            tab: Site
+            label: Site logo
+            type: mediafinder
+            mode: file
+            span: left
+
+        theme_color:
+            tab: Site
+            label: Theme color
+            type: colorpicker
+            span: right
+            default: '#58595a'
+
+        meta_title:
+            tab: Meta
+            label: Title
+            type: textarea
+            size: tiny
+            span: full
+
+        meta_description:
+            tab: Meta
+            label: Description
+            type: textarea
+            size: tiny
+            span: full
+
+        meta_keywords:
+            tab: Meta
+            label: Keywords
+            type: textarea
+            size: tiny
+            span: full
+
+        social:
+            tab: Social
+            label: Social Networks
+            type: repeater
+            form:
+                fields:
+                    name:
+                        label: Name
+                        type: text
+                    link:
+                        label: Link
+                        type: text
+                    icon:
+                        label: Icon
+                        type: text

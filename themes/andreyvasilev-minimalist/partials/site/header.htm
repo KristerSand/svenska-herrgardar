@@ -1,0 +1,10 @@
+description = "Site Header"
+==
+<header class="header">
+    <a href="/"><img src="{{ this.theme.site_logo ? this.theme.site_logo|media : 'assets/images/favicon.png'|theme }}" alt="{{ this.theme.site_name }}"></a>
+    {% if this.page.id == 'home' %}
+        <h2 class="site-name"><a href="/">{{ this.theme.site_name }}</a></h2>
+    {% else %}
+        <div class="site-name"><a href="/">{{ this.theme.site_name }}</a></div>
+    {% endif %}
+</header>
