@@ -1,0 +1,47 @@
+bootstrap/
+/config/
+/modules/
+plugins/*
+/storage/
+/vendor/
+themes/*
+.htaccess
+.env
+.env.*.php
+.env.php
+index.php
+artisan
+server.php
+!plugins/sandit/
+!plugins/sandit/*
+!themes/andreyvasilev-minimalist/
+!themes/andreyvasilev-minimalist/*
+
+# Vagrant files #
+#################
+/.vagrant
+
+# IDE files #
+#############
+.vscode/
+
+# OS generated files #
+######################
+.DS_Store
+.DS_Store?
+
+# node.js and bower files #
+###########################
+node_modules
+npm-debug.log
+npm-shrinkwrap.json
+.tmp
+.sass-cache
+bower_components
+bower.json
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
