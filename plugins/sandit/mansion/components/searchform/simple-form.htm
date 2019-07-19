@@ -1,0 +1,58 @@
+{% set landskap = __SELF__.landskap %}
+{% set harad = __SELF__.harad %}
+{% set socken = __SELF__.socken %}
+
+
+<form data-request="onSearch" class="mb-2">
+
+    <input type="hidden" name="searchform" value="simple">
+
+    <fieldset>
+        <h5>Gård</h5>
+        <div class="form-group">
+            <input type="text" class="form-control" id="gard-simple" name="gard">
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Geografi</h5>
+        <div class="form-group">
+                <label for ="landskap">Landskap</label>
+            <select class="form-control" id="landskap-simple" name="landskap" data-request="onSelectLandskap">
+                <option value="0" selected>Alla</option>
+                {% for l in landskap %}
+                    <option value="{{ l.id }}">{{ l.namn }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="harad">Härad</label>
+            <select class="form-control" id="harad-simple" name="harad" data-request="onSelectHarad"></select>
+        </div>
+        <div class="form-group">
+            <label for="socken">Socken</label>
+            <select class="form-control" id="socken-simple" name="socken"></select>
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Ägare/innehavare</h5>     
+        <div class="form-group">
+            <input type="text" class="form-control" id="person_namn-simple" name="person_namn" placeholder="Namn">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="person_efternamn-simple" name="person_efternamn" placeholder="Efternamn">
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Make/maka</h5>
+        <div class="form-group">
+            <input type="text" class="form-control" id="maka_namn-simple" name="maka_namn" placeholder="Förnamn">
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" id="maka_efternamn-simple" name="maka_efternamn" placeholder="Efternamn">
+        </div>
+    </fieldset>
+    <button class="btn btn-success mt-3 btn-sm-block px-md-5" type="submit">Sök</button>
+</form>

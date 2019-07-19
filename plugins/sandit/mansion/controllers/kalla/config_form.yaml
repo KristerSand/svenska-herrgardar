@@ -1,0 +1,10 @@
+name: Kalla
+form: $/sandit/mansion/models/kalla/fields.yaml
+modelClass: Sandit\Mansion\Models\Kalla
+defaultRedirect: sandit/mansion/kalla
+create:
+    redirect: 'sandit/mansion/kalla/update/:id'
+    redirectClose: sandit/mansion/kalla
+update:
+    redirect: sandit/mansion/kalla
+    redirectClose: sandit/mansion/kalla

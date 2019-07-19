@@ -1,0 +1,83 @@
+fields:
+    gard:
+        label: Herrgård
+        nameFrom: namn
+        descriptionFrom: description
+        span: left
+        required: 1
+        type: relation
+    ar_borjan:
+        label: 'År början'
+        span: left
+        type: number
+    ar_borjan_anm:
+        label: 'År början anm'
+        span: right
+        type: text
+    ar_slut:
+        label: 'År slut'
+        span: left
+        type: number
+    ar_slut_anm:
+        label: 'År slut anm'
+        span: right
+        type: text
+tabs:
+    fields:
+        agare_person:
+            label: Ägare
+            nameFrom: namn
+            descriptionFrom: description
+            span: auto
+            emptyOption: ' '
+            type: relation
+            select: concat(namn, ' ', efternamn, ' (', titel_tjanst, ', ', titel_familj,')')
+            tab: Personer
+        maka1_person:
+            label: 'Maka 1'
+            nameFrom: namn
+            descriptionFrom: description
+            span: left
+            emptyOption: ' '
+            type: relation
+            select: concat(namn, ' ', efternamn, ' (', titel_tjanst, ', ', titel_familj,')')
+            tab: Personer
+        maka2_person:
+            label: 'Maka 2'
+            nameFrom: namn
+            descriptionFrom: description
+            span: right
+            emptyOption: ' '
+            type: relation
+            select: concat(namn, ' ', efternamn, ' (', titel_tjanst, ', ', titel_familj,')')
+            tab: Personer
+        ag_arr:
+            label: Ägar/arr
+            span: auto
+            type: text
+            tab: Övrigt
+        status:
+            label: Status
+            nameFrom: namn
+            descriptionFrom: description
+            span: auto
+            emptyOption: ' '
+            type: relation
+            tab: Övrigt
+        typ:
+            label: Typ
+            span: auto
+            type: text
+            tab: Övrigt
+        kalla:
+            label: Källa
+            nameFrom: namn
+            descriptionFrom: description
+            span: auto
+            type: relation
+            tab: Övrigt
+        kommentar:
+            label: Kommentar
+            span: auto
+            type: text
+            tab: Övrigt

@@ -1,0 +1,12 @@
+list: $/sandit/mansion/models/jordnatur/columns.yaml
+modelClass: Sandit\Mansion\Models\Jordnatur
+title: Jordnatur
+noRecordsMessage: 'backend::lang.list.no_records'
+showSetup: true
+showCheckboxes: true
+recordsPerPage: 20
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
+recordUrl: 'sandit/mansion/jordnatur/update/:id'

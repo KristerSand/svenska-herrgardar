@@ -1,0 +1,89 @@
+{% set gard = __SELF__.gard %}
+
+
+<a class="btn btn-outline-primary mb-3" role="button" href="/herrgardsdatabasen/sokresultat">Tillbaka till sökresultatet</a>
+
+<div class="d-flex w-100 justify-content-start align-items-center mb-2">
+    <h4 class="m-0 py-2">{{ gard.namn }}</h4>
+    <div class="mt-1 py-2 ml-4">{{ gard.socken.namn }}, {{ gard.socken.harad.namn }}, {{ gard.socken.harad.landskap.namn }}</div>
+    <a href="" data-request="onDownload" data-request-data="id: {{ gard.id }}" class="mt-1 p-2y ml-4">Ladda ner som Excelfil</a>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-sm">
+        <thead>
+            <tr>
+                <th scope="col">År början</th>
+                <th scope="col">År början anm</th>
+                <th scope="col">År slut</th>
+                <th scope="col">År slut anm</th>
+                <th scope="col">Status</th>                
+                <th scope="col">Jordnatur</th>
+                <th scope="col">Ägar/arr</th>
+                <th scope="col">Typ</th>
+                <th scope="col">Titel tjänst</th>
+                <th scope="col">Titel familj</th>
+                <th scope="col">Namn</th>
+                <th scope="col">Efternamn</th>
+                <th scope="col">M1 titel tjänst</th>
+                <th scope="col">M1 titel familj</th>
+                <th scope="col">M1 namn</th>
+                <th scope="col">M1 efternamn</th>
+                <th scope="col">M2 titel tjänst</th>
+                <th scope="col">M2 titel familj</th>
+                <th scope="col">M2 namn</th>
+                <th scope="col">M2 efternamn</th>
+                <th scope="col">Herrgård mantal</th>
+                <th scope="col">Herrgård hektar</th>
+                <th scope="col">Herrgård hektar åker</th>
+                <th scope="col">Gods mantal</th>
+                <th scope="col">Gods hektar</th>
+                <th scope="col">Gods hektar åker</th>
+                <th scope="col">Taxering</th>
+                <th scope="col">Brukare-förhållande</th>
+                <th scope="col">Kommentar</th>
+                <th scope="col">Källa</th>
+            </tr>
+        </thead>
+        
+        <tbody>
+            {% for post in gard.poster %}
+                <tr>
+                    <td class="text-nowrap">{{ post.ar_borjan }}</td>
+                    <td class="text-nowrap">{{ post.ar_borjan_anm }}</td>
+                    <td class="text-nowrap">{{ post.ar_slut }}</td>
+                    <td class="text-nowrap">{{ post.ar_slut_anm }}</td>
+                    <td class="text-nowrap">{{ post.status.namn|capitalize}}</td>                                    
+                    <td class="text-nowrap">
+                        {% for jordnatur in post.jordnatur %}    
+                            {{ jordnatur.namn }},
+                        {% endfor %}
+                    </td>
+                    <td class="text-nowrap">{{ post.ag_arr }}</td>
+                    <td class="text-nowrap">{{ post.typ }}</td>
+                    <td class="text-nowrap">{{ post.agare.titel_tjanst }}</td>
+                    <td class="text-nowrap">{{ post.agare.titel_familj }}</td>
+                    <td class="text-nowrap">{{ post.agare.namn }}</td>
+                    <td class="text-nowrap">{{ post.agare.efternamn }}</td>
+                    <td class="text-nowrap">{{ post.maka1.titel_tjanst }}</td>
+                    <td class="text-nowrap">{{ post.maka1.titel_familj }}</td>
+                    <td class="text-nowrap">{{ post.maka1.namn }}</td>
+                    <td class="text-nowrap">{{ post.maka1.efternamn }}</td>
+                    <td class="text-nowrap">{{ post.maka2.titel_tjanst }}</td>
+                    <td class="text-nowrap">{{ post.maka2.titel_familj }}</td>
+                    <td class="text-nowrap">{{ post.maka2.namn }}</td>
+                    <td class="text-nowrap">{{ post.maka2.efternamn }}</td>
+                    <td class="text-nowrap">{{ post.storlek_herrgard_mtl }}</td>
+                    <td class="text-nowrap">{{ post.storlek_har }}</td>
+                    <td class="text-nowrap">{{ post.storlek_aker_har }}</td>
+                    <td class="text-nowrap">{{ post.gods_mantal }}</td>
+                    <td class="text-nowrap">{{ post.gods_hektar }}</td>
+                    <td class="text-nowrap">{{ post.gods_aker_hektar }}</td>
+                    <td class="text-nowrap">{{ post.taxering }}</td>
+                    <td class="text-nowrap">{{ post.brukareforhallande }}</td>
+                    <td class="text-nowrap">{{ post.kommentar }}</td>
+                    <td class="text-nowrap">{{ post.kalla.namn }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

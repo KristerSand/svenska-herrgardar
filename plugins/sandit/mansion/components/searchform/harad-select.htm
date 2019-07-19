@@ -1,0 +1,4 @@
+<option value="0" selected>Härad</option>
+{% for h in harad %}
+    <option value="{{ h.id }}">{{ h.namn }}</option>
+{% endfor %}

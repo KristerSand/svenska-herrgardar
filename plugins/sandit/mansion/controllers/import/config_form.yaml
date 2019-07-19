@@ -1,0 +1,11 @@
+name: Import
+modelClass: Sandit\Mansion\Models\Import
+form: $/sandit/mansion/models/import/fields.yaml
+defaultRedirect: sandit/mansion/import
+create:
+    title: 'Importera poster'
+    redirect: 'sandit/mansion/import/create'
+    redirectClose: sandit/mansion/import
+update:
+    #redirect: sandit/mansion/import
+    #redirectClose: sandit/mansion/import

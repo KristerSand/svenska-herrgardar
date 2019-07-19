@@ -1,0 +1,6 @@
+fields:
+    namn:
+        label: Landskap
+        span: left
+        required: 1
+        type: text

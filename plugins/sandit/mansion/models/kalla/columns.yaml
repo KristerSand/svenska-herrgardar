@@ -1,0 +1,6 @@
+columns:
+    namn:
+        label: Källa
+        type: text
+        searchable: true
+        sortable: true

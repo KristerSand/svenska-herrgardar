@@ -1,0 +1,10 @@
+name: Status
+form: $/sandit/mansion/models/status/fields.yaml
+modelClass: Sandit\Mansion\Models\Status
+defaultRedirect: sandit/mansion/status
+create:
+    redirect: 'sandit/mansion/status/update/:id'
+    redirectClose: sandit/mansion/status
+update:
+    redirect: sandit/mansion/status
+    redirectClose: sandit/mansion/status

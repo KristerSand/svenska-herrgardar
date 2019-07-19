@@ -1,0 +1,10 @@
+name: Jordnatur
+form: $/sandit/mansion/models/jordnatur/fields.yaml
+modelClass: Sandit\Mansion\Models\Jordnatur
+defaultRedirect: sandit/mansion/jordnatur
+create:
+    redirect: 'sandit/mansion/jordnatur/update/:id'
+    redirectClose: sandit/mansion/jordnatur
+update:
+    redirect: sandit/mansion/jordnatur
+    redirectClose: sandit/mansion/jordnatur

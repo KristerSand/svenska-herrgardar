@@ -1,0 +1,252 @@
+{% set landskap = __SELF__.landskap %}
+{% set harad = __SELF__.harad %}
+{% set socken = __SELF__.socken %}
+{% set status = __SELF__.status %}
+{% set jordnatur = __SELF__.jordnatur %}
+{% set agar_arr = __SELF__.agar_arr %}
+{% set person_titel_tjanst = __SELF__.person_titel_tjanst %}
+{% set person_titel_familj = __SELF__.person_titel_familj %}
+{% set maka_titel_tjanst = __SELF__.maka_titel_tjanst %}
+{% set maka_titel_familj = __SELF__.maka_titel_familj %}
+
+<form id="advanced-form" data-request="onSearch" class="mb-4">
+
+    <input type="hidden" name="searchform" value="advanced">
+    
+    <fieldset>
+        <h5>Gård</h5>
+        <div class="form-group">
+            <input type="text" class="form-control" id="gard" name="gard">
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Geografi</h5>
+        <div class="form-row">
+            <div class="col form-group">
+                <select class="form-control" id="landskap" name="landskap" data-request="onSelectLandskap">
+                    <option value="0" selected>Landskap</option>
+                    {% for l in landskap %}
+                    <option value="{{ l.id }}">{{ l.namn }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col form-group">
+                <select class="form-control" id="harad" name="harad" data-request="onSelectHarad">
+                    <option value="0" selected>Härad</option>
+                </select>
+            </div>
+
+            <div class="col form-group">
+                <select class="form-control" id="socken" name="socken">
+                    <option value="0" selected>Socken</option>
+                </select>
+            </div>
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Ägare/innehavare</h5>
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="text" class="form-control" id="person_namn" name="person_namn" placeholder="Namn">
+            </div>
+            <div class="col form-group">
+                <input type="text" class="form-control" id="person_efternamn" name="person_efternamn"  placeholder="Efternamn">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col form-group">
+                <select class="form-control" id="person_titel_tjanst" name="person_titel_tjanst">
+                    <option value="0" selected>Titel tjänst</option>
+                    {% for ptt in person_titel_tjanst %}
+                        <option value="{{ ptt.titel }}">{{ ptt.titel }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col form-group">
+                <select class="form-control" id="person_titel_familj" name="person_titel_familj">
+                    <option value="0" selected>Titel familj</option>
+                    {% for ptf in person_titel_familj %}
+                        <option value="{{ ptf.titel }}">{{ ptf.titel }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Make/maka</h5>
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="text" class="form-control" id="maka_namn" name="maka_namn" placeholder="Förnamn">
+            </div>
+            <div class="col form-group">
+                <input type="text" class="form-control" id="maka_efternamn" name="maka_efternamn" placeholder="Efternamn">
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col form-group">
+                <select class="form-control" id="maka_titel_tjanst" name="maka_titel_tjanst">
+                    <option value="0" selected>Titel tjänst</option>
+                    {% for mtt in maka_titel_tjanst %}
+                        <option value="{{ mtt.titel }}">{{ mtt.titel }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="col form-group">
+                <select class="form-control" id="maka_titel_familj" name="maka_titel_familj">
+                    <option value="0" selected>Titel familj</option>
+                    {% for mtf in maka_titel_familj %}
+                        <option value="{{ mtf.titel }}">{{ mtf.titel }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </fieldset>
+
+    <hr />
+
+    <fieldset>
+        <h5>Tid</h5>
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="number" class="form-control" id="ar_borjan" name="ar_borjan" placeholder="År början">
+            </div>
+            <div class="col form-group">
+                <input type="number" class="form-control" id="ar_slut" name="ar_slut" placeholder="År slut">
+            </div>
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Övrigt</h5>
+        <div class="form-row">
+            <div class="col form-group">
+                <select class="form-control" id="jordnatur" name="jordnatur">
+                    <option value="0" selected>Jordnatur</option>
+                    {% for j in jordnatur %}
+                    <option value="{{ j.id }}">{{ j.namn }}</option>
+                    {% endfor%}
+                </select>
+            </div>
+
+            <div class="col form-group">
+                <select class="form-control" id="status" name="status">
+                    <option value="0" selected>Status</option>
+                    {% for s in status %}
+                    <option value="{{ s.id }}">{{ s.namn }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="col form-group">
+                <select class="form-control" id="agar_arr" name="agar_arr">
+                    <option value="0" selected>Ägar/arr</option>
+                    {% for a in agar_arr %}
+                    <option value="{{ a.ag_arr }}">{{ a.ag_arr }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col form-group">
+                <input type="test" class="form-control" id="typ" name="typ" placeholder="Typ">
+            </div>
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Storlek herrgård</h5>
+        <div class="form-row">
+            <div class="col form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control w-75" min="0" id="herrgard_mantal" name="herrgard_mantal" placeholder="Mantal">
+                    <select class="form-control w-25" id="herrgard_mantal_operator" name="herrgard_mantal_operator">
+                        <option value="&#61;">&#61;</option>
+                        <option value="&#60;">&#60;</option>
+                        <option value="&#62;">&#62;</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col form-group">
+                <div class="input-group">
+                    <input type="number" class="form-control w-75" min="0" id="herrgard_hektar" name="herrgard_hektar" placeholder="Hektar totalt">
+                    <select class="form-control w-25" id="herrgard_hektar_operator" name="herrgard_hektar_operator">
+                        <option value="&#61;">&#61;</option>
+                        <option value="&#60;">&#60;</option>
+                        <option value="&#62;">&#62;</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col form-group">
+                <div class="input-group">
+                    <input type="number" class="form-control w-75" min="0" id="herrgard_aker_hektar" name="herrgard_aker_hektar" placeholder="Hektar åker">
+                    <select class="form-control w-25" id="herrgard_aker_hektar_operator" name="herrgard_aker_hektar_operator">
+                        <option value="&#61;">&#61;</option>
+                        <option value="&#60;">&#60;</option>
+                        <option value="&#62;">&#62;</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <hr />
+    <fieldset>
+        <h5>Storlek gods</h5>
+        <div class="form-row">
+            <div class="col form-group">
+                <div class="input-group">
+                    <input type="text" class="form-control w-75" min="0" id="gods_mantal" name="gods_mantal" placeholder="Mantal">
+                    <select class="form-control w-25" id="gods_mantal_operator" name="gods_mantal_operator">
+                        <option value="&#61;">&#61;</option>
+                        <option value="&#60;">&#60;</option>
+                        <option value="&#62;">&#62;</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col form-group">
+                <div class="input-group">
+                    <input type="number" class="form-control w-75" min="0" id="gods_hektar" name="gods_hektar" placeholder="Hektar totalt">
+                    <select class="form-control w-25" id="gods_hektar_operator" name="gods_hektar_operator">
+                        <option value="&#61;">&#61;</option>
+                        <option value="&#60;">&#60;</option>
+                        <option value="&#62;">&#62;</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col form-group">
+                <div class="input-group">
+                    <input type="number" class="form-control w-75" min="0" id="gods_aker_hektar" name="gods_aker_hektar" placeholder="Hektar åker">
+                    <select class="form-control w-25" id="gods_aker_hektar_operator" name="gods_aker_hektar_operator">
+                        <option value="&#61;">&#61;</option>
+                        <option value="&#60;">&#60;</option>
+                        <option value="&#62;">&#62;</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-row">
+            <div class="col  col-md-4 form-group">
+                <div class="input-group">
+                    <input type="number" class="form-control w-75" min="0" id="gods_taxering" name="gods_taxering" placeholder="Taxering">
+                    <select class="form-control w-25" id="gods_taxering_operator" name="gods_taxering_operator">
+                        <option value="&#61;">&#61;</option>
+                        <option value="&#60;">&#60;</option>
+                        <option value="&#62;">&#62;</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+    <div class="mt-3">
+        <button class="btn btn-success my-2 my-sm-0 px-4" type="submit">Sök</button>
+        <button class="btn btn-warning my-2 my-sm-0 px-3" type="reset">Rensa</button>
+    </div>
+</form>

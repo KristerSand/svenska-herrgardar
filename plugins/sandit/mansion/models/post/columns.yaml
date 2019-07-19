@@ -1,0 +1,61 @@
+columns:
+    gard_namn:
+        label: Gård
+        type: text
+        searchable: true
+        sortable: true
+        select: namn
+        relation: gard
+    ar_borjan:
+        label: 'År början'
+        type: number
+        searchable: true
+        sortable: true
+    ar_borjan_anm:
+        label: 'År början anm'
+        type: text
+        searchable: true
+    ar_slut:
+        label: 'År slut'
+        type: number
+        searchable: true
+        sortable: true
+    ar_slut_anm:
+        label: 'År slut anm'
+        type: text
+        searchable: true
+    jordnatur_namn:
+        label: Jordnatur
+        type: text
+        searchable: true
+        sortable: true
+        select: namn
+        relation: jordnatur
+    status_namn:
+        label: Status
+        type: text
+        searchable: true
+        sortable: true
+        select: namn
+        relation: status
+    ag_arr:
+        label: Ägar/arr
+        type: text
+        searchable: true
+        sortable: true
+    typ:
+        label: Typ
+        type: text
+        searchable: true
+        sortable: true
+    kommentar:
+        label: Kommentar
+        type: text
+        searchable: true
+    kalla_namn:
+        label: Källa
+        type: text
+        searchable: true
+        sortable: true
+        select: namn
+        relation: kalla

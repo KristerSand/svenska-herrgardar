@@ -1,0 +1,24 @@
+{
+    "name": "sandit/oc-mansion-plugin",
+    "type": "october-plugin",
+    "description": "OctoberCMS plugin for mansion",
+    "keywords": ["october", "cms", "mansion", "plugin"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Krister Sandh",
+            "email": "krister@sandit.se",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": ">=7.0",
+        "composer/installers": "~1.0",
+        "maatwebsite/excel": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+          
+        }
+      }
+}

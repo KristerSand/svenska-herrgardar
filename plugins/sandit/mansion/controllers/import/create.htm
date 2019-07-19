@@ -1,0 +1,39 @@
+<?php Block::put('breadcrumb') ?>
+    <ul>
+        <li><a href="<?= Backend::url('sandit/mansion/import') ?>">Import</a></li>
+        <li><?= e($this->pageTitle) ?></li>
+    </ul>
+<?php Block::endPut() ?>
+
+<?php if (!$this->fatalError): ?>
+    <?= Form::open(['class' => 'layout']) ?>
+
+        <div class="layout-row">
+            <?= $this->formRender() ?>
+        </div>
+
+        <p style="text-align:left;" class="flash-message static <?= $message_type ?>">
+            <?= $message ?>
+        </p>
+        
+        <div class="form-buttons">
+            <div class="loading-indicator-container">
+                <button
+                    type="submit"
+                    data-request="onSave"
+                    data-hotkey="ctrl+s, cmd+s"
+                    data-load-indicator="<?= e(trans('backend::lang.form.saving')) ?>"
+                    class="btn btn-primary">
+                    Importera poster
+                </button>
+                <span class="btn-text">
+                    <?= e(trans('backend::lang.form.or')) ?> <a href="<?= Backend::url('sandit/mansion/import') ?>">Avbryt</a>
+                </span>
+            </div>
+        </div>
+
+    <?= Form::close() ?>
+<?php else: ?>
+    <p class="flash-message static error"><?= e(trans($this->fatalError)) ?></p>
+    <p><a href="<?= Backend::url('sandit/mansion/import') ?>" class="btn btn-default"><?= e(trans('backend::lang.form.return_to_list')) ?></a></p>
+<?php endif ?>

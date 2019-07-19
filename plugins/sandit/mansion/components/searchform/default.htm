@@ -1,0 +1,21 @@
+{% set searchform = __SELF__.searchform %}
+
+<nav class="nav mb-3 mb-md-4">
+  <a class="nav-item nav-link {% if searchform != 'mapsearch' %}disabled{% endif %} d-block d-md-none" 
+    {% if searchform != 'mapsearch' %} tabindex="-1" aria-disabled="true" {% endif %}
+    href="#">Sök i formulär</a>
+  <a class="nav-item nav-link {% if searchform != 'mapsearch' %}disabled{% endif %} d-none d-md-block" 
+    {% if searchform != 'mapsearch' %} tabindex="-1" aria-disabled="true" {% endif %}
+    href="#" >Sök i formulär</a>
+  <a class="nav-item nav-link {% if searchform == 'mapsearch' %}disabled{% endif %}"
+  {% if searchform == 'mapsearch' %} tabindex="-1" aria-disabled="true" {% endif %}
+  href="#">Kartsökning</a>
+</nav>
+
+  <div class="d-block d-md-none">
+    {% partial '@simple-form' %}
+  </div>
+
+  <div class="d-none d-md-block">
+    {% partial '@advanced-form' %}
+  </div>

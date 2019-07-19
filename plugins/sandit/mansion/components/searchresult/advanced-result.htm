@@ -1,0 +1,29 @@
+{% set result = __SELF__.result %}
+
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Gårdsnamn</th>
+                <th scope="col">Status</th>
+                <th scope="col">Landskap</th>
+                <th scope="col">Härad</th>
+                <th scope="col">Socken</th>
+                <th scope="col">Antal poster</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in result %}
+                <tr>
+                    <td><a href="gard/{{ row.id }}">{{ row.gard }}</a></td>
+                    <td>{{ row.status }}</td>
+                    <td>{{ row.landskap}}</td>
+                    <td>{{ row.harad }}</td>
+                    <td>{{ row.socken }}</td>
+                    <td>{{ row.antal }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

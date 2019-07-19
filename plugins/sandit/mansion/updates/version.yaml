@@ -1,0 +1,35 @@
+1.0.1:
+    - 'Initialize plugin.'
+1.0.2:
+    - 'Created table sandit_mansion_import'
+    - builder_table_create_sandit_mansion_import.php
+1.0.3:
+    - 'Created table sandit_mansion_landskap'
+    - builder_table_create_sandit_mansion_landskap.php
+1.0.4:
+    - 'Created table sandit_mansion_harad'
+    - builder_table_create_sandit_mansion_harad.php
+1.0.5:
+    - 'Created table sandit_mansion_socken'
+    - builder_table_create_sandit_mansion_socken.php
+1.0.6:
+    - 'Created table sandit_mansion_kalla'
+    - builder_table_create_sandit_mansion_kalla.php
+1.0.7:
+    - 'Created table sandit_mansion_status'
+    - builder_table_create_sandit_mansion_status.php
+1.0.8:
+    - 'Created table sandit_mansion_person'
+    - builder_table_create_sandit_mansion_person.php
+1.0.9:
+    - 'Created table sandit_mansion_gard'
+    - builder_table_create_sandit_mansion_gard.php
+1.0.10:
+    - 'Created table sandit_mansion_post'
+    - builder_table_create_sandit_mansion_post.php
+1.0.11:
+    - 'Created table sandit_mansion_jordnatur'
+    - builder_table_create_sandit_mansion_jordnatur.php
+1.0.12:
+    - 'Created table sandit_mansion_jordnatur_post'
+    - builder_table_create_sandit_mansion_jordnatur_post.php

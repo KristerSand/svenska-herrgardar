@@ -1,0 +1,18 @@
+columns:
+    id:
+        label: Id
+        type: number
+    importfile:
+        label: Filnamn
+        type: partial
+        path: ~/plugins/sandit/mansion/models/import/_import_filename.htm
+    saved_rows:
+        label: 'Sparade'
+        type: number
+    total_rows:
+        label: 'Totalt'
+        type: number
+    created_at:
+        label: Datum
+        type: datetime
+

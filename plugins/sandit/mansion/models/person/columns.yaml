@@ -1,0 +1,21 @@
+columns:
+    namn:
+        label: Namn
+        type: text
+        searchable: true
+        sortable: true
+    efternamn:
+        label: Efternamn
+        type: text
+        searchable: true
+        sortable: true
+    titel_tjanst:
+        label: 'Titel tjänst'
+        type: text
+        searchable: true
+        sortable: true
+    titel_familj:
+        label: 'Titel familj'
+        type: text
+        searchable: true
+        sortable: true

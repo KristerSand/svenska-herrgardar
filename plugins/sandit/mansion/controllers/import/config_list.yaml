@@ -1,0 +1,11 @@
+title: Import
+modelClass: Sandit\Mansion\Models\Import
+list: $/sandit/mansion/models/import/columns.yaml
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: 20
+showSetup: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'

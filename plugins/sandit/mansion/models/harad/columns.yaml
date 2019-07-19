@@ -1,0 +1,13 @@
+columns:
+    namn:
+        label: Härad
+        type: text
+        searchable: true
+        sortable: true
+    landskap_namn:
+        label: Landskap
+        type: text
+        searchable: true
+        sortable: true
+        select: namn
+        relation: landskap

@@ -1,0 +1,10 @@
+name: Person
+form: $/sandit/mansion/models/person/fields.yaml
+modelClass: Sandit\Mansion\Models\Person
+defaultRedirect: sandit/mansion/person
+create:
+    redirect: 'sandit/mansion/person/update/:id'
+    redirectClose: sandit/mansion/person
+update:
+    redirect: sandit/mansion/person
+    redirectClose: sandit/mansion/person

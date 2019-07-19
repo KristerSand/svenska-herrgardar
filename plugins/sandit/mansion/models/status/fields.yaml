@@ -1,0 +1,6 @@
+fields:
+    namn:
+        label: Status
+        span: auto
+        required: 1
+        type: text

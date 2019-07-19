@@ -1,0 +1,6 @@
+columns:
+    namn:
+        label: Namn
+        type: text
+        searchable: true
+        sortable: true

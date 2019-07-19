@@ -1,0 +1,6 @@
+columns:
+    namn:
+        label: Landskap
+        type: text
+        searchable: true
+        sortable: true

@@ -1,0 +1,23 @@
+columns:
+    id:
+        label: Id
+        type: number
+        searchable: true
+        sortable: true
+    toraid:
+        label: 'Toraid'
+        type: text
+        searchable: true
+        sortable: true
+    namn:
+        label: Namn
+        type: text
+        searchable: true
+        sortable: true
+    socken_namn:
+        label: Socken
+        type: text
+        searchable: true
+        sortable: true
+        select: namn
+        relation: socken

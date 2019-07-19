@@ -1,0 +1,49 @@
+{% set result = __SELF__.result %}
+
+
+<div id="search-result" class="list-group">
+    {% for row in result %}
+        <div class="card mb-1">
+            <a href="#expand-{{ row.id }}" 
+                class="list-group-item list-group-item-action border-top-0 border-right-0 border-left-0" 
+                data-toggle="collapse" 
+                aria-expanded="false" 
+                aria-controls="expand-{{ row.id }}"
+                data-request="onShowMansionData"
+                data-request-data="gard_id: {{ row.id }}"> 
+                <div class="container p-0"> 
+                    <div class="row d-flex w-100 align-items-center ml-0">
+                        <div class="col-10 col-md-4 h5 mb-1 p-0">{{ row.gard }}</div>
+                        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.landskap }}</div>
+                        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.harad }}</div>
+                        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.socken }}</div>
+
+                        <div class="col-2 col-md-2 text-right p-0">
+                                {% if row.status == 'Herrgård' %}
+                                    <span class="badge badge-primary d-none d-md-inline px-2">Herrgård</span>
+                                {% elseif row.status == 'Ståndsgård' %}
+                                    <span class="badge badge-success d-none d-md-inline px-2">Ståndsgård</span>
+                                {% elseif row.status == 'Bondgård' %}
+                                    <span class="badge badge-danger d-none d-md-inline px-2">Bondgård</span>
+                                {% elseif row.status == 'Inkorporerad' %}
+                                    <span class="badge badge-info d-none d-md-inline px-2">Inkorporerad</span>
+                                {% elseif row.status == 'Institution' %}
+                                    <span class="badge badge-secondary d-none d-md-inline px-2">Institution</span>
+                                {% elseif row.status != '' %}
+                                    <span class="badge badge-dark d-none d-md-inline px-2">{{ row.status }}</span>
+                                {% endif %}
+                            <span class="badge badge-secondary">{{ row.antal }}</span>
+                        </div>
+                    </div>
+                    <div class="row mb-0 d-block d-md-none">
+                        <div class="col">{{ row.landskap }}, {{ row.harad }}, {{ row.socken }}</div>
+                    </div>
+                </div>
+            </a>
+            
+            <div class="collapse" id="expand-{{ row.id }}">
+                <div class="card-body p-0 " id="gard-info-{{ row.id }}"></div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

@@ -1,0 +1,11 @@
+fields:
+    importfile:
+        label: Excelfil
+        mode: file
+        useCaption: true
+        thumbOptions:
+            mode: crop
+            extension: auto
+        span: left
+        required: 1
+        type: fileupload

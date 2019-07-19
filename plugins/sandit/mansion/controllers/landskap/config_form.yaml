@@ -1,0 +1,10 @@
+name: Landskap
+form: $/sandit/mansion/models/landskap/fields.yaml
+modelClass: Sandit\Mansion\Models\Landskap
+defaultRedirect: sandit/mansion/landskap
+create:
+    redirect: 'sandit/mansion/landskap/update/:id'
+    redirectClose: sandit/mansion/landskap
+update:
+    redirect: sandit/mansion/landskap
+    redirectClose: sandit/mansion/landskap

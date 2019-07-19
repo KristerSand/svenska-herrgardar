@@ -1,0 +1,10 @@
+name: Gard
+form: $/sandit/mansion/models/gard/fields.yaml
+modelClass: Sandit\Mansion\Models\Gard
+defaultRedirect: sandit/mansion/gard
+create:
+    redirect: 'sandit/mansion/gard/update/:id'
+    redirectClose: sandit/mansion/gard
+update:
+    redirect: sandit/mansion/gard
+    redirectClose: sandit/mansion/gard

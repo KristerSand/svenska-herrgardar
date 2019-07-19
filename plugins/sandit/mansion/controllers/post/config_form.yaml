@@ -1,0 +1,10 @@
+name: Post
+form: $/sandit/mansion/models/post/fields.yaml
+modelClass: Sandit\Mansion\Models\Post
+defaultRedirect: sandit/mansion/post
+create:
+    redirect: 'sandit/mansion/post/update/:id'
+    redirectClose: sandit/mansion/post
+update:
+    redirect: sandit/mansion/post
+    redirectClose: sandit/mansion/post

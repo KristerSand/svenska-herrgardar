@@ -1,0 +1,10 @@
+name: Socken
+form: $/sandit/mansion/models/socken/fields.yaml
+modelClass: Sandit\Mansion\Models\Socken
+defaultRedirect: sandit/mansion/socken
+create:
+    redirect: 'sandit/mansion/socken/update/:id'
+    redirectClose: sandit/mansion/socken
+update:
+    redirect: sandit/mansion/socken
+    redirectClose: sandit/mansion/socken

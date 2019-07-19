@@ -1,0 +1,17 @@
+fields:
+    namn:
+        label: Namn
+        span: auto
+        type: text
+    efternamn:
+        label: Efternamn
+        span: auto
+        type: text
+    titel_tjanst:
+        label: 'Titel tjänst'
+        span: auto
+        type: text
+    titel_familj:
+        label: 'Titel familj'
+        span: auto
+        type: text

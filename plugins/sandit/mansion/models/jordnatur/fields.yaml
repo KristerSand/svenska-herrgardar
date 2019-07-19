@@ -1,0 +1,5 @@
+fields:
+    namn:
+        label: Jordnatur
+        span: auto
+        type: text

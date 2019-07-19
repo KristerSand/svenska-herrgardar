@@ -1,0 +1,16 @@
+fields:
+    namn:
+        label: Namn
+        span: auto
+        required: 1
+        type: text
+    socken:
+        label: Socken
+        nameFrom: namn
+        descriptionFrom: description
+        span: auto
+        type: relation
+    toraid:
+        label: Toraid
+        span: auto
+        type: text

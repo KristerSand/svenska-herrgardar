@@ -1,0 +1,52 @@
+plugin:
+    name: 'sandit.mansion::lang.plugin.name'
+    description: 'sandit.mansion::lang.plugin.description'
+    author: Sandit
+    icon: oc-icon-bank
+    homepage: ''
+navigation:
+    mansion:
+        label: Herrgårdar
+        url: sandit/mansion/import
+        icon: icon-university
+        sideMenu:
+            import:
+                label: Import
+                url: sandit/mansion/import
+                icon: icon-upload
+            post:
+                label: Post
+                url: sandit/mansion/post
+                icon: icon-file-text
+            gard:
+                label: Gård
+                url: sandit/mansion/gard
+                icon: icon-home
+            person:
+                label: Person
+                url: sandit/mansion/person
+                icon: icon-user
+            jordnatur:
+                label: Jordnatur
+                url: sandit/mansion/jordnatur
+                icon: icon-leaf
+            status:
+                label: Status
+                url: sandit/mansion/status
+                icon: icon-bookmark
+            socken:
+                label: Socken
+                url: sandit/mansion/socken
+                icon: icon-map-marker
+            harad:
+                label: Härad
+                url: sandit/mansion/harad
+                icon: icon-map-marker
+            lanskap:
+                label: Landskap
+                url: sandit/mansion/landskap
+                icon: icon-map-marker
+            kalla:
+                label: Källa
+                url: sandit/mansion/kalla
+                icon: icon-book

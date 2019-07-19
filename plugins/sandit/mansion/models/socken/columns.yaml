@@ -1,0 +1,13 @@
+columns:
+    namn:
+        label: Socken
+        type: text
+        searchable: true
+        sortable: true
+    harad_namn:
+        label: Härad
+        type: text
+        searchable: true
+        sortable: true
+        select: namn
+        relation: harad

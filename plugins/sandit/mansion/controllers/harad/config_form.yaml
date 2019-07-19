@@ -1,0 +1,10 @@
+name: Harad
+form: $/sandit/mansion/models/harad/fields.yaml
+modelClass: Sandit\Mansion\Models\Harad
+defaultRedirect: sandit/mansion/harad
+create:
+    redirect: 'sandit/mansion/harad/update/:id'
+    redirectClose: sandit/mansion/harad
+update:
+    redirect: sandit/mansion/harad
+    redirectClose: sandit/mansion/harad
