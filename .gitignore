@@ -17,6 +17,14 @@ server.php
 !themes/andreyvasilev-minimalist/
 !themes/andreyvasilev-minimalist/*
 
+LICENSE
+composer.json
+composer.lock
+phpcs.xml
+phpunit.xml
+/tests/
+README.md
+
 # Vagrant files #
 #################
 /.vagrant
