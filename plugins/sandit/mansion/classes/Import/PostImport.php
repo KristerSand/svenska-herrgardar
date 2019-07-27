@@ -5,6 +5,8 @@ ini_set('max_execution_time', '0');
 
 use Maatwebsite\Excel\Concerns\WithMultipleSheets;
 use Sandit\Mansion\Classes\Import\FirstSheetImport;
+use Maatwebsite\Excel\Concerns\ToArray;
+use Maatwebsite\Excel\Concerns\WithHeadingRow;
 
 class PostImport implements WithMultipleSheets
 {
@@ -19,4 +21,13 @@ class PostImport implements WithMultipleSheets
             new FirstSheetImport($this->importer)
         ];
     }
+
+     /**
+     * @param array $array
+     * @return void
+     */
+    /*public function array(array $array)
+    {
+        return $this->importer->doImport($array);
+    }*/
 }

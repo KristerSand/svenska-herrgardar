@@ -63,4 +63,9 @@ class MansionImporter extends Importer
     {
         return $this->repository->isMansionPostExisting($post_data);
     }
+
+    protected function isIdExisting($post_data)
+    {
+        return $this->repository->isIdExisting($post_data);
+    }
 }

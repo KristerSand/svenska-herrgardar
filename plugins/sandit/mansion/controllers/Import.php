@@ -5,13 +5,14 @@ use BackendMenu;
 use Sandit\Mansion\Classes\Repositories\ImportRepositoryInterface;
 use Sandit\Mansion\Classes\Import\MansionImporter;
 use Sandit\Mansion\Classes\Import\PostImport;
+use Vdomah\Excel\Classes\Excel;
 use Input;
 use Request;
 use Redirect;
 use Flash;
 use App;
 use Session;
-use Excel;
+//use Excel;
 use Exception;
 use Storage;
 
@@ -38,19 +39,16 @@ class Import extends Controller
 
     public function formAfterSave($model)
     {
-        $path = $model->getExcelFilePath();
         $repository = App::make('ImportRepositoryInterface');
         $importer = new MansionImporter($repository, $model);
         $postImport = new PostImport($importer);
 
         try {
-            Excel::import($postImport, $model->getExcelFilePath());
+            Excel::excel()->import($postImport, $model->getExcelFilePath());
             $message = $importer->getMessage();
         } catch (\Exception $e) {
             $message = ['message' => $e->getMessage(), 'message_type' => 'error'];
-        }        
-        Storage::delete($path);
-        
+        }
         Session::flash('message', $message['message']);
         Session::flash('message_type', $message['message_type']);
     }

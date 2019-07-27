@@ -25,6 +25,9 @@ class Import extends Model
       'importfile' => 'required',
     ];
 
+
+    private $upload_dir = 'uploads/public/';
+
     /**
      * @var string The database table used by the model.
      */
@@ -45,7 +48,9 @@ class Import extends Model
 
     public function getExcelFilePath()
     {
-        return $this->importfile->getLocalPath();
+        $absolute_path = $this->importfile->getLocalPath();
+        $relpath = substr($absolute_path, strpos($absolute_path, $this->upload_dir));
+        return $relpath;
     }
 
     public function getExcelFileName()

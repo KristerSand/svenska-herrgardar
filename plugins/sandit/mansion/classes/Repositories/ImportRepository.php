@@ -391,4 +391,22 @@ class ImportRepository implements ImportRepositoryInterface
         $kalla = Kalla::firstOrCreate(array('namn' => $kalla));
         return $kalla->id;
     }
+
+
+    public function isIdExisting(array $post_data) : bool
+    {
+        extract($post_data);
+        
+        $db_gard = Gard::find($lopnummer);
+
+        if (! $db_gard || 
+            (strcasecmp($db_gard->namn, $gard) == 0 && 
+            strcasecmp($db_gard->socken->namn, $socken) == 0 &&
+            strcasecmp($db_gard->socken->harad->namn, $harad) == 0 && 
+            strcasecmp($db_gard->socken->harad->landskap->namn, $landskap) == 0)) 
+                {
+            return false;
+        }
+        return true;
+    }
 }

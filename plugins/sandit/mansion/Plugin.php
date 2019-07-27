@@ -30,7 +30,7 @@ class Plugin extends PluginBase
 
     public function boot()
     {
-        $this->bootPackages();
+        //$this->bootPackages();
     }
 
     /**

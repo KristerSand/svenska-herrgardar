@@ -7,6 +7,7 @@ abstract class Importer
     private $message = array('message' => '', 'message_type' => '');
 
     abstract protected function isPostExisting($post_data);
+    abstract protected function isIdExisting($post_data);
     abstract protected function addPost($post_data);
 
     public function __construct(ImportRepositoryInterface $repository, $import)
@@ -24,7 +25,8 @@ abstract class Importer
         $nr_of_saved_posts = 0;
         $required_posts = array();
         $duplicate_posts = array();
-        $total_nr_of_posts = count($data_array);
+        $duplicate_gard_ids = array();
+        $total_nr_of_posts = 0;
         $file_name = $this->import->getExcelFileName();
         $column_error_message = $this->checkColumns($data_array);
         
@@ -41,10 +43,17 @@ abstract class Importer
             $data = array_map('trim', $data);
             $dbData = $this->replaceEmptyFieldsWithNull($data);
 
+            if ($this->isEmptyRow($dbData)) {
+                continue;
+            }
+            $total_nr_of_posts++;
+
             if ($this->isRequiredFieldsMissing($dbData)) {
-                $required_posts[$index+1] = $data;
+                $required_posts[$index+2] = $data;
             } elseif ($this->isPostExisting($dbData)) {
-                $duplicate_posts[$index+1] = $data;
+                $duplicate_posts[$index+2] = $data;
+            } elseif ($this->isIdExisting($dbData)) {
+                $duplicate_gard_ids[$index+2] = $data; 
             } else {
                 $dbData['import_id'] = $this->import->id;
                 $this->addPost($dbData);
@@ -64,6 +73,7 @@ abstract class Importer
                     $total_nr_of_posts,
                     $nr_of_saved_posts,
                     $duplicate_posts,
+                    $duplicate_gard_ids,
                     $required_posts
         );
     }
@@ -132,7 +142,8 @@ abstract class Importer
     private function createMessage(
         int $total_nr_of_posts, 
         int $nr_of_saved_posts, 
-        array $duplicate_posts, 
+        array $duplicate_posts,
+        array $duplicate_gard_ids,  
         array $required_posts
         ) : array
     {
@@ -142,7 +153,7 @@ abstract class Importer
             $message['message_type'] = 'success';
             $message['message'] = "Importen av '$file_name' är klar.<br /><br />".
                 $nr_of_saved_posts.' poster av '.$total_nr_of_posts.' sparade.' .
-                $this->getExtraInformation($required_posts, $duplicate_posts);
+                $this->getExtraInformation($required_posts, $duplicate_posts, $duplicate_gard_ids);
         } else {
             $message['message_type'] = 'success';
 
@@ -161,20 +172,30 @@ abstract class Importer
      * @param array $duplicate_posts
      * @return string
      */
-    private function getExtraInformation(array $required_posts, array $duplicate_posts) : string
+    private function getExtraInformation(
+        array $required_posts,
+        array $duplicate_posts,
+        array $duplicate_gard_ids
+        ) : string
     {
         $message = '';
 
         if ( ! empty($required_posts)) {
             $message .= '<br /><br />';
-            $message .= count($required_posts).' poster saknade obligatoriska värden:<br />'
-            .implode(', ', array_keys($required_posts));
+            $message .= count($required_posts).' poster saknar obligatoriska värden. Rad:<br />'
+            .implode(',', array_keys($required_posts));
+        }
+        if ( ! empty($duplicate_gard_ids)) {
+            $message .= '<br /><br />';
+            $message .= count($duplicate_gard_ids).' poster har duplicerade löpnummer. Rad:<br />'
+            .implode(',',array_keys($duplicate_gard_ids));
         }
         if ( ! empty($duplicate_posts)) {
-            $duplicat_rows = array_keys($duplicate_posts);
             $message .= '<br /><br />';
-            $message .= count($duplicat_rows).' poster var dubletter. Rad:<br />'.implode(',',$duplicat_rows);
+            $message .= count($duplicate_posts).' poster är dubletter. Rad:<br />'
+            .implode(',',array_keys($duplicate_posts));
         }
+        
         return $message;
     }
 
@@ -188,5 +209,19 @@ abstract class Importer
         return array_map(function($value) {
                return $value === "" ? NULL : $value;
             }, $post_data);
+    }
+
+    /**
+     * @param array dbData
+     * @return bool
+     */
+    private function isEmptyRow(array $dbData) : bool
+    {
+        foreach($dbData as $item) {
+            if ( ! empty($item)) {
+                return false;
+            }
+        }
+        return true;
     }
 }
