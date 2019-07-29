@@ -2,9 +2,8 @@
 
 use Cms\Classes\ComponentBase;
 use Input;
-use Sandit\Mansion\Models\Post;
+use Redirect;
 use Sandit\Mansion\Models\Gard;
-use Excel;
 use Sandit\Mansion\Classes\Export\MansionExport;
 
 class MansionPosts extends ComponentBase
@@ -15,7 +14,7 @@ class MansionPosts extends ComponentBase
     {
         return [
             'name'        => 'MansionPosts',
-            'description' => 'Lista av en gårds poster'
+            'description' => 'Lista med en gårds poster'
         ];
     }
 
@@ -33,13 +32,12 @@ class MansionPosts extends ComponentBase
     public function onRun()
     {
         $gardId = $this->property('id');
-        $this->gard = Gard::getGardar($gardId, ['post'])->first();
+        $this->gard = Gard::getGardPosts($gardId);
     }
-
+    
     public function onDownload()
     {
-        $id = Input::get('id');
-        $gardData = Gard::getGardar($id, ['post'])->first();
-        return Excel::download($gardData , 'file.xlsx');
+        $gardId = Input::get('id');
+        return Redirect::to('downloadExcel/'.$gardId);
     }
 }

@@ -1,7 +1,10 @@
 <?php
 
 use Sandit\Mansion\Classes\Repositories\SearchRepositoryInterface;
-  
+use Sandit\Mansion\Models\Gard;
+use Sandit\Mansion\Classes\Export\MansionExport;
+use Vdomah\Excel\Classes\Excel;
+
 Route::group(['prefix' => 'api/v1', 'middleware' => ['\Barryvdh\Cors\HandleCors']], function(){
 
         Route::get('gard', function() {
@@ -32,4 +35,13 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['\Barryvdh\Cors\HandleCors'
             $search_repo = App::make('SearchRepositoryInterface');
             return $search_repo->getGardar([$id], 'id', $relations);
         });
+});
+
+Route::get('downloadExcel/{id}', function($id) {
+    $mansion_exporter = new MansionExport($id);
+    $file_name = $mansion_exporter->makeFileName();
+
+    //dd($mansion_exporter->gard_id, $file_name);
+
+    return Excel::excel()->download($mansion_exporter, $file_name);
 });

@@ -6,7 +6,7 @@
 <div class="d-flex w-100 justify-content-start align-items-center mb-2">
     <h4 class="m-0 py-2">{{ gard.namn }}</h4>
     <div class="mt-1 py-2 ml-4">{{ gard.socken.namn }}, {{ gard.socken.harad.namn }}, {{ gard.socken.harad.landskap.namn }}</div>
-    <a href="" data-request="onDownload" data-request-data="id: {{ gard.id }}" class="mt-1 p-2y ml-4">Ladda ner som Excelfil</a>
+    <a href="" data-request-success="$.oc.stripeLoadIndicator.hide();" data-request="onDownload" data-request-data="id: {{ gard.id }}" class="mt-1 p-2y ml-4">Ladda ner som Excelfil</a>
 </div>
 <div class="table-responsive">
     <table class="table table-striped table-bordered table-sm">

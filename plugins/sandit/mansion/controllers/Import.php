@@ -12,9 +12,7 @@ use Redirect;
 use Flash;
 use App;
 use Session;
-//use Excel;
 use Exception;
-use Storage;
 
 class Import extends Controller
 {

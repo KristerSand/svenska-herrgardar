@@ -68,4 +68,9 @@ class MansionImporter extends Importer
     {
         return $this->repository->isIdExisting($post_data);
     }
+
+    public function getColumns() : array
+    {
+        return $this->excel_columns;
+    }
 }

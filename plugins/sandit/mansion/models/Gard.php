@@ -56,34 +56,15 @@ class Gard extends Model
     ];
 
 
-    static function getGardar($id='', $relations=[])
+    static function getGardPosts($id)
     {
-        if ( ! empty($id)) {
-            $gardar = Gard::with('socken.harad.landskap')->where('id','=',$id)->get();
-        } elseif (Input::has('id')) {
-            $ids = explode(',', Input::get('id'));
-            $gardar = Gard::with('socken.harad.landskap')->whereIn('id', $ids)->get();
-        } elseif (Input::has('toraid')) {
-            $toraids = explode(',', Input::get('toraid'));
-            $gardar = Gard::with('socken.harad.landskap')->whereIn('toraid', $toraids)->get();
-        } else {
-            $gardar = Gard::with('socken.harad.landskap')->get();
-        }
-        if (Input::has('with')) {
-            $relations = explode(',', Input::get('with'));
-        }
-        if ( ! empty($relations)) {
+        //dd($id);
+        $gard = Gard::with('socken.harad.landskap')->where('id','=',$id)->first();
+        $gard->poster = Post::with('jordnatur','agare','maka1','maka2','status','kalla')
+            ->where('gard_id','=',$id)
+            ->get();
 
-            if (in_array('post', $relations)) {
-
-                foreach ($gardar as &$gard) {
-                    $gard->poster = Post::with('jordnatur','agare','maka1','maka2','status','kalla')
-                        ->where('gard_id','=',$gard->id)
-                        ->get();
-                }
-            }
-        }
-        return $gardar;
+        return $gard;
     }
 
 
