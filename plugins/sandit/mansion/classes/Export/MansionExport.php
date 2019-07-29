@@ -74,7 +74,7 @@ class MansionExport implements FromCollection, WithHeadings
                 $post->ar_borjan_anm,
                 $post->ar_slut,
                 $post->ar_slut_anm,
-                ucfirst($post->status->namn),
+                is_null($post->status) ? null : ucfirst($post->status->namn),
                 $this->makeJordnaturString($post->jordnatur),
                 ucfirst($post->ag_arr),
                 $post->typ,
