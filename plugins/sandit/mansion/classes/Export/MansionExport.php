@@ -54,7 +54,6 @@ class MansionExport implements FromCollection, WithHeadings
         $this->gard_id = $gard_id;
     }
 
-    // set the headings
     public function headings(): array
     {
         return array_keys($this->excel_columns);
@@ -102,7 +101,6 @@ class MansionExport implements FromCollection, WithHeadings
                 $post->kalla->namn
             ];
         }
-
         return collect($rows);
     }
 
