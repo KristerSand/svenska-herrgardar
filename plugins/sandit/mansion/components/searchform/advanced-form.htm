@@ -2,11 +2,9 @@
 {% set harad = __SELF__.harad %}
 {% set socken = __SELF__.socken %}
 {% set status = __SELF__.status %}
-{% set jordnatur = __SELF__.jordnatur %}
 {% set agar_arr = __SELF__.agar_arr %}
 {% set person_titel_tjanst = __SELF__.person_titel_tjanst %}
 {% set person_titel_familj = __SELF__.person_titel_familj %}
-{% set maka_titel_tjanst = __SELF__.maka_titel_tjanst %}
 {% set maka_titel_familj = __SELF__.maka_titel_familj %}
 
 <form id="advanced-form" data-request="onSearch" class="mb-4">
@@ -17,6 +15,7 @@
         <h5>Gård</h5>
         <div class="form-group">
             <input type="text" class="form-control" id="gard" name="gard">
+            <small id="gardHelp" class="form-text text-muted">Här kan du söka på gårdarnas namn. Namnen anges efter Lantmäteriets normalstavning, men här återfinns i många fall även äldre namnformer samt ursprungliga gårdsnamn, i de fall gården har bytt namn.</small>
         </div>
     </fieldset>
     <hr />
@@ -47,7 +46,7 @@
     </fieldset>
     <hr />
     <fieldset>
-        <h5>Ägare/innehavare</h5>
+        <h5>Ägare/innehavare/arrendatorer</h5>
         <div class="form-row">
             <div class="col form-group">
                 <input type="text" class="form-control" id="person_namn" name="person_namn" placeholder="Namn">
@@ -59,12 +58,8 @@
 
         <div class="form-row">
             <div class="col form-group">
-                <select class="form-control" id="person_titel_tjanst" name="person_titel_tjanst">
-                    <option value="0" selected>Titel tjänst</option>
-                    {% for ptt in person_titel_tjanst %}
-                        <option value="{{ ptt.titel }}">{{ ptt.titel }}</option>
-                    {% endfor %}
-                </select>
+                <input type="text" class="form-control" id="person_titel_tjanst" name="person_titel_tjanst" placeholder="Titel tjänst">
+                <small id="person_titel_tjanstHelp" class="form-text text-muted">Här kan du söka på den yrkestitel ägarna/arrendatorerna/innehavarna hade under de år de besatt gården, t.ex. löjtnant, kapten, överste, lantmätare, länsman, handelsman, godsägare, hovfröken, kammarjungfru etc.</small>
             </div>
 
             <div class="col form-group">
@@ -92,12 +87,8 @@
 
         <div class="form-row">
             <div class="col form-group">
-                <select class="form-control" id="maka_titel_tjanst" name="maka_titel_tjanst">
-                    <option value="0" selected>Titel tjänst</option>
-                    {% for mtt in maka_titel_tjanst %}
-                        <option value="{{ mtt.titel }}">{{ mtt.titel }}</option>
-                    {% endfor %}
-                </select>
+                <input type="text" class="form-control" id="maka_titel_tjanst" name="maka_titel_tjanst" placeholder="Titel tjänst">
+                <small id="maka_titel_tjanstHelp" class="form-text text-muted">Här kan du söka på den yrkestitel makarna/makorna hade under de år de besatt gården, t.ex. löjtnant, kapten, överste, lantmätare, länsman, handelsman, godsägare, hovfröken, kammarjungfru etc.</small>
             </div>
 
             <div class="col form-group">
@@ -129,15 +120,6 @@
         <h5>Övrigt</h5>
         <div class="form-row">
             <div class="col form-group">
-                <select class="form-control" id="jordnatur" name="jordnatur">
-                    <option value="0" selected>Jordnatur</option>
-                    {% for j in jordnatur %}
-                    <option value="{{ j.id }}">{{ j.namn }}</option>
-                    {% endfor%}
-                </select>
-            </div>
-
-            <div class="col form-group">
                 <select class="form-control" id="status" name="status">
                     <option value="0" selected>Status</option>
                     {% for s in status %}
@@ -145,8 +127,6 @@
                     {% endfor %}
                 </select>
             </div>
-        </div>
-        <div class="form-row">
             <div class="col form-group">
                 <select class="form-control" id="agar_arr" name="agar_arr">
                     <option value="0" selected>Ägar/arr</option>
@@ -155,8 +135,16 @@
                     {% endfor %}
                 </select>
             </div>
+
+        </div>
+        <div class="form-row">
             <div class="col form-group">
-                <input type="test" class="form-control" id="typ" name="typ" placeholder="Typ">
+                <input type="text" class="form-control" id="jordnatur" name="jordnatur" placeholder="Jordnatur">
+                <small id="jordnaturHelp" class="form-text text-muted">Här kan du söka på gårdens jordnatur t.ex. frälse, skatte, krono, säteri, berustat säteri eller ladugård, eller om det var ett bruk. Du kan även söka på kronoboställenas funktion, dels genom att ange positionen (kyrkoherde, komminister, länsman, trumpetare, löjtnant, överste), dels regementes namn.</small>
+            </div>
+            <div class="col form-group">
+                <input type="text" class="form-control" id="typ" name="typ" placeholder="Typ">
+                <small id="typHelp" class="form-text text-muted">Här kan du söka efter vilken form av transaktion som föregick innehavet av gården, t.ex. förläning, donation, köp, byte, gåva, arv, etc. Du kan även se släktrelationen med föregående innehavare, om gården togs över av en son, dotter, änka, änkeman eller annan släkting. Använd ; som skiljetecken om du vill söka på både transaktion och släktrelation.</small>
             </div>
         </div>
     </fieldset>

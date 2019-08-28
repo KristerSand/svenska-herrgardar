@@ -5,7 +5,6 @@ use Sandit\Mansion\Models\Landskap;
 use Sandit\Mansion\Models\Harad;
 use Sandit\Mansion\Models\Socken;
 use Sandit\Mansion\Models\Status;
-use Sandit\Mansion\Models\Jordnatur;
 use Sandit\Mansion\Models\Person;
 use Input;
 use Redirect;
@@ -18,12 +17,9 @@ class SearchForm extends ComponentBase
     public $harad;
     public $socken;
     public $status;
-    public $jordnatur;
     public $agar_arr;
     public $searchform;
-    public $person_titel_tjanst;
     public $person_titel_familj;
-    public $maka_titel_tjanst;
     public $maka_titel_familj;
 
 
@@ -41,11 +37,8 @@ class SearchForm extends ComponentBase
         $this->harad = $this->loadHarad();
         $this->socken = $this->loadSocken();
         $this->status = $this->loadStatus();
-        $this->jordnatur = $this->loadJordnatur();
         $this->agar_arr = $this->loadAgarArr();
-        $this->person_titel_tjanst = $this->loadTitle('person_titel_tjanst');
         $this->person_titel_familj = $this->loadTitle('person_titel_familj');
-        $this->maka_titel_tjanst = $this->loadTitle('maka_titel_tjanst');
         $this->maka_titel_familj = $this->loadTitle('maka_titel_familj');
 
         if (Session::has('input')) {
@@ -85,11 +78,6 @@ class SearchForm extends ComponentBase
     protected function loadStatus()
     {
         return Status::orderBy('namn')->get();
-    }
-
-    protected function loadJordnatur()
-    {
-        return Jordnatur::orderBy('namn')->get();
     }
 
     protected function loadAgarArr()

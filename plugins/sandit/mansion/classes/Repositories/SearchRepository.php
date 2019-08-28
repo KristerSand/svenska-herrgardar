@@ -91,9 +91,9 @@ class SearchRepository implements SearchRepositoryInterface
 			$query .= " AND pe.efternamn LIKE ?";
 			$param[] = "%".$data['person_efternamn']."%";
 		}
-		if (isset($data['person_titel_tjanst']) && $data['person_titel_tjanst'] != '0') {
-			$query .= " AND pe.titel_tjanst = ?";
-			$param[] = $data['person_titel_tjanst'];
+		if (isset($data['person_titel_tjanst']) &&  ! empty($data['person_titel_tjanst'])) {
+			$query .= " AND pe.titel_tjanst LIKE ?";
+			$param[] = '%'.$data['person_titel_tjanst'].'%';
 		}
 		if (isset($data['person_titel_familj']) && $data['person_titel_familj'] != '0') {
 			$query .= " AND pe.titel_familj = ?";
@@ -109,10 +109,10 @@ class SearchRepository implements SearchRepositoryInterface
 			$param[] = "%".$data['maka_efternamn']."%";
 			$param[] = "%".$data['maka_efternamn']."%";
 		}
-		if (isset($data['maka_titel_tjanst']) && $data['maka_titel_tjanst'] != '0') {
-			$query .= " AND (pe_m1.titel_tjanst = ? OR pe_m2.titel_tjanst LIKE ?)";
-			$param[] = $data['maka_titel_tjanst'];
-			$param[] = $data['maka_titel_tjanst'];
+		if (isset($data['maka_titel_tjanst']) && ! empty($data['maka_titel_tjanst'])) {
+			$query .= " AND (pe_m1.titel_tjanst LIKE ? OR pe_m2.titel_tjanst LIKE ?)";
+			$param[] = '%'.$data['maka_titel_tjanst'].'%';
+			$param[] = '%'.$data['maka_titel_tjanst'].'%';
 		}
 		if (isset($data['maka_titel_familj']) && $data['maka_titel_familj'] != '0') {
 			$query .= " AND (pe_m1.titel_familj = ? OR pe_m2.titel_familj LIKE ?)";
@@ -131,9 +131,9 @@ class SearchRepository implements SearchRepositoryInterface
 			$query .= " AND st.id = ?";
 			$param[] = $data['status'];
 		}
-		if (isset($data['jordnatur']) && $data['jordnatur'] != '0') {
-			$query .= " AND j.id = ?";
-			$param[] = $data['jordnatur'];
+		if (isset($data['jordnatur']) && ! empty($data['jordnatur'])) {
+			$query .= " AND j.namn like ?";
+			$param[] = '%'.$data['jordnatur'].'%';
 		}
 		if (isset($data['agar_arr']) && $data['agar_arr'] != '0') {
 			$query .= " AND p.ag_arr = ?";
@@ -141,7 +141,7 @@ class SearchRepository implements SearchRepositoryInterface
 		}
 		if (isset($data['typ']) && ! empty($data['typ'])) {
 			$query .= " AND p.typ LIKE ?";
-			$param[] = str_replace('*', '%', $data['typ']);
+			$param[] = '%'. $data['typ'].'%';
 		}
 		if (isset($data['herrgard_mantal']) 
 			&& (! empty($data['herrgard_mantal'])
