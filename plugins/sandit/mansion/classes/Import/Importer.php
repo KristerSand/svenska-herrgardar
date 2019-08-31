@@ -56,7 +56,18 @@ abstract class Importer
                 $duplicate_gard_ids[$index+2] = $data; 
             } else {
                 $dbData['import_id'] = $this->import->id;
-                $this->addPost($dbData);
+                try {
+                    $this->addPost($dbData);
+                } catch (\Illuminate\Database\QueryException $e) {
+                    $this->repository->deleteImportAndAllItsData($this->import->id);
+                    $this->message = [
+                        'message_type' => 'error',
+                        'message' =>
+                        'Importen avbröts på rad '.($index+2).', troligtvis på grund data som inte kan sparas.<br />
+                        Felmeddelande: '.$e->getMessage().'<br />Ingen data sparades.'
+                    ];
+                    return;
+                }
                 $nr_of_saved_posts++;
             }
         }

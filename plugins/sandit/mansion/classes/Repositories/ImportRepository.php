@@ -20,7 +20,7 @@ class ImportRepository implements ImportRepositoryInterface
         $this->savePerson($post_data, 'maka1', $post_id);
         $this->savePerson($post_data, 'maka2', $post_id);
         $this->saveStorlek($post_data, 'herrgard', $post_id);
-		$this->saveJordnatur($post_data, $post_id);
+        $this->saveJordnatur($post_data, $post_id);
     }
 
 

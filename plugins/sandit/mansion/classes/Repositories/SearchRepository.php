@@ -32,7 +32,6 @@ class SearchRepository implements SearchRepositoryInterface
 
 	public function search($data)
 	{
-		//dd($data);
 		if (empty($data)) {
 			return [];
 		}
@@ -267,8 +266,6 @@ class SearchRepository implements SearchRepositoryInterface
 			$param[] = $data['gods_taxering'];
 		}
 
-
-//dd($query,$param);
 		$query = "SELECT 
 					tmp.id AS 'id',
 					CONCAT(UCASE(MID(tmp.gard ,1,1)),MID(tmp.gard ,2)) AS 'gard',
@@ -281,7 +278,7 @@ class SearchRepository implements SearchRepositoryInterface
 					WHERE tmp.id = post.gard_id
 					GROUP BY tmp.id,tmp.gard,tmp.socken,tmp.harad,tmp.landskap,tmp.status 
 					ORDER BY tmp.gard";
-					//dd($query,$param,$data);
+					
 		return DB::select($query, $param);
 	}
 
