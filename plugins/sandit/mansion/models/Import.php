@@ -13,15 +13,10 @@ class Import extends Model
 
     protected $guarded = [];
 
-    /*Validator::extend('foo', function($attribute, $value, $parameters) {
-        return $value == 'foo';
-    });*/
-
     /**
      * @var array Validation rules
      */
     public $rules = [
-      //'importfile' => ['required', 'mimes:xls,xlsx'],
       'importfile' => 'required',
     ];
 
@@ -57,22 +52,4 @@ class Import extends Model
     {
         return $this->importfile->file_name;
     }
-
-
-    /*public function afterValidate()
-    {
-      $importer = Importer::getImporter($this->import_type);
-      //var_dump($importer);
-
-      throw new ValidationException([
-         'importfile' => var_export($importer,true)
-      ]);
-  }*/
-
-
-    /*public function afterDelete()
-    {
-        $importRepository = new ImportRepository;
-        $importRepository->delete($this->id, 'import');
-    }*/
 }
