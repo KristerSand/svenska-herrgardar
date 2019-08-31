@@ -144,6 +144,7 @@ class ImportRepository implements ImportRepositoryInterface
         $import = Import::find($import_id);
         $import->saved_rows = $saved_rows;
         $import->total_rows = $total_rows;
+        $import->file_name = $import->getExcelFileName();
         $import->save();
     }
 

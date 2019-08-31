@@ -2,17 +2,19 @@ columns:
     id:
         label: Id
         type: number
-    importfile:
+    file_name:
         label: Filnamn
-        type: partial
-        path: ~/plugins/sandit/mansion/models/import/_import_filename.htm
+        type: text
+        searchable: true
+        sortable: true
     saved_rows:
-        label: 'Sparade'
+        label: Sparade
         type: number
     total_rows:
-        label: 'Totalt'
+        label: Totalt
         type: number
     created_at:
         label: Datum
         type: datetime
-
+        searchable: true
+        sortable: true

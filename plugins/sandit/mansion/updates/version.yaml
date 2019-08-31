@@ -33,3 +33,6 @@
 1.0.12:
     - 'Created table sandit_mansion_jordnatur_post'
     - builder_table_create_sandit_mansion_jordnatur_post.php
+1.0.13:
+    - 'Updated table sandit_mansion_import'
+    - builder_table_update_sandit_mansion_import.php
