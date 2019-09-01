@@ -159,16 +159,10 @@ class ImportRepository implements ImportRepositoryInterface
 	}
 
 
-    public function deleteImportAndAllItsData(int $import_id): void
+    /*public function deleteImportAndAllItsData(int $import_id): void
     {
 		$this->deleteImport($import_id);
 		Post::where('import_id', $import_id)->delete();
-		$this->cleanUpTablesAfterPostDelete();
-    }
-
-
-	private function cleanUpTablesAfterPostDelete(): void
-    {
         DB::delete('DELETE s FROM sandit_mansion_status s LEFT JOIN sandit_mansion_post p ON s.id=p.status_id WHERE p.status_id IS NULL');
         DB::delete('DELETE k FROM sandit_mansion_kalla k LEFT JOIN sandit_mansion_post p ON k.id=p.kalla_id WHERE p.kalla_id IS NULL');
         DB::delete('DELETE i FROM sandit_mansion_import i LEFT JOIN sandit_mansion_post p ON i.id=p.import_id WHERE p.import_id IS NULL');
@@ -179,12 +173,29 @@ class ImportRepository implements ImportRepositoryInterface
         DB::delete('DELETE l FROM sandit_mansion_landskap l LEFT JOIN sandit_mansion_harad h ON l.id=h.landskap_id WHERE h.landskap_id IS NULL');
 		DB::delete('DELETE pj FROM sandit_mansion_jordnatur_post pj LEFT JOIN sandit_mansion_post p ON pj.post_id=p.id WHERE p.id IS NULL');
         DB::delete('DELETE j FROM sandit_mansion_jordnatur j LEFT JOIN sandit_mansion_jordnatur_post pj ON pj.jordnatur_id=j.id WHERE pj.jordnatur_id IS NULL');
-        $this->cleanUpPersonTable();
-    }
+        DB::delete('DELETE p 
+            FROM sandit_mansion_person p
+                LEFT JOIN sandit_mansion_post pa ON p.id=pa.agare_person_id
+                LEFT JOIN sandit_mansion_post pm1 ON p.id=pm1.maka1_person_id
+                LEFT JOIN sandit_mansion_post pm2 ON p.id=pm2.maka2_person_id
+            WHERE pa.agare_person_id IS NULL 
+                AND pm1.maka1_person_id IS NULL
+                AND pm2.maka2_person_id IS NULL');
+    }*/
 
-
-    private function cleanUpPersonTable(): void
+    public function deleteImportAndAllItsData(int $import_id): void
     {
+		$this->deleteImport($import_id);
+		Post::where('import_id', $import_id)->delete();
+        DB::delete('DELETE s FROM sandit_mansion_status s LEFT JOIN sandit_mansion_post p ON s.id=p.status_id WHERE p.status_id IS NULL');
+        DB::delete('DELETE k FROM sandit_mansion_kalla k LEFT JOIN sandit_mansion_post p ON k.id=p.kalla_id WHERE p.kalla_id IS NULL');
+        DB::delete('DELETE i FROM sandit_mansion_import i LEFT JOIN sandit_mansion_post p ON i.id=p.import_id WHERE p.import_id IS NULL');
+        DB::delete('DELETE g FROM sandit_mansion_gard g LEFT JOIN sandit_mansion_post p ON g.id=p.gard_id WHERE p.gard_id IS NULL');
+        DB::delete('DELETE s FROM sandit_mansion_socken s LEFT JOIN sandit_mansion_gard g ON s.id=g.socken_id WHERE g.socken_id IS NULL');
+        DB::delete('DELETE h FROM sandit_mansion_harad h LEFT JOIN sandit_mansion_socken s ON h.id=s.harad_id WHERE s.harad_id IS NULL');
+        DB::delete('DELETE l FROM sandit_mansion_landskap l LEFT JOIN sandit_mansion_harad h ON l.id=h.landskap_id WHERE h.landskap_id IS NULL');
+		DB::delete('DELETE pj FROM sandit_mansion_jordnatur_post pj LEFT JOIN sandit_mansion_post p ON pj.post_id=p.id WHERE p.id IS NULL');
+        DB::delete('DELETE j FROM sandit_mansion_jordnatur j LEFT JOIN sandit_mansion_jordnatur_post pj ON pj.jordnatur_id=j.id WHERE pj.jordnatur_id IS NULL');
         DB::delete('DELETE p 
             FROM sandit_mansion_person p
                 LEFT JOIN sandit_mansion_post pa ON p.id=pa.agare_person_id
