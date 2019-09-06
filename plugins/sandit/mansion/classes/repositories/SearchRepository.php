@@ -285,15 +285,13 @@ class SearchRepository implements SearchRepositoryInterface
 
 	public function getGardar($ids, $id_type, $relations)
     {
+		$gardar = collect();
+		
 		if (empty($ids)) {
 			$gardar = Gard::with('socken.harad.landskap')->get();
-		} elseif ($id_type == 'id') {
-            $gardar = Gard::with('socken.harad.landskap')->whereIn('id', $ids)->get();
-        } elseif ($id_type == 'toraid') {
-            $gardar = Gard::with('socken.harad.landskap')->whereIn('toraid', $toraids)->get();
-        } else {
-			return collect();
-		}
+		} elseif ($id_type == 'id' || $id_type == 'toraid') {
+            $gardar = Gard::with('socken.harad.landskap')->whereIn($id_type, $ids)->get();
+        }
         if ( ! empty($relations)) {
 
             if (in_array('post', $relations)) {

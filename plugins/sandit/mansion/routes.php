@@ -21,7 +21,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['\Barryvdh\Cors\HandleCors'
             }
             if (Input::has('with')) {
                 $relations = explode(',', Input::get('with'));
-            }
+            }            
             $search_repo = App::make('SearchRepositoryInterface');
             return $search_repo->getGardar($ids, $id_type, $relations);
         });
