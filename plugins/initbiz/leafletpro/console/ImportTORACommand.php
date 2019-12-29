@@ -3,6 +3,8 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+
+use DB;
 use Initbiz\leafletpro\models\Marker;
 
 class ImportTORACommand extends Command
@@ -25,6 +27,11 @@ class ImportTORACommand extends Command
     {
         $this->output->writeln('Hello world!');
         $marker = new Marker();
+        $marker->name = "klk";
+        $marker->lat = 59.00;
+        $marker->lon = 18.00;
+        $marker->tora_id = 222;
+        $marker->save();
     }
 
     /**
