@@ -3,6 +3,7 @@
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
+use Initbiz\leafletpro\models\Marker;
 
 class ImportTORACommand extends Command
 {
@@ -23,6 +24,7 @@ class ImportTORACommand extends Command
     public function handle()
     {
         $this->output->writeln('Hello world!');
+        $marker = new Marker();
     }
 
     /**
