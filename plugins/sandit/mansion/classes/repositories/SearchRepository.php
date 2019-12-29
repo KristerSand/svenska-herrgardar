@@ -10,10 +10,15 @@ use Sandit\Mansion\Models\Kalla;
 use Sandit\Mansion\Models\Post;
 use Sandit\Mansion\Models\Person;
 use Sandit\Mansion\Models\Jordnatur;
+use Sandit\Mansion\Classes\Helpers\ExecutionTime;
 
 class SearchRepository implements SearchRepositoryInterface
 {
 	const DB_PREFIX = 'sandit_mansion_';
+
+	private $from = "";
+	private $where = " WHERE 1 ";
+	private $param = [];
 
 	public $trunc_list = array(
 		'anywhere'=>'var som helst',
@@ -21,7 +26,8 @@ class SearchRepository implements SearchRepositoryInterface
 		'last'=>'slutet',
 		'strict'=>'exakt matchning'
 	);
-    public $year_list = array('', '1740', '1780', '1820', '1860', '1900', '1940');
+	public $year_list = array('', '1740', '1780', '1820', '1860', '1900', '1940');
+	
     public $storlek_operator_list = array(
 		'eq' => '=',
 		'lt' => '<',
@@ -35,251 +41,307 @@ class SearchRepository implements SearchRepositoryInterface
 		if (empty($data)) {
 			return [];
 		}
-		array_walk($data, 'trim');
-
-		$param = array();
-
-		$query = "SELECT DISTINCT g.id AS 'id',
-				g.namn AS 'gard',
-				s.namn AS 'socken',
-				h.namn AS 'harad',
-				l.namn AS 'landskap',
-				(SELECT status.namn 
-				FROM sandit_mansion_post post 
-					JOIN sandit_mansion_gard gard ON post.gard_id=gard.id 
-					LEFT JOIN sandit_mansion_status status ON post.status_id=status.id 
-				WHERE gard.id=g.id 
-				GROUP BY status.namn,gard.id HAVING COUNT(*) 
-				ORDER BY count(*) DESC LIMIT 1) AS 'status'
-			FROM sandit_mansion_post p
-				JOIN sandit_mansion_import i ON p.import_id=i.id
+		$select = "SELECT DISTINCT g.id ";
+		
+		$this->from = " FROM sandit_mansion_post p
 				JOIN sandit_mansion_gard g ON p.gard_id=g.id
 				JOIN sandit_mansion_socken s ON g.socken_id=s.id
 				JOIN sandit_mansion_harad h ON s.harad_id=h.id
-				JOIN sandit_mansion_landskap l ON h.landskap_id=l.id
-				LEFT JOIN sandit_mansion_status st ON p.status_id=st.id
-	            LEFT JOIN sandit_mansion_person pe ON p.agare_person_id = pe.id
-	            LEFT JOIN sandit_mansion_person pe_m1 ON p.maka1_person_id = pe_m1.id
-	            LEFT JOIN sandit_mansion_person pe_m2 ON p.maka2_person_id = pe_m2.id
-				LEFT JOIN sandit_mansion_jordnatur_post jp ON p.id = jp.post_id
-				LEFT JOIN sandit_mansion_jordnatur j ON jp.jordnatur_id = j.id
+				JOIN sandit_mansion_landskap l ON h.landskap_id=l.id ";
+		
+		array_walk($data, 'trim');
 
-			WHERE 1 ";
+		$this->addGardSearchSql($data);
+		$this->addLandskapSearchSql($data);
+		$this->addHaradSearchSql($data);
+		$this->addSockenSearchSql($data);
+		$this->addAgareSearchSql($data);
+		$this->addMakaSearchSql($data);
+		$this->addTidSearchSql($data);
+		$this->addStatusSearchSql($data);
+		$this->addJordnaturSearchSql($data);
+		$this->addAgareArrSearchSql($data);
+		$this->addTypSearchSql($data);
+		$this->addMantalSearchSql($data);
+		$this->addHektarSearchSql($data);
+		$this->addAkerHektarSearchSql($data);
+		$this->addGodsMantalSearchSql($data);
+		$this->addGodsHektarSearchSql($data);
+		$this->addGodsAkerHektarSearchSql($data);
+		$this->addGodsTaxeringSearchSql($data);
+		
+		$inner_query = $select;
+		$inner_query .= $this->from;
+		$inner_query .= $this->where;
+		
+		$query = "SELECT g.id AS 'id',
+		g.namn AS 'gard',
+		s.namn AS 'socken',
+		h.namn AS 'harad',
+		l.namn AS 'landskap',
+		GROUP_CONCAT(st.namn) AS 'status',
+		COUNT(*) AS 'antal' ";
 
-		if (isset($data['gard']) && ! empty($data['gard'])) {
-			$query .= " AND g.namn LIKE ?";
-			$param[] = "%".$data['gard']."%";
+		$query .= " FROM ($inner_query) AS tmp 
+		JOIN sandit_mansion_gard g ON tmp.id=g.id  
+		JOIN sandit_mansion_post p ON p.gard_id=g.id
+		JOIN sandit_mansion_socken s ON g.socken_id=s.id
+		JOIN sandit_mansion_harad h ON s.harad_id=h.id
+		JOIN sandit_mansion_landskap l ON h.landskap_id=l.id
+		LEFT JOIN sandit_mansion_status st ON p.status_id=st.id ";
+
+		$query .= ' GROUP BY id ';
+		$query .= ' ORDER BY gard ';
+
+		//$executionTime = new ExecutionTime();
+		//$executionTime->start();
+		$result = DB::select($query, $this->param);
+		//$executionTime->end();
+		//echo $executionTime;
+		//var_dump($query);
+		//var_dump($this->param);
+		
+		foreach($result as $row) {
+			$row->gard = ucfirst($row->gard);
+			$row->socken = ucfirst($row->socken);
+			$row->harad = ucfirst($row->harad);
+			$row->landskap = ucfirst($row->landskap);
+			$row->status = ucfirst(Status::findMostFrequentStatus($row->status));
 		}
-		if (isset($data['harad']) && $data['landskap'] != '0') {
-			$query .= " AND l.id = ?";
-			$param[] = $data['landskap'];
+		
+		return $result;
+	}
+
+	private function isFieldSet(string $field, array $data): bool
+	{
+		return isset($data[$field]) && ! ((empty($data[$field]) || $data[$field] === '0'));
+	}
+
+
+	private function addGardSearchSql($data) 
+	{
+		if ($this->isFieldSet('gard', $data)) {
+			$this->where .= " AND g.namn LIKE ?";
+			$this->param[] = "%".$data['gard']."%";
 		}
-		if (isset($data['harad']) && $data['harad'] != '0') {
-			$query .= " AND h.id = ?";
-			$param[] = $data['harad'];
+	}
+
+	private function addLandskapSearchSql($data)
+	{
+		if ($this->isFieldSet('landskap', $data)) {
+			$this->where .= " AND l.id = ?";
+			$this->param[] = $data['landskap'];
 		}
-		if (isset($data['socken']) && $data['socken'] != '0') {
-			$query .= " AND s.id = ?";
-			$param[] = $data['socken'];
+	}
+
+	private function addHaradSearchSql($data)
+	{
+		if ($this->isFieldSet('harad', $data)) {
+			$this->where .= " AND h.id = ?";
+			$this->param[] = $data['harad'];
 		}
-		if (isset($data['person_namn']) && ! empty($data['person_namn'])) {
-			$query .= " AND pe.namn LIKE ?";
-			$param[] = "%".$data['person_namn']."%";
+	}
+
+	private function addSockenSearchSql($data)
+	{
+		if ($this->isFieldSet('socken', $data)) {
+			$this->where .= " AND s.id = ?";
+			$this->param[] = $data['socken'];
 		}
-		if (isset($data['person_efternamn']) && ! empty($data['person_efternamn'])) {
-			$query .= " AND pe.efternamn LIKE ?";
-			$param[] = "%".$data['person_efternamn']."%";
+	}
+
+	private function addAgareSearchSql($data)
+	{
+		if (true === $this->isPersonFieldSet('owner', $data)) {
+			$this->from .= "LEFT JOIN sandit_mansion_person pe ON p.agare_person_id = pe.id ";
+
+			if ($this->isFieldSet('person_namn', $data)) {
+				$this->where .= " AND pe.namn LIKE ?";
+				$this->param[] = "%".$data['person_namn']."%";
+			}
+			if ($this->isFieldSet('person_efternamn', $data)) {
+				$this->where .= " AND pe.efternamn LIKE ?";
+				$this->param[] = "%".$data['person_efternamn']."%";
+			}
+			if ($this->isFieldSet('person_titel_tjanst', $data)) {
+				$this->where .= " AND pe.titel_tjanst LIKE ?";
+				$this->param[] = '%'.$data['person_titel_tjanst'].'%';
+			}
+			if ($this->isFieldSet('person_titel_familj', $data)) {
+				$this->where .= " AND pe.titel_familj = ?";
+				$this->param[] = $data['person_titel_familj'];
+			}
 		}
-		if (isset($data['person_titel_tjanst']) &&  ! empty($data['person_titel_tjanst'])) {
-			$query .= " AND pe.titel_tjanst LIKE ?";
-			$param[] = '%'.$data['person_titel_tjanst'].'%';
+	}
+
+
+	private function addMakaSearchSql($data)
+	{
+		if (true === $this->isPersonFieldSet('spouse', $data)) {
+			$this->from .= " LEFT JOIN sandit_mansion_person pe_m1 ON p.maka1_person_id = pe_m1.id
+					LEFT JOIN sandit_mansion_person pe_m2 ON p.maka2_person_id = pe_m2.id ";
+
+			if ($this->isFieldSet('maka_namn', $data)) {
+				$this->where .= " AND (pe_m1.namn LIKE ? OR pe_m2.namn LIKE ?)";
+				$this->param[] = "%".$data['maka_namn']."%";
+				$this->param[] = "%".$data['maka_namn']."%";
+			}
+			if ($this->isFieldSet('maka_efternamn', $data)) {
+				$this->where .= " AND (pe_m1.efternamn LIKE ? OR pe_m2.efternamn LIKE ?)";
+				$this->param[] = "%".$data['maka_efternamn']."%";
+				$this->param[] = "%".$data['maka_efternamn']."%";
+			}
+			if ($this->isFieldSet('maka_titel_tjanst', $data)) {
+				$this->where .= " AND (pe_m1.titel_tjanst LIKE ? OR pe_m2.titel_tjanst LIKE ?)";
+				$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
+				$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
+			}
+			if ($this->isFieldSet('maka_titel_familj', $data)) {
+				$this->where .= " AND (pe_m1.titel_familj = ? OR pe_m2.titel_familj = ?)";
+				$this->param[] = $data['maka_titel_familj'];
+				$this->param[] = $data['maka_titel_familj'];
+			}
 		}
-		if (isset($data['person_titel_familj']) && $data['person_titel_familj'] != '0') {
-			$query .= " AND pe.titel_familj = ?";
-			$param[] = $data['person_titel_familj'];
+	}
+
+	private function isPersonFieldSet(string $type, array $data): bool
+	{
+		if ('owner' === $type) {
+			$name = 'person_namn';
+			$surname = 'person_efternamn';
+			$title_service = 'person_titel_tjanst';
+			$title_family = 'person_titel_familj';
+		} else {
+			$name = 'maka_namn';
+			$surname = 'maka_efternamn';
+			$title_service = 'maka_titel_tjanst';
+			$title_family = 'maka_titel_familj';
 		}
-		if (isset($data['maka_namn']) && ! empty($data['maka_namn'])) {
-			$query .= " AND (pe_m1.namn LIKE ? OR pe_m2.namn LIKE ?)";
-			$param[] = "%".$data['maka_namn']."%";
-			$param[] = "%".$data['maka_namn']."%";
-		}
-		if (isset($data['maka_efternamn']) && ! empty($data['maka_efternamn'])) {
-			$query .= " AND (pe_m1.efternamn LIKE ? OR pe_m2.efternamn LIKE ?)";
-			$param[] = "%".$data['maka_efternamn']."%";
-			$param[] = "%".$data['maka_efternamn']."%";
-		}
-		if (isset($data['maka_titel_tjanst']) && ! empty($data['maka_titel_tjanst'])) {
-			$query .= " AND (pe_m1.titel_tjanst LIKE ? OR pe_m2.titel_tjanst LIKE ?)";
-			$param[] = '%'.$data['maka_titel_tjanst'].'%';
-			$param[] = '%'.$data['maka_titel_tjanst'].'%';
-		}
-		if (isset($data['maka_titel_familj']) && $data['maka_titel_familj'] != '0') {
-			$query .= " AND (pe_m1.titel_familj = ? OR pe_m2.titel_familj LIKE ?)";
-			$param[] = $data['maka_titel_familj'];
-			$param[] = $data['maka_titel_familj'];
-		}
+		
+		return $this->isFieldSet($name, $data) ||
+			$this->isFieldSet($surname, $data) ||
+			$this->isFieldSet($title_service, $data) || 
+			$this->isFieldSet($title_family, $data);
+	}
+
+	private function addTidSearchSql($data)
+	{
 		if (isset($data['tid_fran']) && is_numeric($data['tid_fran'])) {
-			$query .= " AND IF(p.tid_fran IS NOT NULL AND p.tid_till IS NOT NULL, p.tid_fran <= ? AND p.tid_till >= ?,
+			$this->where .= " AND IF(p.tid_fran IS NOT NULL AND p.tid_till IS NOT NULL, p.tid_fran <= ? AND p.tid_till >= ?,
 							IF(p.tid_fran IS NOT NULL, p.tid_fran = ?, IF(p.tid_till IS NOT NULL, p.tid_till = ?, 0)))";
-			$param[] = $data['tid_fran'];
-			$param[] = $data['tid_fran'];
-			$param[] = $data['tid_fran'];
-			$param[] = $data['tid_fran'];
+			$this->param[] = $data['tid_fran'];
+			$this->param[] = $data['tid_fran'];
+			$this->param[] = $data['tid_fran'];
+			$this->param[] = $data['tid_fran'];
 		}
-		if (isset($data['status']) && $data['status'] != '0') {
-			$query .= " AND st.id = ?";
-			$param[] = $data['status'];
+	}
+
+	private function addStatusSearchSql($data)
+	{
+		if ($this->isFieldSet('status', $data)) {
+			$this->from .= " LEFT JOIN sandit_mansion_status st ON p.status_id=st.id ";
+			$this->where .= " AND st.id = ?";
+			$this->param[] = $data['status'];
 		}
-		if (isset($data['jordnatur']) && ! empty($data['jordnatur'])) {
-			$query .= " AND j.namn like ?";
-			$param[] = '%'.$data['jordnatur'].'%';
+	}
+
+	private function addJordnaturSearchSql($data)
+	{
+		$separator = ';';
+		if ($this->isFieldSet('jordnatur', $data)) {
+			$jns = explode($separator, $data['jordnatur']);
+			$i = 0;
+
+			foreach ($jns as $jn) {
+				$i++;
+				$this->from .= " LEFT JOIN sandit_mansion_jordnatur_post jp$i ON p.id = jp$i.post_id
+				LEFT JOIN sandit_mansion_jordnatur j$i ON jp$i.jordnatur_id = j$i.id ";
+
+				$this->where .= " AND j$i.namn = ?";
+				$this->param[] = trim($jn);
+			}
 		}
-		if (isset($data['agar_arr']) && $data['agar_arr'] != '0') {
-			$query .= " AND p.ag_arr = ?";
-			$param[] = $data['agar_arr'];
+	}
+
+	private function addAgareArrSearchSql($data)
+	{
+		if ($this->isFieldSet('agar_arr', $data)) {
+			$this->where .= " AND p.ag_arr = ?";
+			$this->param[] = $data['agar_arr'];
 		}
-		if (isset($data['typ']) && ! empty($data['typ'])) {
-			$query .= " AND p.typ LIKE ?";
-			$param[] = '%'. $data['typ'].'%';
+	}
+
+	private function addTypSearchSql($data)
+	{
+		if ($this->isFieldSet('typ', $data)) {
+			$this->where .= " AND p.typ LIKE ? ";
+			$this->param[] = '%'. $data['typ'].'%';
 		}
-		if (isset($data['herrgard_mantal']) 
-			&& (! empty($data['herrgard_mantal'])
-			|| $data['herrgard_mantal'] == '0')) {
+	}
+
+	private function addMantalSearchSql($data)
+	{
+		if ($this->isFieldSet('herrgard_mantal', $data)) {
 			$data['herrgard_mantal'] = str_replace(',', '.', $data['herrgard_mantal']);
-			
-			switch($data['herrgard_mantal_operator']) {
-				case '=':
-					$query .= " AND p.storlek_herrgard_mtl = ?";
-					break;
-				case '<':
-					$query .= " AND p.storlek_herrgard_mtl < ?";
-					break;
-				case '>':
-					$query .= " AND p.storlek_herrgard_mtl > ?";
-					break;
-			}
-			$query .= " AND p.storlek_herrgard_mtl IS NOT NULL";
-			$param[] = $data['herrgard_mantal'];
+			$this->where .= " AND p.storlek_herrgard_mtl ".$data['herrgard_mantal_operator']." ? ";
+			$this->where .= " AND p.storlek_herrgard_mtl IS NOT NULL ";
+			$this->param[] = $data['herrgard_mantal'];
 		}
-		if (isset($data['herrgard_hektar']) 
-			&& (! empty($data['herrgard_hektar'])
-			|| $data['herrgard_hektar'] == '0')) {
-			switch($data['herrgard_hektar_operator']) {
-				case '=':
-					$query .= " AND p.storlek_har = ?";
-					break;
-				case '<':
-					$query .= " AND p.storlek_har < ?";
-					break;
-				case '>':
-					$query .= " AND p.storlek_har > ?";
-					break;
-			}
-			$query .= " AND p.storlek_har IS NOT NULL";
-			$param[] = $data['herrgard_hektar'];
+	}
+
+	private function addHektarSearchSql($data)
+	{
+		if ($this->isFieldSet('herrgard_hektar', $data)) {
+			$this->where .= " AND p.storlek_har ".$data['herrgard_hektar_operator']." ? ";
+			$this->where .= " AND p.storlek_har IS NOT NULL";
+			$this->param[] = $data['herrgard_hektar'];
 		}
-		if (isset($data['herrgard_aker_hektar']) 
-			&& (! empty($data['herrgard_aker_hektar'])
-			|| $data['herrgard_aker_hektar'] == '0')) {
-			switch($data['herrgard_aker_hektar_operator']) {
-				case '=':
-					$query .= " AND p.storlek_aker_har = ?";
-					break;
-				case '<':
-					$query .= " AND p.storlek_aker_har < ?";
-					break;
-				case '>':
-					$query .= " AND p.storlek_aker_har > ?";
-					break;
-			}
-			$query .= " AND p.storlek_aker_har IS NOT NULL";
-			$param[] = $data['herrgard_aker_hektar'];
+	}
+
+	private function addAkerHektarSearchSql($data)
+	{
+		if ($this->isFieldSet('herrgard_aker_hektar', $data)) {
+			$this->where .= " AND p.storlek_aker_har ".$data['herrgard_aker_hektar_operator']." ? ";
+			$this->where .= " AND p.storlek_aker_har IS NOT NULL ";
+			$this->param[] = $data['herrgard_aker_hektar'];
 		}
-		if (isset($data['gods_mantal']) 
-			&& (! empty($data['gods_mantal'])
-			|| $data['gods_mantal'] == '0')) {
+	}
+
+	private function addGodsMantalSearchSql($data)
+	{
+		if ($this->isFieldSet('gods_mantal', $data)) {
 			$data['gods_mantal'] = str_replace(',', '.', $data['gods_mantal']);
+			$this->where .= " AND p.gods_mantal ".$data['gods_mantal_operator']." ? ";
+			$this->where .= " AND p.gods_mantal IS NOT NULL ";
+			$this->param[] = $data['gods_mantal'];
+		}
+	}
 
-			switch($data['gods_mantal_operator']) {
-				case '=':
-					$query .= " AND p.gods_mantal = ?";
-					break;
-				case '<':
-					$query .= " AND p.gods_mantal < ?";
-					break;
-				case '>':
-					$query .= " AND p.gods_mantal > ?";
-					break;
-			}
-			$query .= " AND p.gods_mantal IS NOT NULL";
-			$param[] = $data['gods_mantal'];
+	private function addGodsHektarSearchSql($data)
+	{
+		if ($this->isFieldSet('gods_hektar', $data)) {
+			$this->where .= " AND p.gods_hektar ".$data['gods_hektar_operator']." ? ";
+			$this->where .= " AND p.gods_hektar IS NOT NULL ";
+			$this->param[] = $data['gods_hektar'];
 		}
-		if (isset($data['gods_hektar']) 
-			&& (! empty($data['gods_hektar'])
-			|| $data['gods_hektar'] == '0')) {
-			switch($data['gods_hektar_operator']) {
-				case '=':
-					$query .= " AND p.gods_hektar = ?";
-					break;
-				case '<':
-					$query .= " AND p.gods_hektar < ?";
-					break;
-				case '>':
-					$query .= " AND p.gods_hektar > ?";
-					break;
-			}
-			$query .= " AND p.gods_hektar IS NOT NULL";
-			$param[] = $data['gods_hektar'];
-		}
-		if (isset($data['gods_aker_hektar']) 
-			&& (! empty($data['gods_aker_hektar'])
-			|| $data['gods_aker_hektar'] == '0')) {
-			switch($data['gods_aker_hektar_operator']) {
-				case '=':
-					$query .= " AND p.gods_aker_hektar = ?";
-					break;
-				case '<':
-					$query .= " AND p.gods_aker_hektar < ?";
-					break;
-				case '>':
-					$query .= " AND p.gods_aker_hektar > ?";
-					break;
-			}
-			$query .= " AND p.gods_aker_hektar IS NOT NULL";
-			$param[] = $data['gods_aker_hektar'];
-		}
-		if (isset($data['gods_taxering']) 
-			&& (! empty($data['gods_taxering'])
-			|| $data['gods_taxering'] == '0')) {
-			switch($data['gods_taxering_operator']) {
-				case '=':
-					$query .= " AND p.taxering = ?";
-					break;
-				case '<':
-					$query .= " AND p.taxering < ?";
-					break;
-				case '>':
-					$query .= " AND p.taxering > ?";
-					break;
-			}
-			$query .= " AND p.taxering IS NOT NULL";
-			$param[] = $data['gods_taxering'];
-		}
+	}
 
-		$query = "SELECT 
-					tmp.id AS 'id',
-					CONCAT(UCASE(MID(tmp.gard ,1,1)),MID(tmp.gard ,2)) AS 'gard',
-					CONCAT(UCASE(MID(tmp.socken ,1,1)),MID(tmp.socken ,2)) AS 'socken',
-					CONCAT(UCASE(MID(tmp.harad ,1,1)),MID(tmp.harad ,2)) AS 'harad',
-					CONCAT(UCASE(MID(tmp.landskap ,1,1)),MID(tmp.landskap ,2)) AS 'landskap',
-					CONCAT(UCASE(MID(tmp.status ,1,1)),MID(tmp.status ,2)) AS 'status',
-					COUNT(*) AS antal 
-					FROM ($query) AS tmp JOIN sandit_mansion_post AS post
-					WHERE tmp.id = post.gard_id
-					GROUP BY tmp.id,tmp.gard,tmp.socken,tmp.harad,tmp.landskap,tmp.status 
-					ORDER BY tmp.gard";
-					
-		return DB::select($query, $param);
+	private function addGodsAkerHektarSearchSql($data)
+	{
+		if ($this->isFieldSet('gods_aker_hektar', $data)) {
+			$this->where .= " AND p.gods_aker_hektar ".$data['gods_aker_hektar_operator']." ? ";
+			$this->where .= " AND p.gods_aker_hektar IS NOT NULL ";
+			$this->param[] = $data['gods_aker_hektar'];
+		}
+	}
+
+	private function addGodsTaxeringSearchSql($data)
+	{
+		if ($this->isFieldSet('gods_taxering', $data)) {
+			$this->where .= " AND p.taxering ".$data['gods_taxering_operator']." ? ";
+			$this->where .= " AND p.taxering IS NOT NULL ";
+			$this->param[] = $data['gods_taxering'];
+		}
 	}
 
 
@@ -436,7 +498,7 @@ class SearchRepository implements SearchRepositoryInterface
 			$param[] = $data['estate_taxering'];
 		}
 		$query .= " GROUP BY id ";
-		//print_r($query);exit();
+
 		return DB::select($query, $param);
 	}
 

@@ -38,29 +38,30 @@ class Status extends Model
     ];
 
 
-    public static function find_most_frequent($statuses)
+    public static function findMostFrequentStatus($statuses) : string
     {
-        if (empty($statuses)) {
-                return '';
+        if (is_null($statuses) || empty($statuses)) {
+            return '';
         }
-        $tmp = array_count_values(explode(',', $statuses));
-        arsort($tmp);
-        $nr = reset($tmp);
-        $name = Helper::mb_ucfirst(key($tmp));
-        $next_nr = next($tmp);
+        $status_array = array_count_values(explode(',', $statuses));
+        arsort($status_array);
 
-        if ( ! $next_nr || $nr > $next_nr) {
-            return $name;
-        }
-        if ($name == 'Ståndsgård' || $name == 'Herrgård') {
-            return $name;
-        }
-        $next_name = Helper::mb_ucfirst(key($tmp));
+        if (count($status_array) === 1) {
+            return ucfirst(key($status_array));
+        } 
+        $standsgard = 'Ståndsgård';
+        $herrgard = 'Herrgård';
+        $herrgard_frequence = true === key_exists($herrgard, $status_array) ? $status_array[$herrgard] : 0;
+        $standsgard_frequence = true === key_exists($standsgard, $status_array) ? $status_array[$standsgard] : 0;
 
-        if ($next_name == 'Ståndsgård' || $next_name == 'Herrgård') {
-            return $next_name;
+        if ($standsgard_frequence === 0 && $herrgard_frequence === 0) {
+            return ucfirst(key($status_array));
         }
-        return $name;
+        if ($standsgard_frequence > $herrgard_frequence) {
+            return $standsgard;
+        } else {
+            return $herrgard;
+        }
     }
 
 

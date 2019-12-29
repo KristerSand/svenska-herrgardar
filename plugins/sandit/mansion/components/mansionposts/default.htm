@@ -39,8 +39,6 @@
                 <th scope="col">Gods hektar</th>
                 <th scope="col">Gods hektar åker</th>
                 <th scope="col">Taxering</th>
-                <th scope="col">Brukare-förhållande</th>
-                <th scope="col">Kommentar</th>
                 <th scope="col">Källa</th>
             </tr>
         </thead>
@@ -54,9 +52,11 @@
                     <td class="text-nowrap">{{ post.ar_slut_anm }}</td>
                     <td class="text-nowrap">{{ post.status.namn|capitalize}}</td>                                    
                     <td class="text-nowrap">
-                        {% for jordnatur in post.jordnatur %}    
-                            {{ jordnatur.namn }},
-                        {% endfor %}
+                        {% set myArray = [] %}
+                    {% for jordnatur in post.jordnatur %}    
+                        {% set myArray = myArray|merge([jordnatur.namn]) %}
+                    {% endfor %}
+                    {{ myArray|join(';') }}
                     </td>
                     <td class="text-nowrap">{{ post.ag_arr }}</td>
                     <td class="text-nowrap">{{ post.typ }}</td>
@@ -79,8 +79,6 @@
                     <td class="text-nowrap">{{ post.gods_hektar }}</td>
                     <td class="text-nowrap">{{ post.gods_aker_hektar }}</td>
                     <td class="text-nowrap">{{ post.taxering }}</td>
-                    <td class="text-nowrap">{{ post.brukareforhallande }}</td>
-                    <td class="text-nowrap">{{ post.kommentar }}</td>
                     <td class="text-nowrap">{{ post.kalla.namn }}</td>
                 </tr>
             {% endfor %}

@@ -18,20 +18,24 @@
                         <div class="col-md-2 mb-0 d-none d-md-block">{{ row.harad }}</div>
                         <div class="col-md-2 mb-0 d-none d-md-block">{{ row.socken }}</div>
 
+                        {% set  color = '' %}
+                        {% if row.status == 'Herrgård' %}
+                            {% set  color = 'primary' %}
+                        {% elseif row.status == 'Ståndsgård' %}
+                            {% set  color = 'success' %}
+                        {% elseif row.status == 'Bondgård' %}
+                            {% set  color = 'danger' %}
+                        {% elseif row.status == 'Inkorporerad' %}
+                            {% set  color = 'info' %}
+                        {% elseif row.status == 'Institution' %}
+                            {% set  color = 'info' %}
+                        {% elseif row.status != '' %}
+                            {% set  color = 'dark' %}
+                        {% endif %}
                         <div class="col-2 col-md-2 text-right p-0">
-                                {% if row.status == 'Herrgård' %}
-                                    <span class="badge badge-primary d-none d-md-inline px-2">Herrgård</span>
-                                {% elseif row.status == 'Ståndsgård' %}
-                                    <span class="badge badge-success d-none d-md-inline px-2">Ståndsgård</span>
-                                {% elseif row.status == 'Bondgård' %}
-                                    <span class="badge badge-danger d-none d-md-inline px-2">Bondgård</span>
-                                {% elseif row.status == 'Inkorporerad' %}
-                                    <span class="badge badge-info d-none d-md-inline px-2">Inkorporerad</span>
-                                {% elseif row.status == 'Institution' %}
-                                    <span class="badge badge-secondary d-none d-md-inline px-2">Institution</span>
-                                {% elseif row.status != '' %}
-                                    <span class="badge badge-dark d-none d-md-inline px-2">{{ row.status }}</span>
-                                {% endif %}
+                            {% if row.status != '' %}
+                                <span class="badge badge-{{ color }} d-none d-md-inline px-2">{{ row.status }}</span>    
+                            {% endif %}
                             <span class="badge badge-secondary">{{ row.antal }}</span>
                         </div>
                     </div>

@@ -57,9 +57,11 @@
                 <dd class="col-8 mb-0">{{ post.status.namn }}</dd>
                 <dt class="col-4 pr-0{% if not post.jordnatur|length %} d-none d-md-block{% endif %}">Jordnatur</dt>
                 <dd class="col-8 mb-0{% if not post.jordnatur|length %} d-none d-md-block{% endif %}">
+                    {% set myArray = [] %}
                     {% for jordnatur in post.jordnatur %}    
-                        {{ jordnatur.namn }},
+                        {% set myArray = myArray|merge([jordnatur.namn]) %}
                     {% endfor %}
+                    {{ myArray|join('; ') }}
                 </dd>
                 <dt class="col-4 pr-0{% if not post.ag_arr %} d-none d-md-block{% endif %}">Ägar/arr</dt>
                 <dd class="col-8 mb-0{% if not post.ag_arr %} d-none d-md-block{% endif %}">{{ post.ag_arr }}</dd>
