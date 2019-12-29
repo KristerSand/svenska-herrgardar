@@ -19,6 +19,19 @@ class ImportTORACommand extends Command
      */
     protected $description = 'Does something cool.';
 
+
+
+    private function create_marker($name,$tora_id,$lon, $lat)
+    {
+        $marker = new Marker();
+        $marker->name = "klk";
+        $marker->lat = 59.00;
+        $marker->lon = 18.00;
+        $marker->tora_id = 222;
+        $marker->save();
+    }
+
+
     /**
      * Execute the console command.
      * @return void
@@ -26,12 +39,8 @@ class ImportTORACommand extends Command
     public function handle()
     {
         $this->output->writeln('Hello world!');
-        $marker = new Marker();
-        $marker->name = "klk";
-        $marker->lat = 59.00;
-        $marker->lon = 18.00;
-        $marker->tora_id = 222;
-        $marker->save();
+        $this->create_marker("foo",223,18.00, 58.00);
+        
     }
 
     /**
