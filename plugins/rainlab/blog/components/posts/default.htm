@@ -1,18 +1,19 @@
 {% set posts = __SELF__.posts %}
 
-<ul class="post-list list-unstyled">
+<ul class="post-list">
     {% for post in posts %}
-        <li class="mb-5">
+        <li>
             <h3><a href="{{ post.url }}">{{ post.title }}</a></h3>
 
-            <p class="small">
-                Publicerad
-                {% if post.categories.count %} i {% endif %}
+            <p class="info">
+                Posted
+                {% if post.categories.count %} in {% endif %}
                 {% for category in post.categories %}
                     <a href="{{ category.url }}">{{ category.name }}</a>{% if not loop.last %}, {% endif %}
                 {% endfor %}
-                den {{ post.published_at|date('d M Y') }}
+                on {{ post.published_at|date('M d, Y') }}
             </p>
+
             <p class="excerpt">{{ post.summary|raw }}</p>
         </li>
     {% else %}

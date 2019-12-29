@@ -1,6 +1,6 @@
 {% set post = __SELF__.post %}
 
-<div class="">{{ post.content_html|raw }}</div>
+<div class="content">{{ post.content_html|raw }}</div>
 
 {% if post.featured_images.count %}
     <div class="featured-images text-center">
@@ -16,7 +16,7 @@
     </div>
 {% endif %}
 
-<p class="text-muted">
+<p class="info">
     Posted
     {% if post.categories.count %} in
         {% for category in post.categories %}
