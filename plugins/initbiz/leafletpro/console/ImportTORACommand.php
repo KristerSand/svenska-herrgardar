@@ -38,7 +38,7 @@ class ImportTORACommand extends Command
      */
     public function handle()
     {
-        $this->output->writeln('Hello world!');
+        $this->output->writeln('Importing TORA IDs');
         $csvFile = file('./plugins/initbiz/leafletpro/toraid.csv');
         $data = [];
         # Skip first line
@@ -49,12 +49,14 @@ class ImportTORACommand extends Command
                 # Skip row
             } else 
             {
-                $data[] = str_getcsv($line);
+                $row_data = str_getcsv($line);
+                $tora_id = $row_data[0];
+                $long = $row_data[2];
+                $lat = $row_data[1];
+                $this->create_marker("foo",$tora_id,$long, $lat);
             }
             $row++;
-        }
-        echo json_encode($data);
-        $this->create_marker("foo",223,18.00, 58.00);
+        }        
         
     }
 
