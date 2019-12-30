@@ -49,7 +49,7 @@ $data = file_get_contents($url_net); // put the contents of the file into a vari
 $characters = json_decode($data); // decode the JSON feed
 #echo json_encode($characters);
 $nr_of_tora_records = $characters->results;
-echo $nr_of_tora_records;
+#echo $nr_of_tora_records;
 echo "tora_id,lat,long\n";
 fetch_all_tora($nr_of_tora_records);
 

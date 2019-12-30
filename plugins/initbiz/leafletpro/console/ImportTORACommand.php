@@ -39,7 +39,7 @@ class ImportTORACommand extends Command
     public function handle()
     {
         $this->output->writeln('Importing TORA IDs');
-        $csvFile = file('./plugins/initbiz/leafletpro/toraid.csv');
+        $csvFile = file('./plugins/initbiz/leafletpro/toraid_all.csv');
         $data = [];
         # Skip first line
         $row = 1;
