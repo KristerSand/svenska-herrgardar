@@ -90,8 +90,7 @@ class ImportTORACommand extends Command
                 $long_uri = "http://www.w3.org/2003/01/geo/wgs84_pos#long";
                 if(isset($tora_record->metadata->$tora_uri->$lat_uri) && isset($tora_record->metadata->$tora_uri->$long_uri))
                 {
-                    echo "fetched record";
-                    $this->create_marker($gard->namn,$gard->toraid,18.00, 57.00);
+                    $this->create_marker($gard->namn,$gard->toraid,$tora_record->metadata->$tora_uri->$long_uri, $tora_record->metadata->$tora_uri->$lat_uri);
                 }
                 
                 
