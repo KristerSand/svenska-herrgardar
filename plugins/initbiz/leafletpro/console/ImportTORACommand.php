@@ -6,6 +6,8 @@ use Symfony\Component\Console\Input\InputArgument;
 
 use DB;
 use Initbiz\leafletpro\models\Marker;
+use Sandit\Mansion\Models\Gard;
+
 
 class ImportTORACommand extends Command
 {
@@ -32,13 +34,8 @@ class ImportTORACommand extends Command
     }
 
 
-    /**
-     * Execute the console command.
-     * @return void
-     */
-    public function handle()
+    private function import_from_csv() 
     {
-        $this->output->writeln('Importing TORA IDs');
         $csvFile = file('./plugins/initbiz/leafletpro/toraid_all.csv');
         $data = [];
         # Skip first line
@@ -56,9 +53,58 @@ class ImportTORACommand extends Command
                 $this->create_marker("foo",$tora_id,$long, $lat);
             }
             $row++;
-        }        
+        }       
+    }
+
+    private function construct_tora_url($tora_id)
+    {
+        return "https://tora.entryscape.net/store/61/entry/" . $tora_id. "?includeAll&format=application/json";
+    }
+
+    private function fetch_tora_post($tora_id) 
+    {
+        $tora_url = $this->construct_tora_url($tora_id);
+        #echo "Fetched record " . $tora_url;
+        $data = file_get_contents($tora_url); // put the contents of the file into a variable
+        $tora_record = json_decode($data); 
+        return $tora_record;
+    }
+
+
+    /**
+     * Execute the console command.
+     * @return void
+     */
+    public function handle()
+    {
+        $this->output->writeln('Importing TORA IDs');
+        $csvFile = file('./plugins/initbiz/leafletpro/toraid_all.csv');
+        # Loop through all manors and get coordinates from TORA by API
+        Gard::each(function ($gard) 
+        {
+            if(isset($gard->toraid)) 
+            {
+                $tora_post = $this->fetch_tora_post($gard->toraid);
+                $tora_uri = "https://data.riksarkivet.se/tora/" . $gard->toraid;
+                $lat_uri = "http://www.w3.org/2003/01/geo/wgs84_pos#lat";
+                $long_uri = "http://www.w3.org/2003/01/geo/wgs84_pos#long";
+                echo "\n";
+                echo json_encode($tora_post,JSON_PRETTY_PRINT);
+                if(isset($tora_post->metadata->$tora_uri->$lat_uri) && isset($tora_post->metadata->$tora_uri->$long_uri))
+                {
+                    echo "Creating marker";
+                    $lat = str_replace(",", ".", $tora_post->metadata->$tora_uri->$lat_uri[0]->value);
+                    $lon =  str_replace(",", ".",$tora_post->metadata->$tora_uri->$long_uri[0]->value);
+                    $this->create_marker($gard->namn,$gard->toraid,$lon,$lat);
+                }
+                
+                
+            }
+        });
         
     }
+
+    
 
     /**
      * Get the console command arguments.
