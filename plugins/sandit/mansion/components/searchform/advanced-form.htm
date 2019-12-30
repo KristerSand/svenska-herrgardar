@@ -12,7 +12,7 @@
     <input type="hidden" name="searchform" value="advanced">
     
     <fieldset>
-        <h5>Gård</h5>
+        <h5>Gårdsnamn</h5>
         <div class="form-group">
             <input type="text" class="form-control" id="gard" name="gard">
             <small id="gardHelp" class="form-text text-muted">Här kan du söka på gårdarnas namn. Namnen anges efter Lantmäteriets normalstavning, men här återfinns i många fall även äldre namnformer samt ursprungliga gårdsnamn, i de fall gården har bytt namn.</small>
@@ -46,7 +46,7 @@
     </fieldset>
     <hr />
     <fieldset>
-        <h5>Ägare/innehavare/arrendatorer</h5>
+        <h5>Ägare / innehavare / arrendatorer</h5>
         <div class="form-row">
             <div class="col form-group">
                 <input type="text" class="form-control" id="person_namn" name="person_namn" placeholder="Namn">
@@ -75,7 +75,7 @@
     </fieldset>
     <hr />
     <fieldset>
-        <h5>Make/maka</h5>
+        <h5>Make / maka</h5>
         <div class="form-row">
             <div class="col form-group">
                 <input type="text" class="form-control" id="maka_namn" name="maka_namn" placeholder="Förnamn">
@@ -101,23 +101,9 @@
             </div>
         </div>
     </fieldset>
-
-    <hr />
-
-    <fieldset>
-        <h5>Tid</h5>
-        <div class="form-row">
-            <div class="col form-group">
-                <input type="number" class="form-control" id="ar_borjan" name="ar_borjan" placeholder="År början">
-            </div>
-            <div class="col form-group">
-                <input type="number" class="form-control" id="ar_slut" name="ar_slut" placeholder="År slut">
-            </div>
-        </div>
-    </fieldset>
     <hr />
     <fieldset>
-        <h5>Övrigt</h5>
+        <h5>Status, jordnatur, ägarförhållanden och typ av transaktion</h5>
         <div class="form-row">
             <div class="col form-group">
                 <select class="form-control" id="status" name="status">
@@ -144,11 +130,25 @@
             </div>
             <div class="col form-group">
                 <input type="text" class="form-control" id="typ" name="typ" placeholder="Typ">
-                <small id="typHelp" class="form-text text-muted">Här kan du söka efter vilken form av transaktion som föregick innehavet av gården, t.ex. förläning, donation, köp, byte, gåva, arv, etc. Du kan även se släktrelationen med föregående innehavare, om gården togs över av en son, dotter, änka, änkeman eller annan släkting. Använd ; som skiljetecken om du vill söka på både transaktion och släktrelation.</small>
+                <small id="typHelp" class="form-text text-muted">Här kan du söka efter vilken form av transaktion som föregick innehavet av gården, t.ex. förläning, donation, köp, byte, gåva, arv, fideikommiss etc. Du kan även se släktrelationen med föregående innehavare, om gården togs över av en son, dotter, änka, änkeman eller annan släkting. Använd ; som skiljetecken om du vill söka på både transaktion och släktrelation.</small>
             </div>
         </div>
     </fieldset>
     <hr />
+
+    <fieldset>
+        <h5>Tid</h5>
+        <div class="form-row">
+            <div class="col form-group">
+                <input type="number" class="form-control" id="ar_borjan" name="ar_borjan" placeholder="År början">
+            </div>
+            <div class="col form-group">
+                <input type="number" class="form-control" id="ar_slut" name="ar_slut" placeholder="År slut">
+            </div>
+        </div>
+    </fieldset>
+    <hr />
+    
     <fieldset>
         <h5>Storlek herrgård</h5>
         <div class="form-row">
@@ -234,7 +234,7 @@
         </div>
     </fieldset>
     <div class="mt-3">
-        <button class="btn btn-success my-2 my-sm-0 px-4" type="submit">Sök</button>
-        <button class="btn btn-warning my-2 my-sm-0 px-3" type="reset">Rensa</button>
+        <button class="btn btn-warning my-2 my-sm-0 px-2" type="reset">Rensa</button>
+        <button class="btn btn-success my-2 my-sm-0 px-5" type="submit">Sök</button>
     </div>
 </form>
