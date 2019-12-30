@@ -64,10 +64,10 @@ class ImportTORACommand extends Command
     private function fetch_tora_post($tora_id) 
     {
         $tora_url = $this->construct_tora_url($tora_id);
-        echo "Fetched record " . $tora_url;
+        #echo "Fetched record " . $tora_url;
         $data = file_get_contents($tora_url); // put the contents of the file into a variable
         $tora_record = json_decode($data); 
-        
+        return $tora_record;
     }
 
 
@@ -88,9 +88,14 @@ class ImportTORACommand extends Command
                 $tora_uri = "https://data.riksarkivet.se/tora/" . $gard->toraid;
                 $lat_uri = "http://www.w3.org/2003/01/geo/wgs84_pos#lat";
                 $long_uri = "http://www.w3.org/2003/01/geo/wgs84_pos#long";
-                if(isset($tora_record->metadata->$tora_uri->$lat_uri) && isset($tora_record->metadata->$tora_uri->$long_uri))
+                echo "\n";
+                echo json_encode($tora_post,JSON_PRETTY_PRINT);
+                if(isset($tora_post->metadata->$tora_uri->$lat_uri) && isset($tora_post->metadata->$tora_uri->$long_uri))
                 {
-                    $this->create_marker($gard->namn,$gard->toraid,$tora_record->metadata->$tora_uri->$long_uri, $tora_record->metadata->$tora_uri->$lat_uri);
+                    echo "Creating marker";
+                    $lat = str_replace(",", ".", $tora_post->metadata->$tora_uri->$lat_uri[0]->value);
+                    $lon =  str_replace(",", ".",$tora_post->metadata->$tora_uri->$long_uri[0]->value);
+                    $this->create_marker($gard->namn,$gard->toraid,$lon,$lat);
                 }
                 
                 
