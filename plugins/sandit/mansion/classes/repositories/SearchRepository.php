@@ -120,7 +120,13 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addGardSearchSql($data) 
 	{
-		if ($this->isFieldSet('gard', $data)) {
+		if ( ! $this->isFieldSet('gard', $data)) {
+			return;
+		}
+		if (isset($data['gard_exact'])) {
+			$this->where .= " AND g.namn = ?";
+			$this->param[] = $data['gard'];
+		} else {
 			$this->where .= " AND g.namn LIKE ?";
 			$this->param[] = "%".$data['gard']."%";
 		}
@@ -152,55 +158,57 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addAgareSearchSql($data)
 	{
-		if (true === $this->isPersonFieldSet('owner', $data)) {
-			$this->from .= "LEFT JOIN sandit_mansion_person pe ON p.agare_person_id = pe.id ";
+		if (false === $this->isPersonFieldSet('owner', $data)) {
+			return;
+		}
+		$this->from .= "LEFT JOIN sandit_mansion_person pe ON p.agare_person_id = pe.id ";
 
-			if ($this->isFieldSet('person_namn', $data)) {
-				$this->where .= " AND pe.namn LIKE ?";
-				$this->param[] = "%".$data['person_namn']."%";
-			}
-			if ($this->isFieldSet('person_efternamn', $data)) {
-				$this->where .= " AND pe.efternamn LIKE ?";
-				$this->param[] = "%".$data['person_efternamn']."%";
-			}
-			if ($this->isFieldSet('person_titel_tjanst', $data)) {
-				$this->where .= " AND pe.titel_tjanst LIKE ?";
-				$this->param[] = '%'.$data['person_titel_tjanst'].'%';
-			}
-			if ($this->isFieldSet('person_titel_familj', $data)) {
-				$this->where .= " AND pe.titel_familj = ?";
-				$this->param[] = $data['person_titel_familj'];
-			}
+		if ($this->isFieldSet('person_namn', $data)) {
+			$this->where .= " AND pe.namn LIKE ?";
+			$this->param[] = "%".$data['person_namn']."%";
+		}
+		if ($this->isFieldSet('person_efternamn', $data)) {
+			$this->where .= " AND pe.efternamn LIKE ?";
+			$this->param[] = "%".$data['person_efternamn']."%";
+		}
+		if ($this->isFieldSet('person_titel_tjanst', $data)) {
+			$this->where .= " AND pe.titel_tjanst LIKE ?";
+			$this->param[] = '%'.$data['person_titel_tjanst'].'%';
+		}
+		if ($this->isFieldSet('person_titel_familj', $data)) {
+			$this->where .= " AND pe.titel_familj = ?";
+			$this->param[] = $data['person_titel_familj'];
 		}
 	}
 
 
 	private function addMakaSearchSql($data)
 	{
-		if (true === $this->isPersonFieldSet('spouse', $data)) {
-			$this->from .= " LEFT JOIN sandit_mansion_person pe_m1 ON p.maka1_person_id = pe_m1.id
-					LEFT JOIN sandit_mansion_person pe_m2 ON p.maka2_person_id = pe_m2.id ";
+		if (false === $this->isPersonFieldSet('spouse', $data)) {
+			return;
+		}
+		$this->from .= " LEFT JOIN sandit_mansion_person pe_m1 ON p.maka1_person_id = pe_m1.id
+				LEFT JOIN sandit_mansion_person pe_m2 ON p.maka2_person_id = pe_m2.id ";
 
-			if ($this->isFieldSet('maka_namn', $data)) {
-				$this->where .= " AND (pe_m1.namn LIKE ? OR pe_m2.namn LIKE ?)";
-				$this->param[] = "%".$data['maka_namn']."%";
-				$this->param[] = "%".$data['maka_namn']."%";
-			}
-			if ($this->isFieldSet('maka_efternamn', $data)) {
-				$this->where .= " AND (pe_m1.efternamn LIKE ? OR pe_m2.efternamn LIKE ?)";
-				$this->param[] = "%".$data['maka_efternamn']."%";
-				$this->param[] = "%".$data['maka_efternamn']."%";
-			}
-			if ($this->isFieldSet('maka_titel_tjanst', $data)) {
-				$this->where .= " AND (pe_m1.titel_tjanst LIKE ? OR pe_m2.titel_tjanst LIKE ?)";
-				$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
-				$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
-			}
-			if ($this->isFieldSet('maka_titel_familj', $data)) {
-				$this->where .= " AND (pe_m1.titel_familj = ? OR pe_m2.titel_familj = ?)";
-				$this->param[] = $data['maka_titel_familj'];
-				$this->param[] = $data['maka_titel_familj'];
-			}
+		if ($this->isFieldSet('maka_namn', $data)) {
+			$this->where .= " AND (pe_m1.namn LIKE ? OR pe_m2.namn LIKE ?)";
+			$this->param[] = "%".$data['maka_namn']."%";
+			$this->param[] = "%".$data['maka_namn']."%";
+		}
+		if ($this->isFieldSet('maka_efternamn', $data)) {
+			$this->where .= " AND (pe_m1.efternamn LIKE ? OR pe_m2.efternamn LIKE ?)";
+			$this->param[] = "%".$data['maka_efternamn']."%";
+			$this->param[] = "%".$data['maka_efternamn']."%";
+		}
+		if ($this->isFieldSet('maka_titel_tjanst', $data)) {
+			$this->where .= " AND (pe_m1.titel_tjanst LIKE ? OR pe_m2.titel_tjanst LIKE ?)";
+			$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
+			$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
+		}
+		if ($this->isFieldSet('maka_titel_familj', $data)) {
+			$this->where .= " AND (pe_m1.titel_familj = ? OR pe_m2.titel_familj = ?)";
+			$this->param[] = $data['maka_titel_familj'];
+			$this->param[] = $data['maka_titel_familj'];
 		}
 	}
 
@@ -226,32 +234,32 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addTidSearchSql($data)
 	{
-		if ($this->isTidFieldSet($data)) {
-
-			if ($this->isFieldSet('ar_borjan', $data) && ! $this->isFieldSet('ar_slut', $data)) {
-				$this->where .= " AND IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NULL AND p.ar_borjan = ?, 1,
-								IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NOT NULL AND ? BETWEEN p.ar_borjan AND p.ar_slut, 1, 0)) ";
-				$this->param[] = $data['ar_borjan'];
-				$this->param[] = $data['ar_borjan'];
-			} elseif ($this->isFieldSet('ar_slut', $data) && ! $this->isFieldSet('ar_borjan', $data)) {
-				$this->where .= " AND IF(p.ar_slut IS NOT NULL AND p.ar_borjan IS NULL AND p.ar_slut = ?, 1,
+		if (false === $this->isTidFieldSet($data)) {
+			return;
+		}
+		if ($this->isFieldSet('ar_borjan', $data) && ! $this->isFieldSet('ar_slut', $data)) {
+			$this->where .= " AND IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NULL AND p.ar_borjan = ?, 1,
 							IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NOT NULL AND ? BETWEEN p.ar_borjan AND p.ar_slut, 1, 0)) ";
-				$this->param[] = $data['ar_slut'];
-				$this->param[] = $data['ar_slut'];
-			} else {
-				$this->where .= " AND IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NULL AND p.ar_borjan BETWEEN ? AND ?, 1 ,
-								IF(p.ar_borjan IS NULL AND p.ar_slut IS NOT NULL AND p.ar_slut BETWEEN ? AND ?, 1, 
-								IF(p.ar_borjan BETWEEN ? AND ?, 1, 
-								IF(p.ar_slut BETWEEN ? AND ?, 1, 0)))) ";
-				$this->param[] = $data['ar_borjan'];
-				$this->param[] = $data['ar_slut'];
-				$this->param[] = $data['ar_borjan'];
-				$this->param[] = $data['ar_slut'];
-				$this->param[] = $data['ar_borjan'];
-				$this->param[] = $data['ar_slut'];
-				$this->param[] = $data['ar_borjan'];
-				$this->param[] = $data['ar_slut'];
-			}
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_borjan'];
+		} elseif ($this->isFieldSet('ar_slut', $data) && ! $this->isFieldSet('ar_borjan', $data)) {
+			$this->where .= " AND IF(p.ar_slut IS NOT NULL AND p.ar_borjan IS NULL AND p.ar_slut = ?, 1,
+						IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NOT NULL AND ? BETWEEN p.ar_borjan AND p.ar_slut, 1, 0)) ";
+			$this->param[] = $data['ar_slut'];
+			$this->param[] = $data['ar_slut'];
+		} else {
+			$this->where .= " AND IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NULL AND p.ar_borjan BETWEEN ? AND ?, 1 ,
+							IF(p.ar_borjan IS NULL AND p.ar_slut IS NOT NULL AND p.ar_slut BETWEEN ? AND ?, 1, 
+							IF(p.ar_borjan BETWEEN ? AND ?, 1, 
+							IF(p.ar_slut BETWEEN ? AND ?, 1, 0)))) ";
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_slut'];
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_slut'];
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_slut'];
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_slut'];
 		}
 	}
 
@@ -280,19 +288,20 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addJordnaturSearchSql($data)
 	{
+		if (false === $this->isFieldSet('jordnatur', $data)) {
+			return;
+		}
 		$separator = ';';
-		if ($this->isFieldSet('jordnatur', $data)) {
-			$jns = explode($separator, $data['jordnatur']);
-			$i = 0;
+		$jns = explode($separator, $data['jordnatur']);
+		$i = 0;
 
-			foreach ($jns as $jn) {
-				$i++;
-				$this->from .= " LEFT JOIN sandit_mansion_jordnatur_post jp$i ON p.id = jp$i.post_id
-				LEFT JOIN sandit_mansion_jordnatur j$i ON jp$i.jordnatur_id = j$i.id ";
+		foreach ($jns as $jn) {
+			$i++;
+			$this->from .= " LEFT JOIN sandit_mansion_jordnatur_post jp$i ON p.id = jp$i.post_id
+			LEFT JOIN sandit_mansion_jordnatur j$i ON jp$i.jordnatur_id = j$i.id ";
 
-				$this->where .= " AND j$i.namn = ?";
-				$this->param[] = trim($jn);
-			}
+			$this->where .= " AND j$i.namn = ?";
+			$this->param[] = trim($jn);
 		}
 	}
 
