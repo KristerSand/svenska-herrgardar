@@ -20,11 +20,15 @@
         </div>
         <div class="col-4">
             <div class="row">
-                <a href="gard/{{ gard_data.id }}">Se gårdens poster i tabell</a>
+                <a href="gard/{{ gard_data.id }}">Visa gårdens poster i tabellform</a>
             </div>
-            <div class="row">
-                <a href="kartan?toraid={{ gard_data.toraid }}">Visa gården på karta</a>
-            </div>
+            {% if this.environment == 'test' %}
+                {% if gard_data.toraid %}
+                <div class="row">
+                    <a href="karta?toraid={{ gard_data.toraid }}">Visa gården på kartan</a>
+                </div>
+                {% endif %}
+            {% endif %}
         </div>
     </div>
 </div>

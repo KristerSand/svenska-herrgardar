@@ -120,7 +120,13 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addGardSearchSql($data) 
 	{
-		if ($this->isFieldSet('gard', $data)) {
+		if ( ! $this->isFieldSet('gard', $data)) {
+			return;
+		}
+		if (isset($data['gard_exact'])) {
+			$this->where .= " AND g.namn = ?";
+			$this->param[] = $data['gard'];
+		} else {
 			$this->where .= " AND g.namn LIKE ?";
 			$this->param[] = "%".$data['gard']."%";
 		}
@@ -152,55 +158,57 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addAgareSearchSql($data)
 	{
-		if (true === $this->isPersonFieldSet('owner', $data)) {
-			$this->from .= "LEFT JOIN sandit_mansion_person pe ON p.agare_person_id = pe.id ";
+		if (false === $this->isPersonFieldSet('owner', $data)) {
+			return;
+		}
+		$this->from .= "LEFT JOIN sandit_mansion_person pe ON p.agare_person_id = pe.id ";
 
-			if ($this->isFieldSet('person_namn', $data)) {
-				$this->where .= " AND pe.namn LIKE ?";
-				$this->param[] = "%".$data['person_namn']."%";
-			}
-			if ($this->isFieldSet('person_efternamn', $data)) {
-				$this->where .= " AND pe.efternamn LIKE ?";
-				$this->param[] = "%".$data['person_efternamn']."%";
-			}
-			if ($this->isFieldSet('person_titel_tjanst', $data)) {
-				$this->where .= " AND pe.titel_tjanst LIKE ?";
-				$this->param[] = '%'.$data['person_titel_tjanst'].'%';
-			}
-			if ($this->isFieldSet('person_titel_familj', $data)) {
-				$this->where .= " AND pe.titel_familj = ?";
-				$this->param[] = $data['person_titel_familj'];
-			}
+		if ($this->isFieldSet('person_namn', $data)) {
+			$this->where .= " AND pe.namn LIKE ?";
+			$this->param[] = "%".$data['person_namn']."%";
+		}
+		if ($this->isFieldSet('person_efternamn', $data)) {
+			$this->where .= " AND pe.efternamn LIKE ?";
+			$this->param[] = "%".$data['person_efternamn']."%";
+		}
+		if ($this->isFieldSet('person_titel_tjanst', $data)) {
+			$this->where .= " AND pe.titel_tjanst LIKE ?";
+			$this->param[] = '%'.$data['person_titel_tjanst'].'%';
+		}
+		if ($this->isFieldSet('person_titel_familj', $data)) {
+			$this->where .= " AND pe.titel_familj = ?";
+			$this->param[] = $data['person_titel_familj'];
 		}
 	}
 
 
 	private function addMakaSearchSql($data)
 	{
-		if (true === $this->isPersonFieldSet('spouse', $data)) {
-			$this->from .= " LEFT JOIN sandit_mansion_person pe_m1 ON p.maka1_person_id = pe_m1.id
-					LEFT JOIN sandit_mansion_person pe_m2 ON p.maka2_person_id = pe_m2.id ";
+		if (false === $this->isPersonFieldSet('spouse', $data)) {
+			return;
+		}
+		$this->from .= " LEFT JOIN sandit_mansion_person pe_m1 ON p.maka1_person_id = pe_m1.id
+				LEFT JOIN sandit_mansion_person pe_m2 ON p.maka2_person_id = pe_m2.id ";
 
-			if ($this->isFieldSet('maka_namn', $data)) {
-				$this->where .= " AND (pe_m1.namn LIKE ? OR pe_m2.namn LIKE ?)";
-				$this->param[] = "%".$data['maka_namn']."%";
-				$this->param[] = "%".$data['maka_namn']."%";
-			}
-			if ($this->isFieldSet('maka_efternamn', $data)) {
-				$this->where .= " AND (pe_m1.efternamn LIKE ? OR pe_m2.efternamn LIKE ?)";
-				$this->param[] = "%".$data['maka_efternamn']."%";
-				$this->param[] = "%".$data['maka_efternamn']."%";
-			}
-			if ($this->isFieldSet('maka_titel_tjanst', $data)) {
-				$this->where .= " AND (pe_m1.titel_tjanst LIKE ? OR pe_m2.titel_tjanst LIKE ?)";
-				$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
-				$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
-			}
-			if ($this->isFieldSet('maka_titel_familj', $data)) {
-				$this->where .= " AND (pe_m1.titel_familj = ? OR pe_m2.titel_familj = ?)";
-				$this->param[] = $data['maka_titel_familj'];
-				$this->param[] = $data['maka_titel_familj'];
-			}
+		if ($this->isFieldSet('maka_namn', $data)) {
+			$this->where .= " AND (pe_m1.namn LIKE ? OR pe_m2.namn LIKE ?)";
+			$this->param[] = "%".$data['maka_namn']."%";
+			$this->param[] = "%".$data['maka_namn']."%";
+		}
+		if ($this->isFieldSet('maka_efternamn', $data)) {
+			$this->where .= " AND (pe_m1.efternamn LIKE ? OR pe_m2.efternamn LIKE ?)";
+			$this->param[] = "%".$data['maka_efternamn']."%";
+			$this->param[] = "%".$data['maka_efternamn']."%";
+		}
+		if ($this->isFieldSet('maka_titel_tjanst', $data)) {
+			$this->where .= " AND (pe_m1.titel_tjanst LIKE ? OR pe_m2.titel_tjanst LIKE ?)";
+			$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
+			$this->param[] = '%'.$data['maka_titel_tjanst'].'%';
+		}
+		if ($this->isFieldSet('maka_titel_familj', $data)) {
+			$this->where .= " AND (pe_m1.titel_familj = ? OR pe_m2.titel_familj = ?)";
+			$this->param[] = $data['maka_titel_familj'];
+			$this->param[] = $data['maka_titel_familj'];
 		}
 	}
 
@@ -226,14 +234,47 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addTidSearchSql($data)
 	{
-		if (isset($data['tid_fran']) && is_numeric($data['tid_fran'])) {
-			$this->where .= " AND IF(p.tid_fran IS NOT NULL AND p.tid_till IS NOT NULL, p.tid_fran <= ? AND p.tid_till >= ?,
-							IF(p.tid_fran IS NOT NULL, p.tid_fran = ?, IF(p.tid_till IS NOT NULL, p.tid_till = ?, 0)))";
-			$this->param[] = $data['tid_fran'];
-			$this->param[] = $data['tid_fran'];
-			$this->param[] = $data['tid_fran'];
-			$this->param[] = $data['tid_fran'];
+		if (false === $this->isTidFieldSet($data)) {
+			return;
 		}
+		if ($this->isFieldSet('ar_borjan', $data) && ! $this->isFieldSet('ar_slut', $data)) {
+			$this->where .= " AND IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NULL AND p.ar_borjan = ?, 1,
+							IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NOT NULL AND ? BETWEEN p.ar_borjan AND p.ar_slut, 1, 0)) ";
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_borjan'];
+		} elseif ($this->isFieldSet('ar_slut', $data) && ! $this->isFieldSet('ar_borjan', $data)) {
+			$this->where .= " AND IF(p.ar_slut IS NOT NULL AND p.ar_borjan IS NULL AND p.ar_slut = ?, 1,
+						IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NOT NULL AND ? BETWEEN p.ar_borjan AND p.ar_slut, 1, 0)) ";
+			$this->param[] = $data['ar_slut'];
+			$this->param[] = $data['ar_slut'];
+		} else {
+			$this->where .= " AND IF(p.ar_borjan IS NOT NULL AND p.ar_slut IS NULL AND p.ar_borjan BETWEEN ? AND ?, 1 ,
+							IF(p.ar_borjan IS NULL AND p.ar_slut IS NOT NULL AND p.ar_slut BETWEEN ? AND ?, 1, 
+							IF(p.ar_borjan BETWEEN ? AND ?, 1, 
+							IF(p.ar_slut BETWEEN ? AND ?, 1, 0)))) ";
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_slut'];
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_slut'];
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_slut'];
+			$this->param[] = $data['ar_borjan'];
+			$this->param[] = $data['ar_slut'];
+		}
+	}
+
+	private function isTidFieldSet($data)
+	{
+		if ( ! $this->isFieldSet('ar_borjan', $data) && ! $this->isFieldSet('ar_slut', $data)) {
+			return false;
+		}
+		if ($this->isFieldSet('ar_borjan', $data) && ! is_numeric($data['ar_borjan'])) {
+			return false;
+		}
+		if ($this->isFieldSet('ar_slut', $data) && ! is_numeric($data['ar_slut'])) {
+			return false;
+		}
+		return true;
 	}
 
 	private function addStatusSearchSql($data)
@@ -247,19 +288,20 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addJordnaturSearchSql($data)
 	{
+		if (false === $this->isFieldSet('jordnatur', $data)) {
+			return;
+		}
 		$separator = ';';
-		if ($this->isFieldSet('jordnatur', $data)) {
-			$jns = explode($separator, $data['jordnatur']);
-			$i = 0;
+		$jns = explode($separator, $data['jordnatur']);
+		$i = 0;
 
-			foreach ($jns as $jn) {
-				$i++;
-				$this->from .= " LEFT JOIN sandit_mansion_jordnatur_post jp$i ON p.id = jp$i.post_id
-				LEFT JOIN sandit_mansion_jordnatur j$i ON jp$i.jordnatur_id = j$i.id ";
+		foreach ($jns as $jn) {
+			$i++;
+			$this->from .= " LEFT JOIN sandit_mansion_jordnatur_post jp$i ON p.id = jp$i.post_id
+			LEFT JOIN sandit_mansion_jordnatur j$i ON jp$i.jordnatur_id = j$i.id ";
 
-				$this->where .= " AND j$i.namn = ?";
-				$this->param[] = trim($jn);
-			}
+			$this->where .= " AND j$i.namn = ?";
+			$this->param[] = trim($jn);
 		}
 	}
 
@@ -281,69 +323,79 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addMantalSearchSql($data)
 	{
-		if ($this->isFieldSet('herrgard_mantal', $data)) {
-			$data['herrgard_mantal'] = str_replace(',', '.', $data['herrgard_mantal']);
-			$this->where .= " AND p.storlek_herrgard_mtl ".$data['herrgard_mantal_operator']." ? ";
-			$this->where .= " AND p.storlek_herrgard_mtl IS NOT NULL ";
-			$this->param[] = $data['herrgard_mantal'];
-		}
+		$this->addIntervalSearchSql('herrgard_mantal', 'storlek_herrgard_mtl', $data);
 	}
 
 	private function addHektarSearchSql($data)
 	{
-		if ($this->isFieldSet('herrgard_hektar', $data)) {
-			$this->where .= " AND p.storlek_har ".$data['herrgard_hektar_operator']." ? ";
-			$this->where .= " AND p.storlek_har IS NOT NULL";
-			$this->param[] = $data['herrgard_hektar'];
-		}
+		$this->addIntervalSearchSql('herrgard_hektar', 'storlek_har', $data);
 	}
 
 	private function addAkerHektarSearchSql($data)
 	{
-		if ($this->isFieldSet('herrgard_aker_hektar', $data)) {
-			$this->where .= " AND p.storlek_aker_har ".$data['herrgard_aker_hektar_operator']." ? ";
-			$this->where .= " AND p.storlek_aker_har IS NOT NULL ";
-			$this->param[] = $data['herrgard_aker_hektar'];
-		}
+		$this->addIntervalSearchSql('herrgard_aker_hektar', 'storlek_aker_har', $data);
 	}
 
 	private function addGodsMantalSearchSql($data)
 	{
-		if ($this->isFieldSet('gods_mantal', $data)) {
-			$data['gods_mantal'] = str_replace(',', '.', $data['gods_mantal']);
-			$this->where .= " AND p.gods_mantal ".$data['gods_mantal_operator']." ? ";
-			$this->where .= " AND p.gods_mantal IS NOT NULL ";
-			$this->param[] = $data['gods_mantal'];
-		}
+		$this->addIntervalSearchSql('gods_mantal', 'gods_mantal', $data);
 	}
 
 	private function addGodsHektarSearchSql($data)
 	{
-		if ($this->isFieldSet('gods_hektar', $data)) {
-			$this->where .= " AND p.gods_hektar ".$data['gods_hektar_operator']." ? ";
-			$this->where .= " AND p.gods_hektar IS NOT NULL ";
-			$this->param[] = $data['gods_hektar'];
-		}
+		$this->addIntervalSearchSql('gods_hektar', 'gods_hektar', $data);
 	}
 
 	private function addGodsAkerHektarSearchSql($data)
 	{
-		if ($this->isFieldSet('gods_aker_hektar', $data)) {
-			$this->where .= " AND p.gods_aker_hektar ".$data['gods_aker_hektar_operator']." ? ";
-			$this->where .= " AND p.gods_aker_hektar IS NOT NULL ";
-			$this->param[] = $data['gods_aker_hektar'];
-		}
+		$this->addIntervalSearchSql('gods_aker_hektar', 'gods_aker_hektar', $data);
 	}
 
 	private function addGodsTaxeringSearchSql($data)
 	{
-		if ($this->isFieldSet('gods_taxering', $data)) {
-			$this->where .= " AND p.taxering ".$data['gods_taxering_operator']." ? ";
-			$this->where .= " AND p.taxering IS NOT NULL ";
-			$this->param[] = $data['gods_taxering'];
+		$this->addIntervalSearchSql('gods_taxering', 'taxering', $data);
+	}
+
+
+	private function addIntervalSearchSql($field, $column, $data)
+	{
+		$is_min = $this->isFieldSet($field.'_min', $data);
+		$is_max = $this->isFieldSet($field.'_max', $data);
+
+		if (false === $is_min && false === $is_max) {
+			return;
+		}
+		if (true === $is_min && false === $is_max) {
+			$min = str_replace(',', '.', $data[$field.'_min']);
+			$this->where .= " AND p.$column IS NOT NULL ";
+			$this->where .= " AND ".$this->castColumnToInteger('p.'.$column)." >= ? ";
+			$this->param[] = $min;
+		} elseif (false === $is_min && true === $is_max) {
+			$max = str_replace(',', '.', $data[$field.'_max']);
+			$this->where .= " AND p.$column IS NOT NULL ";
+			$this->where .= " AND ".$this->castColumnToInteger('p.'.$column)." <= ? ";
+			$this->param[] = $max;
+		} else {
+			$min = str_replace(',', '.', $data[$field.'_min']);
+			$max = str_replace(',', '.', $data[$field.'_max']);
+			$this->where .= " AND p.$column IS NOT NULL ";
+			$this->where .= " AND ".$this->castColumnToInteger('p.'.$column)." BETWEEN ? AND ? ";
+			$this->param[] = $min;
+			$this->param[] = $max;
 		}
 	}
 
+	private function castColumnToInteger(string $column): string 
+	{
+		$columns = ['p.taxering'];
+
+		if (true === in_array($column, $columns)) {
+			return 'CAST('.$column.' AS UNSIGNED)';
+		}
+		return $column;
+	}
+
+	
 
 	public function getGardar($ids, $id_type, $relations)
     {
@@ -367,232 +419,6 @@ class SearchRepository implements SearchRepositoryInterface
         }
         return $gardar;
     }
-
-
-
-	public function searchSize($data)
-	{
-		$param = array();
-
-		$query = "SELECT DISTINCT g.id AS 'id',
-				CONCAT(UCASE(MID(g.namn ,1,1)),MID(g.namn ,2)) AS 'gard',
-				CONCAT(UCASE(MID(s.namn ,1,1)),MID(s.namn ,2)) AS 'socken',
-				CONCAT(UCASE(MID(h.namn ,1,1)),MID(h.namn ,2)) AS 'harad',
-				CONCAT(UCASE(MID(l.namn ,1,1)),MID(l.namn ,2)) AS 'landskap',
-				GROUP_CONCAT(st.namn) AS 'typ'
-			FROM post p
-				JOIN import i on p.import_id=i.id
-				JOIN gard g ON p.gard_id=g.id
-				JOIN socken s ON g.socken_id=s.id
-				JOIN harad h ON s.harad_id=h.id
-				JOIN landskap l ON h.landskap_id=l.id
-				LEFT JOIN status st ON p.status_id=st.id
-				LEFT JOIN person_post ppe ON ppe.post_id = p.id AND ppe.typ = 'person'
-	            LEFT JOIN person pe ON pe.id = ppe.person_id
-	            LEFT JOIN person_post ppm1 ON ppm1.post_id = p.id AND ppm1.typ = 'maka1'
-	            LEFT JOIN person pe_m1 ON pe_m1.id = ppm1.person_id
-	            LEFT JOIN person_post ppm2 ON ppm2.post_id = p.id AND ppm2.typ = 'maka2'
-	            LEFT JOIN person pe_m2 ON pe_m2.id = ppm2.person_id
-	            LEFT JOIN storlek sto ON sto.post_id = p.id
-			WHERE 1 ";
-
-		$query .= "AND import_type = 'mansion' ";
-		$query .= "AND tillhor_herrgard IS NULL ";
-		$query .= "AND (sto.mantal IS NOT NULL OR sto.hektar IS NOT NULL OR sto.aker_hektar IS NOT NULL OR sto.taxering IS NOT NULL)";
-
-
-		if ($data['landskap'] != 0) {
-			$query .= " AND l.id = ?";
-			$param[] = $data['landskap'];
-		}
-		if (( ! is_null($data['harad'])) && $data['harad'] != 0) {
-			$query .= " AND h.id = ?";
-			$param[] = $data['harad'];
-		}
-		if (( ! is_null($data['socken'])) && $data['socken'] != 0) {
-			$query .= " AND s.id = ?";
-			$param[] = $data['socken'];
-		}
-		if ( ! empty($data['mansion'])) {
-			$query .= " AND g.namn LIKE ?";
-			$param[] = '%'.$data['mansion'].'%';
-		}
-		if (( ! is_null($data['status'])) && $data['status'] != 0) {
-			$query .= " AND st.id = ?";
-			$param[] = $data['status'];
-		}
-		/*if ( ! empty($data['person'])) {
-			$query .= " AND (pe.namn LIKE ?
-						OR pe.efternamn LIKE ?
-						OR pe_m1.namn LIKE ?
-						OR pe_m1.efternamn LIKE ?
-						OR pe_m2.namn LIKE ?
-						OR pe_m2.efternamn LIKE ?)";
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-		}*/
-		if ( ! empty($data['person'])) {
-			$query .= " AND (pe.namn LIKE ?
-						OR pe.efternamn LIKE ?)";
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-		}
-		if ($data['tid_fran'] != 0) {
-			$tid_fran = $this->year_list[$data['tid_fran']];
-			$query .= " AND IF((p.tid_fran IS NOT NULL AND p.tid_till IS NOT NULL AND p.tid_fran=p.tid_till)
-				OR (p.tid_fran IS NOT NULL AND p.tid_till IS NULL), p.tid_fran BETWEEN ?-7 AND ?+7, 0)";
-			$param[] = $tid_fran;
-			$param[] = $tid_fran;
-		}
-		if (! empty($data['mansion_mantal']) && is_numeric($data['mansion_mantal'])) {
-			$query .= " AND sto.typ = 'herrgard'";
-			$query .= " AND sto.mantal ";
-			$query .= $this->storlek_operator_list[$data['mansion_mantal_op']];
-			$query .= " ?";
-			$param[] = $data['mantal'];
-		}
-		if (! empty($data['mansion_hektar']) && is_numeric($data['mansion_hektar'])) {
-			$query .= " AND sto.typ = 'herrgard'";
-			$query .= " AND sto.hektar ";
-			$query .= $this->storlek_operator_list[$data['mansion_hektar_op']];
-			$query .= " ?";
-			$param[] = $data['mansion_hektar'];
-		}
-		if (! empty($data['mansion_aker_hektar']) && is_numeric($data['mansion_aker_hektar'])) {
-			$query .= " AND sto.typ = 'herrgard'";
-			$query .= " AND sto.aker_hektar ";
-			$query .= $this->storlek_operator_list[$data['mansion_aker_hektar_op']];
-			$query .= " ?";
-			$param[] = $data['mansion_aker_hektar'];
-		}
-		if (! empty($data['estate_mantal']) && is_numeric($data['estate_mantal'])) {
-			$query .= " AND sto.typ = 'gods'";
-			$query .= " AND sto.mantal ";
-			$query .= $this->storlek_operator_list[$data['estate_mantal_op']];
-			$query .= " ?";
-			$param[] = $data['estate_mantal'];
-		}
-		if (! empty($data['estate_hektar']) && is_numeric($data['estate_hektar'])) {
-			$query .= " AND sto.typ = 'gods'";
-			$query .= " AND sto.hektar ";
-			$query .= $this->storlek_operator_list[$data['estate_hektar_op']];
-			$query .= " ?";
-			$param[] = $data['estate_hektar'];
-		}
-		if (! empty($data['estate_aker_hektar']) && is_numeric($data['estate_aker_hektar'])) {
-			$query .= " AND sto.typ = 'gods'";
-			$query .= " AND sto.aker_hektar ";
-			$query .= $this->storlek_operator_list[$data['estate_aker_hektar_op']];
-			$query .= " ?";
-			$param[] = $data['estate_aker_hektar'];
-		}
-		if (! empty($data['estate_taxering']) && is_numeric($data['estate_taxering'])) {
-			$query .= " AND sto.typ = 'gods'";
-			$query .= " AND sto.taxering ";
-			$query .= $this->storlek_operator_list[$data['estate_taxering_op']];
-			$query .= " ?";
-			$param[] = $data['estate_taxering'];
-		}
-		$query .= " GROUP BY id ";
-
-		return DB::select($query, $param);
-	}
-
-
-
-	public function searchEstate($data)
-	{
-		$param = array();
-
-		$query = "SELECT DISTINCT g.id AS 'id',
-				g.namn AS 'gard',
-				g.nummer AS 'nummer',
-				s.namn AS 'socken',
-				h.namn AS 'harad',
-				l.namn AS 'landskap',
-				hg.id AS 'herrgard_id',
-				hg.namn AS 'herrgard'
-			FROM post p
-				JOIN import i on p.import_id=i.id
-				LEFT JOIN gard g ON p.gard_id=g.id
-				LEFT JOIN socken s ON g.socken_id=s.id
-				LEFT JOIN harad h ON s.harad_id=h.id
-				LEFT JOIN landskap l ON h.landskap_id=l.id
-				LEFT JOIN status st ON p.status_id=st.id
-				LEFT JOIN person_post ppe ON ppe.post_id = p.id AND ppe.typ = 'person'
-	            LEFT JOIN person pe ON pe.id = ppe.person_id
-	            LEFT JOIN person_post ppm1 ON ppm1.post_id = p.id AND ppm1.typ = 'maka1'
-	            LEFT JOIN person pe_m1 ON pe_m1.id = ppm1.person_id
-	            LEFT JOIN person_post ppm2 ON ppm2.post_id = p.id AND ppm2.typ = 'maka2'
-	            LEFT JOIN person pe_m2 ON pe_m2.id = ppm2.person_id
-	            LEFT JOIN storlek sto ON sto.post_id = p.id
-	           	LEFT JOIN gard hg ON g.tillhor_herrgard=hg.id
-			WHERE 1 ";
-
-		$query .= "AND i.import_type = 'estate' ";
-		$query .= "AND g.tillhor_herrgard IS NOT NULL ";
-
-		if ($data['landskap'] != 0) {
-			$query .= " AND l.id = ?";
-			$param[] = $data['landskap'];
-		}
-		if ((! is_null($data['harad'])) && $data['harad'] != 0) {
-			$query .= " AND h.id = ?";
-			$param[] = $data['harad'];
-		}
-		if ((! is_null($data['socken'])) && $data['socken'] != 0) {
-			$query .= " AND s.id = ?";
-			$param[] = $data['socken'];
-		}
-		if (( ! is_null($data['status'])) && $data['status'] != 0) {
-			$query .= " AND st.id = ?";
-			$param[] = $data['status'];
-		}
-		if (! empty($data['person'])) {
-			$query .= " AND (pe.namn LIKE ?
-						OR pe.efternamn LIKE ?
-						OR pe_m1.namn LIKE ?
-						OR pe_m1.efternamn LIKE ?
-						OR pe_m2.namn LIKE ?
-						OR pe_m2.efternamn LIKE ?)";
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-			$param[] = '%'.$data['person'].'%';
-		}
-		if ($data['tid_fran'] != 0) {
-			$tid_fran = $this->year_list[$data['tid_fran']];
-			$query .= " AND IF((p.tid_fran IS NOT NULL AND p.tid_till IS NOT NULL AND p.tid_fran=p.tid_till)
-				OR (p.tid_fran IS NOT NULL AND p.tid_till IS NULL), p.tid_fran BETWEEN ?-7 AND ?+7, 0)";
-			$param[] = $tid_fran;
-			$param[] = $tid_fran;
-		}
-		//print_r($data);exit();
-		if ( ! empty($data['mantal']) && is_numeric($data['mantal'])) {
-			$query .= " AND sto.typ = 'gard'";
-			$query .= " AND sto.mantal ";
-			$query .= $this->storlek_operator_list[$data['mantal_op']];
-			$query .= " ?";
-			$param[] = $data['mantal'];
-		}
-		if ( ! empty($data['brukare']) && is_numeric($data['brukare'])) {
-			$query .= " AND sto.typ = 'gard'";
-			$query .= " AND sto.brukareforhallande ";
-			$query .= $this->storlek_operator_list[$data['brukare_op']];
-			$query .= " ?";
-			$param[] = $data['brukare'];
-		}
-		//print_r($param);
-		//echo $query;exit();
-		return DB::select($query, $param);
-	}
-
 
 
 	public function getLandskap($search_type = '')
