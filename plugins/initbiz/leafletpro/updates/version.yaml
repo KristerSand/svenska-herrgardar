@@ -1,0 +1,14 @@
+1.0.1:
+    - 'Initial version of LeafletPro'
+1.0.2:
+    - 'Added markers table'
+    - create_markers_table.php
+1.0.3:
+    - 'Custom default marker icon URL in settings and overriding initial lon, lat and zoom using GET params'
+1.1.0:
+    - 'Added single map component and a few major changes'
+1.1.1:
+    - 'Fix issue in checkbox properties'
+1.1.2:
+    - 'Updated table initbiz_leafletpro_markers'
+    - builder_table_update_initbiz_leafletpro_markers.php

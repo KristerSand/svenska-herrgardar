@@ -1,0 +1,52 @@
+fields:
+    name:
+        label: 'initbiz.leafletpro::lang.marker.name'
+        type: text
+        span: left
+        required: 1
+    popup_content:
+        label: 'initbiz.leafletpro::lang.marker.popup_content'
+        type: richeditor
+        span: right
+    tora_id:
+        label: 'TORA ID'
+        span: auto
+        type: number
+    street:
+        label: 'initbiz.leafletpro::lang.marker.street'
+        commentAbove: 'initbiz.leafletpro::lang.marker.street_comment'
+        type: text
+        span: left
+    postal_code:
+        label: 'initbiz.leafletpro::lang.marker.postal_code'
+        type: text
+        span: left
+    city:
+        label: 'initbiz.leafletpro::lang.marker.city'
+        type: text
+        span: left
+    country_id:
+        label: 'initbiz.leafletpro::lang.marker.country'
+        emptyOption: 'initbiz.leafletpro::lang.marker.country_empty_option'
+        span: left
+        type: dropdown
+    is_published:
+        label: 'initbiz.leafletpro::lang.marker.is_published'
+        type: switch
+        span: left
+secondaryTabs:
+    fields:
+        refresh_lon_lat_button:
+            label: 'initbiz.leafletpro::lang.marker.refresh_lon_lat_label'
+            type: partial
+            tab: Misc
+        lon:
+            label: 'initbiz.leafletpro::lang.marker.lon'
+            type: text
+            required: 1
+            tab: Misc
+        lat:
+            label: 'initbiz.leafletpro::lang.marker.lat'
+            type: text
+            required: 1
+            tab: Misc

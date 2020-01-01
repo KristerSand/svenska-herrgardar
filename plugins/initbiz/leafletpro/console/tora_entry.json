@@ -1,0 +1,112 @@
+{
+  "metadata": {"https://data.riksarkivet.se/tora/23373": {
+    "https://data.riksarkivet.se/tora/schema/modernMunicipality": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/modernmunicipality/108000000"
+    }],
+    "http://purl.org/dc/terms/coverage": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/coordinateaccuracy/high"
+    }],
+    "https://data.riksarkivet.se/tora/schema/sweref99_e": [{
+      "type": "literal",
+      "value": "536759,0043"
+    }],
+    "http://www.w3.org/2003/01/geo/wgs84_pos#lat": [{
+      "type": "literal",
+      "value": "56,2214"
+    }],
+    "http://purl.org/dc/terms/identifier": [{
+      "type": "literal",
+      "value": "23373"
+    }],
+    "https://data.riksarkivet.se/tora/schema/sweref99_n": [{
+      "type": "literal",
+      "value": "6230881,2285"
+    }],
+    "http://purl.org/dc/elements/1.1/subject": [{
+      "type": "literal",
+      "value": "lm"
+    }],
+    "http://www.w3.org/2003/01/geo/wgs84_pos#long": [{
+      "type": "literal",
+      "value": "15,5928"
+    }],
+    "http://purl.org/dc/terms/isPartOf": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/modernparish/108018000"
+    }],
+    "https://data.riksarkivet.se/tora/schema/modernParish": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/modernparish/108018000"
+    }],
+    "https://data.riksarkivet.se/tora/schema/modernCounty": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/moderncounty/100000000"
+    }],
+    "http://purl.org/dc/terms/creator": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/torapartner/herr"
+    }],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/schema/HistoricalSettlementUnit"
+    }],
+    "http://www.w3.org/2004/02/skos/core#prefLabel": [{
+      "type": "literal",
+      "value": "Allatorp"
+    }],
+    "http://purl.org/dc/terms/conformsTo": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/namingprinciple/modern"
+    }]
+  }},
+  "rights": [
+    "readresource",
+    "readmetadata"
+  ],
+  "relations": {},
+  "entryId": "23373",
+  "info": {"https://tora.entryscape.net/store/61/entry/23373": {
+    "http://entrystore.org/terms/metadata": [{
+      "type": "uri",
+      "value": "https://tora.entryscape.net/store/61/metadata/23373"
+    }],
+    "http://purl.org/dc/terms/creator": [{
+      "type": "uri",
+      "value": "https://tora.entryscape.net/store/_principals/resource/71"
+    }],
+    "http://entrystore.org/terms/resource": [{
+      "type": "uri",
+      "value": "https://data.riksarkivet.se/tora/23373"
+    }],
+    "http://purl.org/dc/terms/created": [{
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2019-11-14T02:12:27.468+01:00"
+    }],
+    "http://purl.org/dc/terms/modified": [{
+      "datatype": "http://www.w3.org/2001/XMLSchema#dateTime",
+      "type": "literal",
+      "value": "2019-12-09T16:58:53.813+01:00"
+    }],
+    "http://purl.org/dc/terms/contributor": [
+      {
+        "type": "uri",
+        "value": "https://tora.entryscape.net/store/_principals/resource/44"
+      },
+      {
+        "type": "uri",
+        "value": "https://tora.entryscape.net/store/_principals/resource/71"
+      }
+    ],
+    "http://www.w3.org/1999/02/22-rdf-syntax-ns#type": [{
+      "type": "uri",
+      "value": "http://entrystore.org/terms/Link"
+    }],
+    "http://entrystore.org/terms/relation": [{
+      "type": "uri",
+      "value": "https://tora.entryscape.net/store/61/relations/23373"
+    }]
+  }}
+}

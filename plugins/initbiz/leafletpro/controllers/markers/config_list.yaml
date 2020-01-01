@@ -1,0 +1,14 @@
+list: $/initbiz/leafletpro/models/marker/columns.yaml
+modelClass: Initbiz\LeafletPro\Models\Marker
+title: 'Manage Markers'
+recordUrl: 'initbiz/leafletpro/markers/update/:id'
+noRecordsMessage: 'backend::lang.list.no_records'
+recordsPerPage: 20
+showPageNumbers: true
+showSetup: true
+showSorting: true
+showCheckboxes: true
+toolbar:
+    buttons: list_toolbar
+    search:
+        prompt: 'backend::lang.list.search_prompt'
