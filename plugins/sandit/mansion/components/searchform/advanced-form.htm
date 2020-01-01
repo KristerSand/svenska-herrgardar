@@ -6,101 +6,106 @@
 {% set person_titel_tjanst = __SELF__.person_titel_tjanst %}
 {% set person_titel_familj = __SELF__.person_titel_familj %}
 {% set maka_titel_familj = __SELF__.maka_titel_familj %}
+{% set input = __SELF__.input %}
+
 <form id="advanced-form" data-request="onSearch" class="mb-4">
 
     <input type="hidden" name="searchform" value="advanced">
     
     <fieldset>
-        <h5>Gårdsnamn</h5>
-        <div class="form-row align-items-center">
-            <div class="form-group col-md-6 mb-1">
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="gard">Gårdsnamn</label>
                 <input type="text" class="form-control" id="gard" name="gard">
+                <small id="gardHelp" class="form-text text-muted">Här kan du söka på gårdarnas namn. Namnen anges efter Lantmäteriets normalstavning, men här återfinns i många fall även äldre namnformer samt ursprungliga gårdsnamn, i de fall gården har bytt namn.</small>
             </div>
-            <div class="col">
-                <div class="form-check mb-1">
-                    <input class="form-check-input" type="checkbox" value="" id="gard_exact" name="gard_exact"> 
-                    <label class="form-check-label mt-1" for="gard_exact">Exakt matchning</label>
-                </div>
+            <div class="form-check mt-4 mx-2">
+                <input class="form-check-input" type="checkbox" id="gard_exact" name="gard_exact"> 
+                <label class="form-check-label mt-1" for="gard_exact">Exakt matchning</label>
             </div>
-            <small id="gardHelp" class="form-text text-muted">Här kan du söka på gårdarnas namn. Namnen anges efter Lantmäteriets normalstavning, men här återfinns i många fall även äldre namnformer samt ursprungliga gårdsnamn, i de fall gården har bytt namn.</small>
         </div>
-    </fieldset>
-    <hr />
-    <fieldset>
-        <h5>Geografi</h5>
         <div class="form-row">
             <div class="col form-group">
+                <label for="landskap">Landskap</label>
                 <select class="form-control" id="landskap" name="landskap" data-request="onSelectLandskap">
-                    <option value="0" selected>Landskap</option>
+                    <option value="0" selected>-- Välj --</option>
                     {% for l in landskap %}
                     <option value="{{ l.id }}">{{ l.namn }}</option>
                     {% endfor %}
                 </select>
             </div>
-
             <div class="col form-group">
+                <label for="harad">Härad</label>
                 <select class="form-control" id="harad" name="harad" data-request="onSelectHarad">
-                    <option value="0" selected>Härad</option>
+                    
                 </select>
             </div>
 
             <div class="col form-group">
+                <label for="socken">Socken</label>
                 <select class="form-control" id="socken" name="socken">
-                    <option value="0" selected>Socken</option>
+                    
                 </select>
             </div>
         </div>
     </fieldset>
-    <hr />
     <fieldset>
-        <h5>Ägare / innehavare / arrendatorer</h5>
         <div class="form-row">
             <div class="col form-group">
-                <input type="text" class="form-control" id="person_namn" name="person_namn" placeholder="Namn">
+                <label for="person_namn">Namn</label>
+                <input type="text" class="form-control" id="person_namn" name="person_namn">
+                <small id="person_namnHelp" class="form-text text-muted">Ägare / innehavare / arrendatorer</small>
             </div>
             <div class="col form-group">
-                <input type="text" class="form-control" id="person_efternamn" name="person_efternamn"  placeholder="Efternamn">
+                <label for="person_efternamn">Efternamn</label>
+                <input type="text" class="form-control" id="person_efternamn" name="person_efternamn">
+                <small id="person_efternamnHelp" class="form-text text-muted">Ägare / innehavare / arrendatorer</small>
             </div>
         </div>
 
         <div class="form-row">
             <div class="col form-group">
-                <input type="text" class="form-control" id="person_titel_tjanst" name="person_titel_tjanst" placeholder="Titel tjänst">
+                <label for="person_titel_tjanst">Titel tjänst</label>
+                <input type="text" class="form-control" id="person_titel_tjanst" name="person_titel_tjanst">
                 <small id="person_titel_tjanstHelp" class="form-text text-muted">Här kan du söka på den yrkestitel ägarna/arrendatorerna/innehavarna hade under de år de besatt gården, t.ex. löjtnant, kapten, överste, lantmätare, länsman, handelsman, godsägare, hovfröken, kammarjungfru etc.</small>
             </div>
 
             <div class="col form-group">
+                <label for="person_titel_familj">Titel familj</label>
                 <select class="form-control" id="person_titel_familj" name="person_titel_familj">
-                    <option value="0" selected>Titel familj</option>
+                    <option value="0" selected>-- Välj --</option>
                     {% for ptf in person_titel_familj %}
                         <option value="{{ ptf.titel }}">{{ ptf.titel }}</option>
                     {% endfor %}
                 </select>
+                <small id="person_title_familjHelp" class="form-text text-muted">Ägare / innehavare / arrendatorer</small>
             </div>
 
         </div>
     </fieldset>
-    <hr />
     <fieldset>
-        <h5>Make / maka</h5>
         <div class="form-row">
             <div class="col form-group">
-                <input type="text" class="form-control" id="maka_namn" name="maka_namn" placeholder="Förnamn">
+                <label for="maka_namn">Förnamn - maka/make</label>
+                <input type="text" class="form-control" id="maka_namn" name="maka_namn">
             </div>
             <div class="col form-group">
-                <input type="text" class="form-control" id="maka_efternamn" name="maka_efternamn" placeholder="Efternamn">
+                <label for="maka_efternamn">Efternamn - maka/make</label>
+                <input type="text" class="form-control" id="maka_efternamn" name="maka_efternamn">
             </div>
         </div>
 
         <div class="form-row">
             <div class="col form-group">
-                <input type="text" class="form-control" id="maka_titel_tjanst" name="maka_titel_tjanst" placeholder="Titel tjänst">
+                <label for="maka_titel_tjanst">Titel tjänst - maka/make</label>
+                <input type="text" class="form-control" id="maka_titel_tjanst" name="maka_titel_tjanst">
                 <small id="maka_titel_tjanstHelp" class="form-text text-muted">Här kan du söka på den yrkestitel makarna/makorna hade under de år de besatt gården, t.ex. löjtnant, kapten, överste, lantmätare, länsman, handelsman, godsägare, hovfröken, kammarjungfru etc.</small>
             </div>
 
             <div class="col form-group">
+                <label for="maka_titel_familj">Titel familj - maka/make</label>
                 <select class="form-control" id="maka_titel_familj" name="maka_titel_familj">
-                    <option value="0" selected>Titel familj</option>
+                    <option value="0" selected>-- Välj --</option>
                     {% for mtf in maka_titel_familj %}
                         <option value="{{ mtf.titel }}">{{ mtf.titel }}</option>
                     {% endfor %}
@@ -108,21 +113,31 @@
             </div>
         </div>
     </fieldset>
-    <hr />
     <fieldset>
-        <h5>Status, jordnatur, ägarförhållanden och typ av transaktion</h5>
+        <div class="form-row">
+            <div class="col col-md-6 form-group">
+                <label for="ar_borjan">Tid år</label>
+                <div class="input-group">
+                    <input type="number" class="form-control" id="ar_borjan" name="ar_borjan" placeholder="start">
+                    <input type="number" class="form-control" id="ar_slut" name="ar_slut" placeholder="slut">
+                </div>
+            </div>
+        </div>
+
         <div class="form-row">
             <div class="col form-group">
+                <label for="status">Status</label>
                 <select class="form-control" id="status" name="status">
-                    <option value="0" selected>Status</option>
+                    <option value="0" selected>-- Välj --</option>
                     {% for s in status %}
                     <option value="{{ s.id }}">{{ s.namn }}</option>
                     {% endfor %}
                 </select>
             </div>
             <div class="col form-group">
+                <label for="agar_arr">Ägarförhållanden</label>
                 <select class="form-control" id="agar_arr" name="agar_arr">
-                    <option value="0" selected>Ägar/arr</option>
+                    <option value="0" selected>-- Välj --</option>
                     {% for a in agar_arr %}
                     <option value="{{ a.ag_arr }}">{{ a.ag_arr }}</option>
                     {% endfor %}
@@ -132,110 +147,74 @@
         </div>
         <div class="form-row">
             <div class="col form-group">
-                <input type="text" class="form-control" id="jordnatur" name="jordnatur" placeholder="Jordnatur">
+                <label for="jordnatur">Jordnatur</label>
+                <input type="text" class="form-control" id="jordnatur" name="jordnatur">
                 <small id="jordnaturHelp" class="form-text text-muted">Här kan du söka på gårdens jordnatur t.ex. frälse, skatte, krono, säteri, berustat säteri eller ladugård, eller om det var ett bruk. Du kan även söka på kronoboställenas funktion, dels genom att ange positionen (kyrkoherde, komminister, länsman, trumpetare, löjtnant, överste), dels regementes namn.</small>
             </div>
             <div class="col form-group">
-                <input type="text" class="form-control" id="typ" name="typ" placeholder="Typ">
+                <label for="typ">Typ av transaktion</label>
+                <input type="text" class="form-control" id="typ" name="typ">
                 <small id="typHelp" class="form-text text-muted">Här kan du söka efter vilken form av transaktion som föregick innehavet av gården, t.ex. förläning, donation, köp, byte, gåva, arv, fideikommiss etc. Du kan även se släktrelationen med föregående innehavare, om gården togs över av en son, dotter, änka, änkeman eller annan släkting. Använd ; som skiljetecken om du vill söka på både transaktion och släktrelation.</small>
             </div>
         </div>
     </fieldset>
-    <hr />
-
-    <fieldset>
-        <h5>Tid</h5>
-        <div class="form-row">
-            <div class="col form-group">
-                <input type="number" class="form-control" id="ar_borjan" name="ar_borjan" placeholder="År början">
-            </div>
-            <div class="col form-group">
-                <input type="number" class="form-control" id="ar_slut" name="ar_slut" placeholder="År slut">
-            </div>
-        </div>
-    </fieldset>
-    <hr />
     
     <fieldset>
-        <h5>Storlek herrgård</h5>
+
         <div class="form-row">
             <div class="col form-group">
+                <label for="herrgard_mantal_min">Mantal herrgård</label>
                 <div class="input-group">
-                    <input type="text" class="form-control w-75" min="0" id="herrgard_mantal" name="herrgard_mantal" placeholder="Mantal">
-                    <select class="form-control w-25" id="herrgard_mantal_operator" name="herrgard_mantal_operator">
-                        <option value="&#61;">&#61;</option>
-                        <option value="&#60;">&#60;</option>
-                        <option value="&#62;">&#62;</option>
-                    </select>
+                    <input type="text" class="form-control" min="0" id="herrgard_mantal_min" name="herrgard_mantal_min" placeholder="min">
+                    <input type="text" class="form-control" min="0" id="herrgard_mantal_max" name="herrgard_mantal_max" placeholder="max">    
                 </div>
             </div>
             <div class="col form-group">
+                <label for="herrgard_hektar_min">Hektar totalt herrgård</label>
                 <div class="input-group">
-                    <input type="number" class="form-control w-75" min="0" id="herrgard_hektar" name="herrgard_hektar" placeholder="Hektar totalt">
-                    <select class="form-control w-25" id="herrgard_hektar_operator" name="herrgard_hektar_operator">
-                        <option value="&#61;">&#61;</option>
-                        <option value="&#60;">&#60;</option>
-                        <option value="&#62;">&#62;</option>
-                    </select>
+                    <input type="number" class="form-control" min="0" id="herrgard_hektar_min" name="herrgard_hektar_min" placeholder="min">
+                    <input type="number" class="form-control" min="0" id="herrgard_hektar_max" name="herrgard_hektar_max" placeholder="max">
                 </div>
             </div>
             <div class="col form-group">
+                <label for="herrgard_aker_hektar">Hektar åker herrgård</label>
                 <div class="input-group">
-                    <input type="number" class="form-control w-75" min="0" id="herrgard_aker_hektar" name="herrgard_aker_hektar" placeholder="Hektar åker">
-                    <select class="form-control w-25" id="herrgard_aker_hektar_operator" name="herrgard_aker_hektar_operator">
-                        <option value="&#61;">&#61;</option>
-                        <option value="&#60;">&#60;</option>
-                        <option value="&#62;">&#62;</option>
-                    </select>
+                    <input type="number" class="form-control" min="0" id="herrgard_aker_hektar_min" name="herrgard_aker_hektar_min" placeholder="min">
+                    <input type="number" class="form-control" min="0" id="herrgard_aker_hektar_max" name="herrgard_aker_hektar_max" placeholder="max">
                 </div>
             </div>
         </div>
-    </fieldset>
-    <hr />
-    <fieldset>
-        <h5>Storlek gods</h5>
+    
         <div class="form-row">
             <div class="col form-group">
+                <label for="gods_mantal_min">Mantal gods</label>
                 <div class="input-group">
-                    <input type="text" class="form-control w-75" min="0" id="gods_mantal" name="gods_mantal" placeholder="Mantal">
-                    <select class="form-control w-25" id="gods_mantal_operator" name="gods_mantal_operator">
-                        <option value="&#61;">&#61;</option>
-                        <option value="&#60;">&#60;</option>
-                        <option value="&#62;">&#62;</option>
-                    </select>
+                    <input type="text" class="form-control" min="0" id="gods_mantal_min" name="gods_mantal_min" placeholder="min">
+                    <input type="text" class="form-control" min="0" id="gods_mantal_max" name="gods_mantal_max" placeholder="max">
                 </div>
             </div>
             <div class="col form-group">
+                <label for="gods_hektar_min">Hektar totalt gods</label>
                 <div class="input-group">
-                    <input type="number" class="form-control w-75" min="0" id="gods_hektar" name="gods_hektar" placeholder="Hektar totalt">
-                    <select class="form-control w-25" id="gods_hektar_operator" name="gods_hektar_operator">
-                        <option value="&#61;">&#61;</option>
-                        <option value="&#60;">&#60;</option>
-                        <option value="&#62;">&#62;</option>
-                    </select>
+                    <input type="number" class="form-control" min="0" id="gods_hektar_min" name="gods_hektar_max" placeholder="min">
+                    <input type="number" class="form-control" min="0" id="gods_hektar_max" name="gods_hektar_min" placeholder="max">
                 </div>
             </div>
             <div class="col form-group">
+                <label for="gods_aker_hektar_min">Hektar åker gods</label>
                 <div class="input-group">
-                    <input type="number" class="form-control w-75" min="0" id="gods_aker_hektar" name="gods_aker_hektar" placeholder="Hektar åker">
-                    <select class="form-control w-25" id="gods_aker_hektar_operator" name="gods_aker_hektar_operator">
-                        <option value="&#61;">&#61;</option>
-                        <option value="&#60;">&#60;</option>
-                        <option value="&#62;">&#62;</option>
-                    </select>
+                    <input type="number" class="form-control" min="0" id="gods_aker_hektar_min" name="gods_aker_hektar_max" placeholder="min">
+                    <input type="number" class="form-control" min="0" id="gods_aker_hektar_max" name="gods_aker_hektar_max" placeholder="max">
                 </div>
             </div>
         </div>
 
         <div class="form-row">
-            <div class="col  col-md-4 form-group">
+            <div class="col col-md-6 form-group">
+                <label for="gods_taxering_min">Taxering gods</label>
                 <div class="input-group">
-                    <input type="number" class="form-control w-75" min="0" id="gods_taxering" name="gods_taxering" placeholder="Taxering">
-                    <select class="form-control w-25" id="gods_taxering_operator" name="gods_taxering_operator">
-                        <option value="&#61;">&#61;</option>
-                        <option value="&#60;">&#60;</option>
-                        <option value="&#62;">&#62;</option>
-                    </select>
+                    <input type="number" class="form-control" min="0" id="gods_taxering_min" name="gods_taxering_min" placeholder="min">
+                    <input type="number" class="form-control" min="0" id="gods_taxering_max" name="gods_taxering_max" placeholder="max">
                 </div>
             </div>
         </div>

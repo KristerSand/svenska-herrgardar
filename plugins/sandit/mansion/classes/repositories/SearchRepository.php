@@ -323,69 +323,79 @@ class SearchRepository implements SearchRepositoryInterface
 
 	private function addMantalSearchSql($data)
 	{
-		if ($this->isFieldSet('herrgard_mantal', $data)) {
-			$data['herrgard_mantal'] = str_replace(',', '.', $data['herrgard_mantal']);
-			$this->where .= " AND p.storlek_herrgard_mtl ".$data['herrgard_mantal_operator']." ? ";
-			$this->where .= " AND p.storlek_herrgard_mtl IS NOT NULL ";
-			$this->param[] = $data['herrgard_mantal'];
-		}
+		$this->addIntervalSearchSql('herrgard_mantal', 'storlek_herrgard_mtl', $data);
 	}
 
 	private function addHektarSearchSql($data)
 	{
-		if ($this->isFieldSet('herrgard_hektar', $data)) {
-			$this->where .= " AND p.storlek_har ".$data['herrgard_hektar_operator']." ? ";
-			$this->where .= " AND p.storlek_har IS NOT NULL";
-			$this->param[] = $data['herrgard_hektar'];
-		}
+		$this->addIntervalSearchSql('herrgard_hektar', 'storlek_har', $data);
 	}
 
 	private function addAkerHektarSearchSql($data)
 	{
-		if ($this->isFieldSet('herrgard_aker_hektar', $data)) {
-			$this->where .= " AND p.storlek_aker_har ".$data['herrgard_aker_hektar_operator']." ? ";
-			$this->where .= " AND p.storlek_aker_har IS NOT NULL ";
-			$this->param[] = $data['herrgard_aker_hektar'];
-		}
+		$this->addIntervalSearchSql('herrgard_aker_hektar', 'storlek_aker_har', $data);
 	}
 
 	private function addGodsMantalSearchSql($data)
 	{
-		if ($this->isFieldSet('gods_mantal', $data)) {
-			$data['gods_mantal'] = str_replace(',', '.', $data['gods_mantal']);
-			$this->where .= " AND p.gods_mantal ".$data['gods_mantal_operator']." ? ";
-			$this->where .= " AND p.gods_mantal IS NOT NULL ";
-			$this->param[] = $data['gods_mantal'];
-		}
+		$this->addIntervalSearchSql('gods_mantal', 'gods_mantal', $data);
 	}
 
 	private function addGodsHektarSearchSql($data)
 	{
-		if ($this->isFieldSet('gods_hektar', $data)) {
-			$this->where .= " AND p.gods_hektar ".$data['gods_hektar_operator']." ? ";
-			$this->where .= " AND p.gods_hektar IS NOT NULL ";
-			$this->param[] = $data['gods_hektar'];
-		}
+		$this->addIntervalSearchSql('gods_hektar', 'gods_hektar', $data);
 	}
 
 	private function addGodsAkerHektarSearchSql($data)
 	{
-		if ($this->isFieldSet('gods_aker_hektar', $data)) {
-			$this->where .= " AND p.gods_aker_hektar ".$data['gods_aker_hektar_operator']." ? ";
-			$this->where .= " AND p.gods_aker_hektar IS NOT NULL ";
-			$this->param[] = $data['gods_aker_hektar'];
-		}
+		$this->addIntervalSearchSql('gods_aker_hektar', 'gods_aker_hektar', $data);
 	}
 
 	private function addGodsTaxeringSearchSql($data)
 	{
-		if ($this->isFieldSet('gods_taxering', $data)) {
-			$this->where .= " AND p.taxering ".$data['gods_taxering_operator']." ? ";
-			$this->where .= " AND p.taxering IS NOT NULL ";
-			$this->param[] = $data['gods_taxering'];
+		$this->addIntervalSearchSql('gods_taxering', 'taxering', $data);
+	}
+
+
+	private function addIntervalSearchSql($field, $column, $data)
+	{
+		$is_min = $this->isFieldSet($field.'_min', $data);
+		$is_max = $this->isFieldSet($field.'_max', $data);
+
+		if (false === $is_min && false === $is_max) {
+			return;
+		}
+		if (true === $is_min && false === $is_max) {
+			$min = str_replace(',', '.', $data[$field.'_min']);
+			$this->where .= " AND p.$column IS NOT NULL ";
+			$this->where .= " AND ".$this->castColumnToInteger('p.'.$column)." >= ? ";
+			$this->param[] = $min;
+		} elseif (false === $is_min && true === $is_max) {
+			$max = str_replace(',', '.', $data[$field.'_max']);
+			$this->where .= " AND p.$column IS NOT NULL ";
+			$this->where .= " AND ".$this->castColumnToInteger('p.'.$column)." <= ? ";
+			$this->param[] = $max;
+		} else {
+			$min = str_replace(',', '.', $data[$field.'_min']);
+			$max = str_replace(',', '.', $data[$field.'_max']);
+			$this->where .= " AND p.$column IS NOT NULL ";
+			$this->where .= " AND ".$this->castColumnToInteger('p.'.$column)." BETWEEN ? AND ? ";
+			$this->param[] = $min;
+			$this->param[] = $max;
 		}
 	}
 
+	private function castColumnToInteger(string $column): string 
+	{
+		$columns = ['p.taxering'];
+
+		if (true === in_array($column, $columns)) {
+			return 'CAST('.$column.' AS UNSIGNED)';
+		}
+		return $column;
+	}
+
+	
 
 	public function getGardar($ids, $id_type, $relations)
     {
