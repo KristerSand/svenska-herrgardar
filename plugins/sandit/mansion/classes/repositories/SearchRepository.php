@@ -281,7 +281,7 @@ class SearchRepository implements SearchRepositoryInterface
 	{
 		if ($this->isFieldSet('status', $data)) {
 			$this->from .= " LEFT JOIN sandit_mansion_status st ON p.status_id=st.id ";
-			$this->where .= " AND st.id = ?";
+			$this->where .= " AND st.id = ? ";
 			$this->param[] = $data['status'];
 		}
 	}
@@ -297,18 +297,19 @@ class SearchRepository implements SearchRepositoryInterface
 
 		foreach ($jns as $jn) {
 			$i++;
+			$jn = trim($jn);
 			$this->from .= " LEFT JOIN sandit_mansion_jordnatur_post jp$i ON p.id = jp$i.post_id
 			LEFT JOIN sandit_mansion_jordnatur j$i ON jp$i.jordnatur_id = j$i.id ";
 
-			$this->where .= " AND j$i.namn = ?";
-			$this->param[] = trim($jn);
+			$this->where .= " AND j$i.namn LIKE ? ";
+			$this->param[] = '%'.$jn.'%';
 		}
 	}
 
 	private function addAgareArrSearchSql($data)
 	{
 		if ($this->isFieldSet('agar_arr', $data)) {
-			$this->where .= " AND p.ag_arr = ?";
+			$this->where .= " AND p.ag_arr = ? ";
 			$this->param[] = $data['agar_arr'];
 		}
 	}
