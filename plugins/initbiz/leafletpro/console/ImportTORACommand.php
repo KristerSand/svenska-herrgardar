@@ -78,7 +78,7 @@ class ImportTORACommand extends Command
     {
         $tora_url = $this->construct_tora_url($tora_id);
         #echo "Fetched record " . $tora_url;
-        $data = get_tora_json_from_url($tora_url); // put the contents of the file into a variable
+        $data = $this->get_tora_json_from_url($tora_url); // put the contents of the file into a variable
         $tora_record = json_decode($data); 
         return $tora_record;
     }
