@@ -7,8 +7,8 @@
         	  	var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}]);
         		markers.addLayer(marker);
                 marker.bindPopup("{{ marker.name }}");
-                {{ mapVar }}.addLayer(markers);
             {% endfor %}
+            {{ mapVar }}.addLayer(markers);
         </script>
     {% else %}
         <script>
