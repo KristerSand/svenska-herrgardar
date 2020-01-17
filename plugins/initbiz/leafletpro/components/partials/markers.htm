@@ -4,9 +4,10 @@
         <script>
             var markers = L.markerClusterGroup();
             {% for marker in __SELF__.markers %}
-        	  	var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}]).addTo({{ mapVar }});
+        	  	var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}]);
         		markers.addLayer(marker);
                 marker.bindPopup("{{ marker.name }}");
+                {{ mapVar }}.addLayer(markers);
             {% endfor %}
         </script>
     {% else %}
