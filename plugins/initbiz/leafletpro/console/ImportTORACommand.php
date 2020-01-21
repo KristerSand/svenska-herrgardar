@@ -23,13 +23,14 @@ class ImportTORACommand extends Command
 
 
 
-    private function create_marker($name,$tora_id,$lon, $lat)
+    private function create_marker($name,$gard_id,$tora_id,$lon, $lat)
     {
         $marker = new Marker();
         $marker->name = $name;
         $marker->lat = $lat;
         $marker->lon = $lon;
         $marker->tora_id = $tora_id;
+        $marker->gard_id = $gard_id;
         $marker->save();
     }
 
@@ -67,7 +68,7 @@ class ImportTORACommand extends Command
         "ssl"=>array(
                 "verify_peer"=>true,
                 "verify_peer_name"=>true,
-                 "cafile" =>"/etc/pki/tls/certs/ca-bundle.crt"
+                 "cafile" =>"./cert.pem"
             ),
         );
         return file_get_contents($tora_url, false, stream_context_create($arrContextOptions));
@@ -107,7 +108,7 @@ class ImportTORACommand extends Command
                     echo "Creating marker";
                     $lat = str_replace(",", ".", $tora_post->metadata->$tora_uri->$lat_uri[0]->value);
                     $lon =  str_replace(",", ".",$tora_post->metadata->$tora_uri->$long_uri[0]->value);
-                    $this->create_marker($gard->namn,$gard->toraid,$lon,$lat);
+                    $this->create_marker($gard->namn,$gard->id, $gard->toraid,$lon,$lat);
                 }
                 
                 
