@@ -57,3 +57,5 @@ bower.json
 *.log
 *.sql
 *.sqlite
+**/.DS_Store
+

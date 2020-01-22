@@ -26,3 +26,7 @@ columns:
         label: 'TORA ID'
         type: number
         searchable: true
+    gard_id:
+        label: 'Gård id'
+        type: number
+        searchable: true
