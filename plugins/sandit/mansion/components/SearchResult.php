@@ -39,6 +39,7 @@ class SearchResult extends ComponentBase
 
     public function onRun()
     {
+        $this->addJs("assets/tora.js");
         $input = Session::get('input');
 
         $this->searchform = $input['searchform'];
