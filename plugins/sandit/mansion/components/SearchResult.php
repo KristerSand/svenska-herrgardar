@@ -40,6 +40,7 @@ class SearchResult extends ComponentBase
     public function onRun()
     {
         $this->addJs("assets/node_modules/proj4/dist/proj4.js");
+        $this->addJs("assets/node_modules/handlebars/dist/handlebars.js");
         $this->addJs("assets/tora.js");
         $input = Session::get('input');
 
