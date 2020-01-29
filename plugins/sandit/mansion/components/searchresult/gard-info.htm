@@ -159,16 +159,16 @@
     <!-- Indicators -->
     <ol class="carousel-indicators">
         {{#each urls}}
-    <li data-target="#myCarousel" data-slide-to="{{ @index }}" class="active"></li>
+    <li data-target="#myCarousel" data-slide-to="{{ @index }}" class="{{#if @first}}active{{/if}}"></li>
         {{/each}}
     </ol>
 
     <!-- Wrapper for slides -->
     <div class="carousel-inner">
         {{#each urls}}
-    <div class="item {{#if @first}}active{{/if}}">
+    <div class="carousel-item {{#if @first}}active{{/if}}">
         <div class="desc">Beskrivning av bild</div>
-        <img src="{{ this }}" alt="Los Angeles" style="width:100%;">
+        <img src="{{ this }}" alt="Los Angeles" class="d-block w-100">
     </div>
         {{/each}}
     </div>
