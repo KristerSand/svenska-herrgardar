@@ -73,12 +73,20 @@ function tora_uri(tora_id) {
 function construct_historical_map_search_url(tora_id)
 {
     function get_sweref_lat_long(data) {
+        var BOUNDING_BOX_SIZE = 500;
         console.log(get_tora_latitude_sweref99(data));
         console.log(get_tora_longitude_sweref99(data));
+        var sweref_lat = parseFloat(get_tora_latitude_sweref99(data));
+        var sweref_long = parseFloat(get_tora_longitude_sweref99(data));
+        var yMin=Math.round(sweref_long - BOUNDING_BOX_SIZE)
+        var xMin=Math.round(sweref_lat - BOUNDING_BOX_SIZE)
+        var yMax=Math.round(sweref_long + BOUNDING_BOX_SIZE)
+        var xMax=Math.round(sweref_lat + BOUNDING_BOX_SIZE)
+        var historical_maps_url = "https://historiskakartor.lantmateriet.se/historiskakartor/searchresult.html?archive=GEOIN&firstMatchToReturnLMS=1&firstMatchToReturnREG=1&firstMatchToReturnRAK=1&yMin="+yMin+"&xMin="+xMin+"&yMax="+yMax+"&xMax="+xMax;
+        var historical_maps_link_id ="historical_maps_link"
+        console.log(historical_maps_url);
+        $("#"+historical_maps_link_id).attr("href",historical_maps_url);
     }
     get_tora_json(tora_id,get_sweref_lat_long);
-    var url_template = "https://historiskakartor.lantmateriet.se/historiskakartor/searchresult.html?archive=GEOIN&firstMatchToReturnLMS=1&firstMatchToReturnREG=1&firstMatchToReturnRAK=1&yMin=6607185&xMin=701600&yMax=6608185&xMax=702600";
-    var historical_maps_link_id ="historical_maps_link"
-    $("#"+historical_maps_link_id).attr("href","#0");
-    alert($("#"+historical_maps_link_id));
+    
 }
