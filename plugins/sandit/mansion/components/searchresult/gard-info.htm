@@ -28,7 +28,7 @@
                     <a href="karta?toraid={{ gard_data.toraid }}">Visa gården på kartan</a>
                 </div>
                 <div class="row">
-                    <a href="https://historiskakartor.lantmateriet.se/historiskakartor/searchresult.html?archive=GEOIN&firstMatchToReturnLMS=1&firstMatchToReturnREG=1&firstMatchToReturnRAK=1&yMin=6607185&xMin=701600&yMax=6608185&xMax=702600" target="_blank" onclick="construct_historical_map_search_url({{ gard_data.toraid }})">Sök historiska kartor på lantmäteriet</a>
+                    <a href="https://historiskakartor.lantmateriet.se/historiskakartor/searchresult.html?archive=GEOIN&firstMatchToReturnLMS=1&firstMatchToReturnREG=1&firstMatchToReturnRAK=1&yMin=6607185&xMin=701600&yMax=6608185&xMax=702600" id="historical_maps_link" target="_blank" onclick="construct_historical_map_search_url({{ gard_data.toraid }})">Sök historiska kartor på lantmäteriet</a>
                 </div>
                 <div class="row">
                     <a href="#0"  onclick="getSueciaImages({{ gard_data.toraid }}, getImagesSuccess)">Visa bilder från Suecia</a>

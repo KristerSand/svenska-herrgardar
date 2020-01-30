@@ -38,10 +38,47 @@ function getSueciaImages(toraID, successFunction) {
 
 }
 
+function get_tora_longitude_sweref99(tora_entry) {
+
+    var entryURI = Object.keys(tora_entry.metadata)[0]
+    if(tora_entry.metadata[entryURI].hasOwnProperty("https://data.riksarkivet.se/tora/schema/sweref99_n")){
+        return parseFloat(tora_entry.metadata[entryURI]["https://data.riksarkivet.se/tora/schema/sweref99_n"][0].value.replace(",", "."))
+    }
+else
+    {
+        return null;
+    }
+
+}
+
+function get_tora_latitude_sweref99(tora_entry) {
+    var entryURI = Object.keys(tora_entry.metadata)[0]
+    if(tora_entry.metadata[entryURI].hasOwnProperty("https://data.riksarkivet.se/tora/schema/sweref99_e")){
+        return parseFloat(tora_entry.metadata[entryURI]["https://data.riksarkivet.se/tora/schema/sweref99_e"][0].value.replace(",", "."));
+    } else {
+        return null;
+    }
+}
+
+
+function get_tora_json(toraid, success_function) {
+    var tora_uri = "https://tora.entryscape.net/store/61/entry/" + toraid+ "?includeAll&limit=50&sort=title&prio=List&format=application/json"
+    $.getJSON(tora_uri, success_function);
+}
+
+function tora_uri(tora_id) {
+    return "https://data.riksarkivet.se/tora/"+tora_id;
+}
 
 function construct_historical_map_search_url(tora_id)
 {
-    
+    function get_sweref_lat_long(data) {
+        console.log(get_tora_latitude_sweref99(data));
+        console.log(get_tora_longitude_sweref99(data));
+    }
+    get_tora_json(tora_id,get_sweref_lat_long);
     var url_template = "https://historiskakartor.lantmateriet.se/historiskakartor/searchresult.html?archive=GEOIN&firstMatchToReturnLMS=1&firstMatchToReturnREG=1&firstMatchToReturnRAK=1&yMin=6607185&xMin=701600&yMax=6608185&xMax=702600";
-    alert(tora_id);
+    var historical_maps_link_id ="historical_maps_link"
+    $("#"+historical_maps_link_id).attr("href","#0");
+    alert($("#"+historical_maps_link_id));
 }
