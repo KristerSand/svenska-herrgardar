@@ -85,8 +85,8 @@ function construct_historical_map_search_url(tora_id)
         var historical_maps_url = "https://historiskakartor.lantmateriet.se/historiskakartor/searchresult.html?archive=GEOIN&firstMatchToReturnLMS=1&firstMatchToReturnREG=1&firstMatchToReturnRAK=1&yMin="+yMin+"&xMin="+xMin+"&yMax="+yMax+"&xMax="+xMax;
         var historical_maps_link_id ="historical_maps_link"
         console.log(historical_maps_url);
-        $("#"+historical_maps_link_id).attr("href",historical_maps_url);
+        window.open(historical_maps_url, '_blank');
     }
     get_tora_json(tora_id,get_sweref_lat_long);
-    
+    return false;
 }
