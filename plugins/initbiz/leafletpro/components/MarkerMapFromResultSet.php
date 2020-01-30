@@ -1,10 +1,13 @@
 <?php namespace Initbiz\LeafletPro\Components;
 
+use Lang;
+use Session;
 use Cms\Classes\ComponentBase;
 use Initbiz\LeafletPro\Models\Marker;
-use Input;
+use Initbiz\LeafletPro\Exceptions\EmptyResponse;
+use October\Rain\Exception\ApplicationException;
 
-class SingleMarkerMapByTORAID extends ComponentBase
+class MarkerMapFromResultSet extends ComponentBase
 {
     use \Initbiz\LeafletPro\Traits\LeafletHelpers;
 
@@ -16,17 +19,25 @@ class SingleMarkerMapByTORAID extends ComponentBase
 
     public $scrollProtection;
 
+    protected $pluginPropertySuffix = 'PluginEnabled';
+
     public function componentDetails()
     {
         return [
-            'name'        => 'initbiz.leafletpro::lang.components.single_marker_map_by_toraid.name',
-            'description' => 'initbiz.leafletpro::lang.components.single_marker_map_by_toraid.description'
+            'name'        => 'initbiz.leafletpro::lang.components.marker_map_from_resulset.name',
+            'description' => 'initbiz.leafletpro::lang.components.marker_map_from_resulset.description'
         ];
     }
 
     public function defineProperties()
     {
         $properties = [
+            'centerLonLat' => [
+                'title'             => 'initbiz.leafletpro::lang.components.center_lon_lat',
+                'description'		=> 'initbiz.leafletpro::lang.components.center_lon_lat_desc',
+                'type'              => 'string',
+                'default'			=> '51.505, -0.09'
+            ],
             'initialZoom' => [
                 'title'             => 'initbiz.leafletpro::lang.components.zoom_title',
                 'description'		=> 'initbiz.leafletpro::lang.components.zoom_description',
@@ -34,52 +45,122 @@ class SingleMarkerMapByTORAID extends ComponentBase
                 'validationMessage' => 'initbiz.leafletpro::lang.components.zoom_validation_message',
                 'default'			=> '12'
             ],
-            'marker' => [
-                'title'             => 'initbiz.leafletpro::lang.components.single_marker_map.marker_title',
-                'description'       => 'initbiz.leafletpro::lang.components.single_marker_map.marker_description',
-                'default'           => 'true',
-                'type'              => 'dropdown',
-            ],
-            'findBy' => [
-                'title'             => 'initbiz.leafletpro::lang.components.single_marker_map.find_by_title',
-                'description'       => 'initbiz.leafletpro::lang.components.single_marker_map.find_by_description',
-                'type'              => 'dropdown',
-                'default'           => 'id',
-                'options'           => [
-                    'id'   => 'initbiz.leafletpro::lang.components.single_marker_map.find_by_id',
-                    'name' => 'initbiz.leafletpro::lang.components.single_marker_map.find_by_name',
-                ],
-            ],
             'scrollProtection' => [
                 'title'             => 'initbiz.leafletpro::lang.components.scroll_protection_title',
                 'description'       => 'initbiz.leafletpro::lang.components.scroll_protection_description',
                 'default'           => '1',
                 'type'              => 'checkbox',
             ],
+            'getOverriding' => [
+                'title'             => 'initbiz.leafletpro::lang.components.get_overriding_title',
+                'description'       => 'initbiz.leafletpro::lang.components.get_overriding_description',
+                'default'           => '0',
+                'type'              => 'checkbox',
+            ]
         ];
 
-        return $properties;
+        return $properties + $this->getLeafletPluginsProperties();
     }
 
     public function onRun()
     {
-        $this->addJs('assets/node_modules/leaflet/dist/leaflet.js');
-        $this->addCss('assets/node_modules/leaflet/dist/leaflet.css');
+        $leafletJs = [];
+        $leafletCss = [];
+        $activePlugins = [];
 
-        $toraid = Input::get("toraid");
+        $leafletJs[] = 'assets/node_modules/leaflet/dist/leaflet.js';
+        $leafletCss[] = 'assets/node_modules/leaflet/dist/leaflet.css';
 
-        $marker = Marker::where("tora_id", $toraid)->first();
-        $markers = [$marker];
-        $this->markers = $markers;
+        foreach ($this->getLeafletPlugins() as $pluginCode => $pluginDef) {
+            if ($this->property($pluginCode . $this->pluginPropertySuffix)) {
+                $activePlugins[] = $pluginCode;
+                $leafletJs[] = $pluginDef['jsPath'];
+                $leafletCss[] = $pluginDef['cssPath'];
+            }
+        }
 
+        $this->addJs($leafletJs);
+
+        $this->addCss($leafletCss);
+
+        $this->page['activeLeafletPlugins'] = $activePlugins;
+
+        $initialParams = $this->getInitialParams();
+
+        $this->centerLonLat = $initialParams['centerLonLat'];
+        $this->initialZoom = $initialParams['initialZoom'];
+
+        // Leaflet use scrollWheelZoom param, to it's negated scrollProtection
         $this->scrollProtection = ($this->property('scrollProtection') === "0") ? 'enable' : 'disable';
 
-        $this->initialZoom = $this->property('initialZoom');
-        $this->centerLonLat = $marker->lat . ', ' . $marker->lon;
+        //Loop through resultset in session and create markers.
+        $gard_resultset = Session::get("gard_resultset");
+        $markers = array();
+        foreach($gard_resultset as $gard) {
+            if(isset($gard->id)) 
+            {
+                $marker = Marker::where("gard_id", $gard->id)->first();
+                if($marker) {
+                    $markers[] = $marker;
+                }
+                
+            }
+        }
+        $this->markers = $markers;
     }
 
-    public function getMarkerOptions()
+    public function getInitialParams()
     {
-        return Marker::published()->get()->pluck('name', 'id')->toArray();
+        $result = [
+            'centerLonLat' => $this->property('centerLonLat'),
+            'initialZoom' => $this->property('initialZoom'),
+        ];
+
+        return $result;
+    }
+
+    /**
+     * Makes properties definitions for Leaflet plugins, right now only checkboxes if enable the plugin for the component
+     * @return array component properties definitions for this component
+     */
+    protected function getLeafletPluginsProperties()
+    {
+        $properties = [];
+
+        foreach ($this->getLeafletPlugins() as $pluginCode => $pluginDef) {
+            $property = [
+                'title'         => $pluginDef['title'],
+                'description'   => $pluginDef['description'],
+                'type'          => 'checkbox',
+                'group'         => 'initbiz.leafletpro::lang.components.leafletmap.plugins_group',
+                'default'       => 0,
+            ];
+
+            $properties[$pluginCode . $this->pluginPropertySuffix] = $property;
+        }
+
+        return $properties;
+    }
+
+    /**
+     * Registers Leaflet plugins to be used in the component
+     * @return array Leaflet plugins
+     */
+    protected function getLeafletPlugins()
+    {
+        return [
+            'markercluster' => [
+                'title' => 'initbiz.leafletpro::lang.leafletmap_plugins.markercluster_name',
+                'description' => 'initbiz.leafletpro::lang.leafletmap_plugins.markercluster_desc',
+                'jsPath' => 'assets/node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js',
+                'cssPath' => 'assets/node_modules/leaflet.markercluster/dist/MarkerCluster.css',
+            ],
+            'locatecontrol' => [
+                'title' => 'initbiz.leafletpro::lang.leafletmap_plugins.locatecontrol_name',
+                'description' => 'initbiz.leafletpro::lang.leafletmap_plugins.locatecontrol_desc',
+                'jsPath' => 'assets/node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
+                'cssPath' => 'assets/node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
+            ]
+        ];
     }
 }

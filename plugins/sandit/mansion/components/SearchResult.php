@@ -14,6 +14,7 @@ class SearchResult extends ComponentBase
     public $result;
     public $searchform;
     public $input;
+    public $gard_ids;
     
     public function componentDetails()
     {
@@ -48,7 +49,8 @@ class SearchResult extends ComponentBase
         $search_repo = App::make('SearchRepositoryInterface');
         $result = $search_repo->search($input);
         $result = new Collection($result);
-        
+        //Put results in session so that they can be shown on map later
+        Session::put("gard_resultset",$result);
         // Paginering
         $perPage = $this->property('postsPerPage');
         $currentPage = Input::get('page') ?: 1;

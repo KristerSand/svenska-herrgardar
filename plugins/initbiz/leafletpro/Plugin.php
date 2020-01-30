@@ -21,6 +21,8 @@ class Plugin extends PluginBase
             'Initbiz\LeafletPro\Components\LeafletMap'      => 'leafletmap',
             'Initbiz\LeafletPro\Components\SingleMarkerMap' => 'singleMarkerMap',
             'Initbiz\LeafletPro\Components\SingleMarkerMapByTORAID' => 'singleMarkerMapByTORAID',
+            'Initbiz\LeafletPro\Components\MarkerMapFromResultSet' => 'markerMapFromResultSet',
+
         ];
     }
 
