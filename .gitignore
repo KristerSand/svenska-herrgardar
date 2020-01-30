@@ -1,12 +1,14 @@
-*
+.idea/**
 !*/
 bootstrap/
 config/
 modules/
 storage/
 vendor/
+plugins/**
 !plugins/sandit/
-!plugins/sandit/*
+!plugins/sandit/**
+!plugins/initbiz/**
 !plugins/rainlab/blog/components/post/default.htm
 !plugins/rainlab/blog/components/posts/default.htm
 #themes/andreyvasilev-minimalist/content/
@@ -16,6 +18,7 @@ vendor/
 #themes/
 #themes/
 **/themes/andreyvasilev-minimalist/content/static-pages
+**/themes/demo/**
 
 !.gitignore
 
@@ -57,3 +60,7 @@ bower.json
 *.sqlite
 **/.DS_Store
 
+.env
+artisan
+index.php
+server.php
