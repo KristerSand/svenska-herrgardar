@@ -1,0 +1,7 @@
+{% set mapVar = __SELF__ ~ 'Map' %}
+
+{% partial __SELF__ ~ '::map' mapVar=mapVar %}
+
+{% partial __SELF__ ~ '::markers' markers=markers plugins=activeLeafletPlugins mapVar=mapVar %}
+
+{% partial __SELF__ ~ '::plugins' plugins=activeLeafletPlugins mapVar=mapVar %}
