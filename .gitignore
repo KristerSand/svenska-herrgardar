@@ -7,8 +7,6 @@ storage/
 vendor/
 !plugins/sandit/
 !plugins/sandit/*
-!plugins/initbiz/
-!plugins/initbiz/*
 !plugins/rainlab/blog/components/post/default.htm
 !plugins/rainlab/blog/components/posts/default.htm
 #themes/andreyvasilev-minimalist/content/
