@@ -92,20 +92,23 @@ class MarkerMapFromResultSet extends ComponentBase
 
         // Leaflet use scrollWheelZoom param, to it's negated scrollProtection
         $this->scrollProtection = ($this->property('scrollProtection') === "0") ? 'enable' : 'disable';
-
-        //Loop through resultset in session and create markers.
-        $gard_resultset = Session::get("gard_resultset");
         $markers = array();
-        foreach($gard_resultset as $gard) {
-            if(isset($gard->id)) 
-            {
-                $marker = Marker::where("gard_id", $gard->id)->first();
-                if($marker) {
-                    $markers[] = $marker;
+        if(Session::has("gard_resultset")) {
+            //Loop through resultset in session and create markers.
+            $gard_resultset = Session::pull("gard_resultset");
+            
+            foreach($gard_resultset as $gard) {
+                if(isset($gard->id)) 
+                {
+                    $marker = Marker::where("gard_id", $gard->id)->first();
+                    if($marker) {
+                        $markers[] = $marker;
+                    }
+                    
                 }
-                
             }
         }
+        
         $this->markers = $markers;
     }
 
