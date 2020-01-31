@@ -12,6 +12,7 @@
                 marker.bindPopup(popup_html);
             {% endfor %}
             {{ mapVar }}.addLayer(markers);
+            {{ mapVar }}.fitBounds(markers.getBounds().pad(0.1));
         </script>
     {% else %}
         <script>
