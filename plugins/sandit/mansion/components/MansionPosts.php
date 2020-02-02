@@ -9,6 +9,7 @@ use Sandit\Mansion\Classes\Export\MansionExport;
 class MansionPosts extends ComponentBase
 {
     public $gard;
+    public $format;
 
     public function componentDetails()
     {
@@ -31,6 +32,7 @@ class MansionPosts extends ComponentBase
 
     public function onRun()
     {
+        $this->format = Input::get('format');
         $gardId = $this->property('id');
         $this->gard = Gard::getGardPosts($gardId);
     }
