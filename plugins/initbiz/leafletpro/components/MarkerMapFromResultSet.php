@@ -96,17 +96,8 @@ class MarkerMapFromResultSet extends ComponentBase
         if(Session::has("gard_resultset")) {
             //Loop through resultset in session and create markers.
             $gard_resultset = Session::pull("gard_resultset");
-            
-            foreach($gard_resultset as $gard) {
-                if(isset($gard->id)) 
-                {
-                    $marker = Marker::where("gard_id", $gard->id)->first();
-                    if($marker) {
-                        $markers[] = $marker;
-                    }
-                    
-                }
-            }
+            $ids=$gard_resultset->map(function($gard) {return $gard->id;})->toArray();
+            $markers = Marker::whereIn("gard_id", $ids)->get();
         }
         
         $this->markers = $markers;
