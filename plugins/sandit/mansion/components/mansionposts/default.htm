@@ -4,7 +4,9 @@
 
 <a class="btn btn-outline-primary mb-3" role="button" href="/herrgardsdatabasen/sokresultat">Tillbaka till sökresultatet</a>
 {% if format=="card" %}
-<h3>Card!!</h3>
+<h3>{{ gard.namn }}</h3>
+
+{% partial '@gard-info' gard_data=gard %}
 {% else %}
 <div class="d-flex w-100 justify-content-start align-items-center mb-2">
     <h4 class="m-0 py-2">{{ gard.namn }}</h4>
