@@ -7,7 +7,7 @@
         	  	var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}]);
                 markers.addLayer(marker);
                 //Put URL to post in popup
-                var mansion_url ="/herrgardsdatabasen/gard/" + {{ marker.gard_id }};
+                var mansion_url ="/herrgardsdatabasen/gard/" + {{ marker.gard_id }} + "?format=card";
                 var popup_html = "<a href=\"" + mansion_url + "\" >{{ marker.name }}</a>";
                 marker.bindPopup(popup_html);
             {% endfor %}
