@@ -83,6 +83,7 @@ class LeafletMap extends ComponentBase
         $this->addJs($leafletJs);
 
         $this->addCss($leafletCss);
+        $this->addCss("assets/css/map.css");
 
         $this->page['activeLeafletPlugins'] = $activePlugins;
 
