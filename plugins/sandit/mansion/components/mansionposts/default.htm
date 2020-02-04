@@ -7,9 +7,9 @@
 <div class="container p-0"> 
     <div class="row d-flex w-100 align-items-center ml-0">
         <div class="col-10 col-md-4 h5 mb-1 p-0">{{ gard.namn }}</div>
-        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.landskap }}</div>
-        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.harad }}</div>
-        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.socken }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ gard.socken.harad.landskap.namn }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ gard.socken.harad.namn }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ gard.socken.namn }}</div>
 
         {% set  color = '' %}
         {% if gard.status == 'Herrgård' %}
