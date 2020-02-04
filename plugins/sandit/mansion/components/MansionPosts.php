@@ -42,7 +42,9 @@ class MansionPosts extends ComponentBase
         $this->gard = Gard::getGardPosts($gardId);
         $statuses  = [];
         foreach($this->gard->post as $post) {
-            $statuses[]=$post->status->namn;
+            if($post->status) {
+                $statuses[]=$post->status->namn;
+            }
         }
         $statuses_text_list = implode(",",$statuses);
         $status = Status::findMostFrequentStatus($statuses_text_list);
