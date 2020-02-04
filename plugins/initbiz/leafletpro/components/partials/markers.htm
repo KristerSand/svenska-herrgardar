@@ -2,9 +2,25 @@
 {% put scripts %}
     {% if 'markercluster' in plugins %}
         <script>
+
+            function createIconHTML(manorName) {
+                var html = "<figure class=\"item\">\n" +
+                    "    <img src=\"{{ 'manor.png'|media }}\"/>" +
+                    "    <figcaption class=\"caption\">" + manorName + "</figcaption>\n" +
+                    "</figure>"
+                return html;
+            }
+
+
             var markers = L.markerClusterGroup();
             {% for marker in __SELF__.markers %}
-        	  	var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}]);
+        	  	var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}], {
+                    icon: L.divIcon({
+                    html: createIconHTML("{{ marker.name }}"),
+                    className: 'manor-icon'
+                    })
+                
+                });
                 markers.addLayer(marker);
                 //Put URL to post in popup
                 var mansion_url ="/herrgardsdatabasen/gard/" + {{ marker.gard_id }} + "?format=card";

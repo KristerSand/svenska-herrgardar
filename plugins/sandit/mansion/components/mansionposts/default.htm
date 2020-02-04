@@ -4,7 +4,38 @@
 
 <a class="btn btn-outline-primary mb-3" role="button" href="/herrgardsdatabasen/sokresultat">Tillbaka till sökresultatet</a>
 {% if format=="card" %}
-<h3>{{ gard.namn }}</h3>
+<div class="container p-0"> 
+    <div class="row d-flex w-100 align-items-center ml-0">
+        <div class="col-10 col-md-4 h5 mb-1 p-0">{{ gard.namn }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.landskap }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.harad }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ row.socken }}</div>
+
+        {% set  color = '' %}
+        {% if gard.status == 'Herrgård' %}
+            {% set  color = 'primary' %}
+        {% elseif gard.status == 'Ståndsgård' %}
+            {% set  color = 'success' %}
+        {% elseif gard.status == 'Bondgård' %}
+            {% set  color = 'danger' %}
+        {% elseif gard.status == 'Inkorporerad' %}
+            {% set  color = 'info' %}
+        {% elseif gard.status == 'Institution' %}
+            {% set  color = 'info' %}
+        {% elseif gard.status != '' %}
+            {% set  color = 'dark' %}
+        {% endif %}
+        <div class="col-2 col-md-2 text-right p-0">
+            {% if gard.status != '' %}
+                <span class="badge badge-{{ color }} d-none d-md-inline px-2">{{ gard.status }}</span>    
+            {% endif %}
+            <span class="badge badge-secondary">{{ gard.antal }}</span>
+        </div>
+    </div>
+    <div class="row mb-0 d-block d-md-none">
+        <div class="col">{{ row.landskap }}, {{ row.harad }}, {{ row.socken }}</div>
+    </div>
+</div>
 
 {% partial '@gard-info' gard_data=gard %}
 {% else %}
