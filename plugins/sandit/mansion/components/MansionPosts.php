@@ -4,12 +4,14 @@ use Cms\Classes\ComponentBase;
 use Input;
 use Redirect;
 use Sandit\Mansion\Models\Gard;
+use Sandit\Mansion\Models\Status;
 use Sandit\Mansion\Classes\Export\MansionExport;
 
 class MansionPosts extends ComponentBase
 {
     public $gard;
     public $format;
+    public $status;
 
     public function componentDetails()
     {
@@ -38,7 +40,16 @@ class MansionPosts extends ComponentBase
         $this->format = Input::get('format');
         $gardId = $this->property('id');
         $this->gard = Gard::getGardPosts($gardId);
+        $statuses  = [];
+        foreach($this->gard->post as $post) {
+            $statuses[]=$post->status->namn;
+        }
+        $statuses_text_list = implode(",",$statuses);
+        $status = Status::findMostFrequentStatus($statuses_text_list);
+        $this->status = $status;
     }
+        
+
     
     public function onDownload()
     {

@@ -12,17 +12,17 @@
         <div class="col-md-2 mb-0 d-none d-md-block">{{ gard.socken.namn }}</div>
 
         {% set  color = '' %}
-        {% if gard.status == 'Herrgård' %}
+        {% if status == 'Herrgård' %}
             {% set  color = 'primary' %}
-        {% elseif gard.status == 'Ståndsgård' %}
+        {% elseif status == 'Ståndsgård' %}
             {% set  color = 'success' %}
-        {% elseif gard.status == 'Bondgård' %}
+        {% elseif status == 'Bondgård' %}
             {% set  color = 'danger' %}
-        {% elseif gard.status == 'Inkorporerad' %}
+        {% elseif status == 'Inkorporerad' %}
             {% set  color = 'info' %}
-        {% elseif gard.status == 'Institution' %}
+        {% elseif status == 'Institution' %}
             {% set  color = 'info' %}
-        {% elseif gard.status != '' %}
+        {% elseif status != '' %}
             {% set  color = 'dark' %}
         {% endif %}
         <div class="col-2 col-md-2 text-right p-0">
