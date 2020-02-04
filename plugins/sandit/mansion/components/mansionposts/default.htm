@@ -1,4 +1,5 @@
 {% set gard = __SELF__.gard %}
+{% set status = __SELF__.status %}
 {% set format = __SELF__.format %}
 
 
@@ -26,8 +27,8 @@
             {% set  color = 'dark' %}
         {% endif %}
         <div class="col-2 col-md-2 text-right p-0">
-            {% if gard.status != '' %}
-                <span class="badge badge-{{ color }} d-none d-md-inline px-2">{{ gard.status }}</span>    
+            {% if status != '' %}
+                <span class="badge badge-{{ color }} d-none d-md-inline px-2">{{ status }}</span>    
             {% endif %}
             <span class="badge badge-secondary">{{ gard.antal }}</span>
         </div>
