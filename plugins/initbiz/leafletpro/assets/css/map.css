@@ -1,8 +1,6 @@
 .caption {
-    display:inline;
-    background-color: bisque;
-    background-size: contain;
-    border-style: solid;
-    border-color: black;
-
-}
+    padding: 2px 3px;
+   display: inline;
+   text-shadow: 0px 0px 3px #fff;
+   font-weight: bold;
+}   
