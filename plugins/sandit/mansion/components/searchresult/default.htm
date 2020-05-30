@@ -4,12 +4,12 @@
 <a class="btn btn-primary mb-3" role="button" href="/herrgardsdatabasen/sok-i-herrgardsdatabasen">
     <span>Tillbaka till sökformuläret</span>
 </a>
-<div class="h5 d-flex w-100 justify-content-between align-items-center mt-md-2 mb-md-1">
-    <div>{{ result.total }}
+<div class="h6 d-flex w-100 justify-content-between align-items-center mt-md-2 mb-md-1">
+    <div>Sökningen hittade {{ result.total }}
         {% if result.total == 1 %}
-            träff
+            gård
         {% else %}
-            träffar
+            gårdar
         {% endif %}
     </div>
     <div class="d-none d-md-block">
