@@ -18,20 +18,15 @@ code = "sidmeny"
     </head>
     <body class="layout-{{ this.layout.id }} page-{{ this.page.id }}">
         <div class="wrapper">
-
-            <!-- Sidebar -->
             {% partial 'site/sidebar' %}
-
             <div id="content" class="px-3 px-md-4">
-
                 {% partial 'site/topbar' %}
-                {% partial 'site/breadcrumbs' %} 
-
+                <h3 class="mb-4">
+                    {{ this.page.title }}
+                </h3>
                 <div class="row">
                     <div class="col-sm-7">
-                       
                         {% component 'advanced_search' %}
-                        
                     </div>
                     <div class="col-sm-5 d-none d-sm-block">
                         <div class="card">
@@ -42,7 +37,6 @@ code = "sidmeny"
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
         {% partial 'layout/js' %}

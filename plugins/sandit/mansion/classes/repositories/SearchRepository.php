@@ -49,7 +49,7 @@ class SearchRepository implements SearchRepositoryInterface
 				JOIN sandit_mansion_harad h ON s.harad_id=h.id
 				JOIN sandit_mansion_landskap l ON h.landskap_id=l.id ";
 		
-		array_walk($data, 'trim');
+		$data = array_map('trim', $data);
 
 		$this->addGardSearchSql($data);
 		$this->addLandskapSearchSql($data);

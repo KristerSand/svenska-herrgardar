@@ -16,16 +16,13 @@ code = "sidmeny"
     </head>
     <body class="layout-{{ this.layout.id }} page-{{ this.page.id }}">
         <div class="wrapper"> 
-
-            {% partial 'site/sidebar' %}
-            
+            {% partial 'site/sidebar' %}  
             <div id="content" class="px-3 px-md-4">
-
                 {% partial 'site/topbar' %}
-                {% partial 'site/breadcrumbs' %} 
-            
+                <h3 class="mb-4">
+                    {{ this.page.title }}
+                </h3>
                 {% page %}
-
             </div>
         </div>
         {% partial 'layout/js' %}

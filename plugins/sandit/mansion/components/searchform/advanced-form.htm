@@ -9,19 +9,17 @@
 {% set input = __SELF__.input %}
 
 <form id="advanced-form" data-request="onSearch" class="mb-4">
-
     <input type="hidden" name="searchform" value="advanced">
     
     <fieldset>
         <div class="form-row">
-            <div class="form-group col-md-6">
+            <div class="col form-group">
                 <label for="gard">Gårdsnamn</label>
                 <input type="text" class="form-control" id="gard" name="gard">
                 <small id="gardHelp" class="form-text text-muted">Här kan du söka på gårdarnas namn. Namnen anges efter Lantmäteriets normalstavning, men här återfinns i många fall även äldre namnformer samt ursprungliga gårdsnamn, i de fall gården har bytt namn.</small>
             </div>
-            <div class="form-check mt-4 mx-2">
-                <input class="form-check-input" type="checkbox" id="gard_exact" name="gard_exact"> 
-                <label class="form-check-label mt-1" for="gard_exact">Exakt matchning</label>
+            <div class="col form-group text-right">
+                <button class="btn btn-success mt-4 px-5" type="submit">Sök</button>
             </div>
         </div>
         <div class="form-row">
@@ -220,7 +218,6 @@
         </div>
     </fieldset>
     <div class="mt-3">
-        <button class="btn btn-warning my-2 my-sm-0 px-2" type="reset">Rensa</button>
         <button class="btn btn-success my-2 my-sm-0 px-5" type="submit">Sök</button>
     </div>
 </form>

@@ -13,28 +13,30 @@
             <input type="text" class="form-control" id="gard-simple" name="gard">
         </div>
     </fieldset>
-    <hr />
     <fieldset>
-        <h5>Geografi</h5>
+        <h5>Landskap</h5>
         <div class="form-group">
-                <label for ="landskap">Landskap</label>
             <select class="form-control" id="landskap-simple" name="landskap" data-request="onSelectLandskap">
-                <option value="0" selected>Alla</option>
+                <option value="0" selected>-- Välj --</option>
                 {% for l in landskap %}
                     <option value="{{ l.id }}">{{ l.namn }}</option>
                 {% endfor %}
             </select>
         </div>
+    </fieldset>
+    <fieldset>
+        <h5>Härad</h5>
         <div class="form-group">
-            <label for="harad">Härad</label>
             <select class="form-control" id="harad-simple" name="harad" data-request="onSelectHarad"></select>
         </div>
+    </fieldset>
+    <fieldset>
+        <h5>Socken</h5>
         <div class="form-group">
-            <label for="socken">Socken</label>
+            
             <select class="form-control" id="socken-simple" name="socken"></select>
         </div>
     </fieldset>
-    <hr />
     <fieldset>
         <h5>Ägare / innehavare</h5>     
         <div class="form-group">
@@ -44,7 +46,6 @@
             <input type="text" class="form-control" id="person_efternamn-simple" name="person_efternamn" placeholder="Efternamn">
         </div>
     </fieldset>
-    <hr />
     <fieldset>
         <h5>Make / maka</h5>
         <div class="form-group">
@@ -54,5 +55,9 @@
             <input type="text" class="form-control" id="maka_efternamn-simple" name="maka_efternamn" placeholder="Efternamn">
         </div>
     </fieldset>
-    <button class="btn btn-success mt-3 btn-sm-block px-md-5" type="submit">Sök</button>
+    <div class="row mt-2">
+        <div class="col col-6">
+            <button class="btn btn-success btn-block" type="submit">Sök</button>
+        </div>
+    </div>
 </form>
