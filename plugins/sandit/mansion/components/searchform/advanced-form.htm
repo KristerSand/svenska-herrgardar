@@ -8,6 +8,8 @@
 {% set maka_titel_familj = __SELF__.maka_titel_familj %}
 {% set input = __SELF__.input %}
 
+
+
 <form id="advanced-form" data-request="onSearch" class="mb-4">
     <input type="hidden" name="searchform" value="advanced">
     
@@ -15,8 +17,14 @@
         <div class="form-row">
             <div class="col form-group">
                 <label for="gard">Gårdsnamn</label>
+                <span 
+                    data-toggle="popover" 
+                    title="Gårdsnamn" 
+                    data-content='Här kan du söka på gårdarnas namn. Namnen anges efter Lantmäteriets normalstavning, men här återfinns i många fall även äldre namnformer samt ursprungliga gårdsnamn, i de fall gården har bytt namn. Observera: skriv endast gårdsnamnet utan tillägg av "slott", "gård" eller annat.'>
+                    <i class="fas fa-info-circle"></i>
+                </span>
+                
                 <input type="text" class="form-control" id="gard" name="gard">
-                <small id="gardHelp" class="form-text text-muted">Här kan du söka på gårdarnas namn. Namnen anges efter Lantmäteriets normalstavning, men här återfinns i många fall även äldre namnformer samt ursprungliga gårdsnamn, i de fall gården har bytt namn.</small>
             </div>
             <div class="col form-group text-right">
                 <button class="btn btn-success mt-4 px-5" type="submit">Sök</button>
@@ -47,25 +55,32 @@
             </div>
         </div>
     </fieldset>
+
+    <hr />
+    
     <fieldset>
+        <legend>Ägare / innehavare / arrendatorer</legend>
         <div class="form-row">
             <div class="col form-group">
                 <label for="person_namn">Namn</label>
                 <input type="text" class="form-control" id="person_namn" name="person_namn">
-                <small id="person_namnHelp" class="form-text text-muted">Ägare / innehavare / arrendatorer</small>
             </div>
             <div class="col form-group">
                 <label for="person_efternamn">Efternamn</label>
                 <input type="text" class="form-control" id="person_efternamn" name="person_efternamn">
-                <small id="person_efternamnHelp" class="form-text text-muted">Ägare / innehavare / arrendatorer</small>
             </div>
         </div>
 
         <div class="form-row">
             <div class="col form-group">
                 <label for="person_titel_tjanst">Titel tjänst</label>
+                <span 
+                    data-toggle="popover" 
+                    title="Titel tjänst - ägare/innehavare/arrendatorer" 
+                    data-content="Här kan du söka på den yrkestitel ägarna/arrendatorerna/innehavarna hade under de år de besatt gården, t.ex. löjtnant, kapten, överste, lantmätare, länsman, handelsman, godsägare, hovfröken, kammarjungfru etc.">
+                    <i class="fas fa-info-circle"></i>
+                </span>
                 <input type="text" class="form-control" id="person_titel_tjanst" name="person_titel_tjanst">
-                <small id="person_titel_tjanstHelp" class="form-text text-muted">Här kan du söka på den yrkestitel ägarna/arrendatorerna/innehavarna hade under de år de besatt gården, t.ex. löjtnant, kapten, överste, lantmätare, länsman, handelsman, godsägare, hovfröken, kammarjungfru etc.</small>
             </div>
 
             <div class="col form-group">
@@ -76,32 +91,40 @@
                         <option value="{{ ptf.titel }}">{{ ptf.titel }}</option>
                     {% endfor %}
                 </select>
-                <small id="person_title_familjHelp" class="form-text text-muted">Ägare / innehavare / arrendatorer</small>
             </div>
 
         </div>
     </fieldset>
+
+    <hr />
+    
     <fieldset>
+        <legend>Make / make</legend>
         <div class="form-row">
             <div class="col form-group">
-                <label for="maka_namn">Förnamn - maka/make</label>
+                <label for="maka_namn">Förnamn</label>
                 <input type="text" class="form-control" id="maka_namn" name="maka_namn">
             </div>
             <div class="col form-group">
-                <label for="maka_efternamn">Efternamn - maka/make</label>
+                <label for="maka_efternamn">Efternamn</label>
                 <input type="text" class="form-control" id="maka_efternamn" name="maka_efternamn">
             </div>
         </div>
 
         <div class="form-row">
             <div class="col form-group">
-                <label for="maka_titel_tjanst">Titel tjänst - maka/make</label>
+                <label for="maka_titel_tjanst">Titel tjänst</label>
+                <span 
+                    data-toggle="popover" 
+                    title="Titel tjänst - make/maka" 
+                    data-content="Här kan du söka på den yrkestitel makarna/makorna hade under de år de besatt gården, t.ex. löjtnant, kapten, överste, lantmätare, länsman, handelsman, godsägare, hovfröken, kammarjungfru etc.">
+                    <i class="fas fa-info-circle"></i>
+                </span>
                 <input type="text" class="form-control" id="maka_titel_tjanst" name="maka_titel_tjanst">
-                <small id="maka_titel_tjanstHelp" class="form-text text-muted">Här kan du söka på den yrkestitel makarna/makorna hade under de år de besatt gården, t.ex. löjtnant, kapten, överste, lantmätare, länsman, handelsman, godsägare, hovfröken, kammarjungfru etc.</small>
             </div>
 
             <div class="col form-group">
-                <label for="maka_titel_familj">Titel familj - maka/make</label>
+                <label for="maka_titel_familj">Titel familj</label>
                 <select class="form-control" id="maka_titel_familj" name="maka_titel_familj">
                     <option value="0" selected>-- Välj --</option>
                     {% for mtf in maka_titel_familj %}
@@ -111,6 +134,9 @@
             </div>
         </div>
     </fieldset>
+
+    <hr />
+
     <fieldset>
         <div class="form-row">
             <div class="col col-md-6 form-group">
@@ -141,24 +167,35 @@
                     {% endfor %}
                 </select>
             </div>
-
         </div>
         <div class="form-row">
             <div class="col form-group">
                 <label for="jordnatur">Jordnatur</label>
+                <span 
+                    data-toggle="popover" 
+                    title="Jordnatur" 
+                    data-content="Här kan du söka på gårdens jordnatur t.ex. frälse, skatte, krono, säteri, berustat säteri eller ladugård, eller om det var ett bruk. Du kan även söka på kronoboställenas funktion, dels genom att ange positionen (kyrkoherde, komminister, länsman, trumpetare, löjtnant, överste), dels regementes namn.">
+                    <i class="fas fa-info-circle"></i>
+                </span>
                 <input type="text" class="form-control" id="jordnatur" name="jordnatur">
-                <small id="jordnaturHelp" class="form-text text-muted">Här kan du söka på gårdens jordnatur t.ex. frälse, skatte, krono, säteri, berustat säteri eller ladugård, eller om det var ett bruk. Du kan även söka på kronoboställenas funktion, dels genom att ange positionen (kyrkoherde, komminister, länsman, trumpetare, löjtnant, överste), dels regementes namn.</small>
             </div>
             <div class="col form-group">
                 <label for="typ">Typ av transaktion</label>
+                <span 
+                    data-toggle="popover" 
+                    title="Typ av transaktion" 
+                    data-content="Här kan du söka efter vilken form av transaktion som föregick innehavet av gården, t.ex. förläning, donation, köp, byte, gåva, arv, fideikommiss etc. Du kan även se släktrelationen med föregående innehavare, om gården togs över av en son, dotter, änka, änkeman eller annan släkting. Använd ; som skiljetecken om du vill söka på både transaktion och släktrelation.">
+                    <i class="fas fa-info-circle"></i>
+                </span>
                 <input type="text" class="form-control" id="typ" name="typ">
-                <small id="typHelp" class="form-text text-muted">Här kan du söka efter vilken form av transaktion som föregick innehavet av gården, t.ex. förläning, donation, köp, byte, gåva, arv, fideikommiss etc. Du kan även se släktrelationen med föregående innehavare, om gården togs över av en son, dotter, änka, änkeman eller annan släkting. Använd ; som skiljetecken om du vill söka på både transaktion och släktrelation.</small>
             </div>
         </div>
     </fieldset>
-    
-    <fieldset>
 
+    <hr />
+
+    <fieldset>
+        <legend>Storlek / taxering</legend>
         <div class="form-row">
             <div class="col form-group">
                 <label for="herrgard_mantal_min">Mantal herrgård</label>
@@ -217,6 +254,7 @@
             </div>
         </div>
     </fieldset>
+
     <div class="mt-3">
         <button class="btn btn-success my-2 my-sm-0 px-5" type="submit">Sök</button>
     </div>
