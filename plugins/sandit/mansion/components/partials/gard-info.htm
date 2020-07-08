@@ -30,9 +30,11 @@
                 <div class="row">
                     <a href="#0" id="historical_maps_link" target="_blank" onclick="return construct_historical_map_search_url({{ gard_data.toraid }});">Sök historiska kartor på Lantmäteriet</a>
                 </div>
-                <div class="row">
-                    <a href="#0"  onclick="getSueciaImages({{ gard_data.toraid }}, getImagesSuccess)">Visa bilder från Suecia</a>
-                </div>
+                    {% if suecia %}
+                    <div class="row sueciarow">
+                        <a href="#0"  onclick="getSueciaImages({{ gard_data.toraid }}, getImagesSuccess)">Visa bilder från Suecia</a>
+                    </div>
+                    {% endif %}
                 {% endif %}
         </div>
     </div>
