@@ -23,7 +23,6 @@
             <div class="row">
                 <a href="/herrgardsdatabasen/gard/{{ gard_data.id }}">Visa gårdens poster i tabellform</a>
             </div>
-            {% if this.environment == 'test' %}
                 {% if gard_data.toraid %}
                 <div class="row">
                     <a href="/herrgardsdatabasen/karta?toraid={{ gard_data.toraid }}">Visa gården på kartan</a>
@@ -35,7 +34,6 @@
                     <a href="#0"  onclick="getSueciaImages({{ gard_data.toraid }}, getImagesSuccess)">Visa bilder från Suecia</a>
                 </div>
                 {% endif %}
-            {% endif %}
         </div>
     </div>
 </div>

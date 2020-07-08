@@ -84,6 +84,11 @@ class ImportTORACommand extends Command
         return $tora_record;
     }
 
+    private function delete_markers() 
+    {
+        Marker::truncate();
+    }
+
 
     /**
      * Execute the console command.
@@ -92,6 +97,8 @@ class ImportTORACommand extends Command
     public function handle()
     {
         $this->output->writeln('Importing TORA IDs');
+        # Delete all previous markers
+        $this->delete_markers();
         # Loop through all manors and get coordinates from TORA by API
         Gard::each(function ($gard) 
         {
@@ -102,13 +109,14 @@ class ImportTORACommand extends Command
                 $lat_uri = "http://www.w3.org/2003/01/geo/wgs84_pos#lat";
                 $long_uri = "http://www.w3.org/2003/01/geo/wgs84_pos#long";
                 echo "\n";
-                echo json_encode($tora_post,JSON_PRETTY_PRINT);
                 if(isset($tora_post->metadata->$tora_uri->$lat_uri) && isset($tora_post->metadata->$tora_uri->$long_uri))
                 {
-                    echo "Creating marker";
+                    echo "Creating marker for Gard: " . $gard->id . " with TORA-id: " . $gard->toraid;
                     $lat = str_replace(",", ".", $tora_post->metadata->$tora_uri->$lat_uri[0]->value);
                     $lon =  str_replace(",", ".",$tora_post->metadata->$tora_uri->$long_uri[0]->value);
                     $this->create_marker($gard->namn,$gard->id, $gard->toraid,$lon,$lat);
+                } else {
+                    echo "No coordinates exist for TORA-id: " . $gard->toraid;
                 }
                 
                 
