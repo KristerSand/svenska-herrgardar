@@ -1,6 +1,8 @@
 {% set gard = __SELF__.gard %}
 {% set status = __SELF__.status %}
 {% set format = __SELF__.format %}
+{% set suecia = __SELF__.suecia %}  
+
 
 
 <a class="btn btn-outline-primary mb-3" role="button" href="/herrgardsdatabasen/sokresultat">Tillbaka till sökresultatet</a>
@@ -38,7 +40,7 @@
     </div>
 </div>
 
-{% partial '@gard-info' gard_data=gard %}
+{% partial '@gard-info' gard_data=gard suecia=suecia  %}
 {% else %}
 <div class="d-flex w-100 justify-content-start align-items-center mb-2">
     <h4 class="m-0 py-2">{{ gard.namn }}</h4>

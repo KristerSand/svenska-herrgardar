@@ -12,6 +12,7 @@ class MansionPosts extends ComponentBase
     public $gard;
     public $format;
     public $status;
+    public $suecia;
 
     public function componentDetails()
     {
@@ -40,6 +41,7 @@ class MansionPosts extends ComponentBase
         $this->format = Input::get('format');
         $gardId = $this->property('id');
         $this->gard = Gard::getGardPosts($gardId);
+        $this->suecia = true;
         $statuses  = [];
         foreach($this->gard->post as $post) {
             if($post->status) {
