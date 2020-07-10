@@ -6,6 +6,8 @@ use Redirect;
 use Sandit\Mansion\Models\Gard;
 use Sandit\Mansion\Models\Status;
 use Sandit\Mansion\Classes\Export\MansionExport;
+use Sandit\Mansion\Classes\suecia\Suecia;
+
 
 class MansionPosts extends ComponentBase
 {
@@ -41,7 +43,7 @@ class MansionPosts extends ComponentBase
         $this->format = Input::get('format');
         $gardId = $this->property('id');
         $this->gard = Gard::getGardPosts($gardId);
-        $this->suecia = true;
+        $this->suecia = Suecia::hasSueciaImages($this->gard->toraid);
         $statuses  = [];
         foreach($this->gard->post as $post) {
             if($post->status) {
