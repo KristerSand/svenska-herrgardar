@@ -1,4 +1,4 @@
-<div class="p-3 d-none d-md-block">
+<div class="py-2 px-4  border-bottom d-none d-md-block">
     <div class="row">
         <div class="col-4">
             <dl class="row mb-0">
@@ -12,10 +12,10 @@
         </div>
         <div class="col-4">
             <dl class="row">
-                <dt class="col-4 pr-0">Toraid</dt>
-                <dd class="col-8 mb-0">{{ gard_data.toraid }}</dd>
-                <dt class="col-4 pr-0">Herrgårdsid</dt>
-                <dd class="col-8 mb-0">{{ gard_data.id }}</dd>
+                <dt class="col-5 pr-0">Toraid</dt>
+                <dd class="col-7 mb-0">{{ gard_data.toraid }}</dd>
+                <dt class="col-5 pr-0">Herrgårdsid</dt>
+                <dd class="col-7 mb-0">{{ gard_data.id }}</dd>
             </dl>
         </div>
         <div class="col-4">
@@ -35,7 +35,7 @@
 
 <ul class="list-group list-group-flush mb-0">
 {% for post in gard_data.poster %}
-<li class="list-group-item">
+<li class="list-group-item pb-0">
     <h6 class="border-bottom mb-2 pb-1 d-block d-md-none">
         {{ post.ar_borjan }}
         {% if post.ar_borjan_anm %}
@@ -52,80 +52,165 @@
     <div class="row">
         <div class="col col-md-6">
             <dl class="row">
-                <dt class="col-4 pr-0 d-none d-md-block">År början</dt>
-                <dd class="col-8 mb-0 d-none d-md-block">{{ post.ar_borjan }}</dd>
-                <dt class="col-4 pr-0 d-none d-md-block">År början amn</dt>
-                <dd class="col-8 mb-0 d-none d-md-block">{{ post.ar_borjan_anm }}</dd>
-                <dt class="col-4 pr-0 d-none d-md-block">År slut</dt>
-                <dd class="col-8 mb-0 d-none d-md-block">{{ post.ar_slut }}</dd>
-                <dt class="col-4 pr-0 d-none d-md-block">År slut anm</dt>
-                <dd class="col-8 mb-0 d-none d-md-block">{{ post.ar_slut_anm }}</dd>
-                <dt class="col-4 pr-0">Status</dt>
-                <dd class="col-8 mb-0">{{ post.status.namn }}</dd>
-                <dt class="col-4 pr-0{% if not post.jordnatur|length %} d-none d-md-block{% endif %}">Jordnatur</dt>
-                <dd class="col-8 mb-0{% if not post.jordnatur|length %} d-none d-md-block{% endif %}">
+                <dt class="col-4 pr-0 d-none d-md-block">År</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">
+                    {{ post.ar_borjan }}
+                    {% if post.ar_borjan_anm %}
+                        ({{ post.ar_borjan_anm }})
+                    {% endif %}
+
+                    {% if post.ar_slut %}
+                    - {{ post.ar_slut }}
+                        {% if post.ar_slut_anm %}
+                            ({{ post.ar_slut_anm }})
+                        {% endif %}
+                    {% endif %}
+                </dd>
+
+                <dt class="col-4 pr-0">Namn</dt>
+                <dd class="col-8 mb-0">{{ post.agare.namn }} {{ post.agare.efternamn }}</dd>
+
+                {% if post.agare.titel_tjanst %}
+                <dt class="col-4 pr-0 d-none d-md-block">Titel tjänst</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">{{ post.agare.titel_tjanst|capitalize }}</dd>
+                {% endif %}
+
+                {% if post.agare.titel_familj %}
+                <dt class="col-4 pr-0 d-none d-md-block">Titel familj</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">{{ post.agare.titel_familj|capitalize }}</dd>
+                {% endif %}
+
+                {% if post.ag_arr %}
+                 <dt class="col-4 pr-0">Ägar/arr</dt>
+                 <dd class="col-8 mb-0">{{ post.ag_arr|capitalize }}</dd>
+                {% endif %}
+
+                {% if post.maka1.namn %}
+                <dt class="col-4 pr-0 d-none d-md-block">Maka 1</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">{{ post.maka1.namn }} {{ post.maka1.efternamn }}</dd>
+                {% endif %}
+
+                {% if post.maka1.titel_tjanst %}
+                <dt class="col-4 pr-0 d-none d-md-block">M1 titel tjänst</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">{{ post.maka1.titel_tjanst|capitalize }}</dd>
+                {% endif %}
+
+                {% if post.maka1.titel_familj %}
+                <dt class="col-4 pr-0 d-none d-md-block">M2 titel familj</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">{{ post.maka1.titel_familj|capitalize }}</dd>
+                {% endif %}
+
+                {% if post.maka2.namn %}
+                <dt class="col-4 pr-0 d-none d-md-block">Maka 2</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">{{ post.maka2.namn }} {{ post.maka2.efternamn }}</dt>
+                {% endif %}
+
+                {% if post.maka2.titel_tjanst %}
+                <dt class="col-4 pr-0 d-none d-md-block">M2 titel tjänst</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">{{ post.maka2.titel_tjanst }}</dd>
+                {% endif %}
+
+                {% if post.maka2.titel_familj %}
+                <dt class="col-4 pr-0 d-none d-md-block">M2 titel familj</dt>
+                <dd class="col-8 mb-0 d-none d-md-block">{{ post.maka2.titel_familj }}</dd>
+                {% endif %}
+
+                
+                {% if post.gods_mantal %}
+                <dt class="col-4 pr-0 d-block d-md-none">Mantal</dt>
+                <dd class="col-8 mb-0 d-block d-md-none">{{ post.gods_mantal }}</dd>
+                {% endif %}
+
+                {% if post.gods_hektar %}
+                <dt class="col-4 pr-0 d-block d-md-none">Hektar</dt>
+                <dd class="col-8 mb-0 d-block d-md-none">{{ post.gods_hektar }}</dd>
+                {% endif %}
+
+                {% if post.gods_aker_hektar %}
+                <dt class="col-4 pr-0 d-block d-md-none">Hektar åker</dt>
+                <dd class="col-8 mb-0 d-block d-md-none">{{ post.gods_aker_hektar }}</dd>
+                {% endif %}
+
+                {% if post.taxering %}
+                <dt class="col-4 pr-0 d-block d-md-none">Taxering</dt>
+                <dd class="col-8 mb-0 d-block d-md-none">{{ post.taxering }}</dd>
+                {% endif %}
+            </dl>
+        </div>
+        <div class="col col-md-6 d-none d-md-block">
+            <dl class="row">
+                <dt class="col-4 px-0">Status</dt>
+                <dd class="col-8 mb-0">{{ post.status.namn|capitalize }}</dd>
+                
+                {% if post.jordnatur|length %}
+                 <dt class="col-4 px-0">Jordnatur</dt>
+                 <dd class="col-8 mb-0">
                     {% set myArray = [] %}
                     {% for jordnatur in post.jordnatur %}    
                         {% set myArray = myArray|merge([jordnatur.namn]) %}
                     {% endfor %}
                     {{ myArray|join('; ') }}
-                </dd>
-                <dt class="col-4 pr-0{% if not post.ag_arr %} d-none d-md-block{% endif %}">Ägar/arr</dt>
-                <dd class="col-8 mb-0{% if not post.ag_arr %} d-none d-md-block{% endif %}">{{ post.ag_arr }}</dd>
-                <dt class="col-4 pr-0{% if not post.typ %} d-none d-md-block{% endif %}">Typ</dt>
-                <dd class="col-8 mb-0{% if not post.typ %} d-none d-md-block{% endif %}">{{ post.typ }}</dd>
-                <dt class="col-4 pr-0">Namn</dt>
-                <dd class="col-8 mb-0">{{ post.agare.namn }} {{ post.agare.efternamn }}</dd>
-                <dt class="col-4 pr-0{% if not post.agare.titel_tjanst %} d-none d-md-block{% endif %}">Titel tjänst</dt>
-                <dd class="col-8 mb-0{% if not post.agare.titel_tjanst %} d-none d-md-block{% endif %}">{{ post.agare.titel_tjanst }}</dd>
-                <dt class="col-4 pr-0{% if not post.agare.titel_familj %} d-none d-md-block{% endif %}">Titel familj</dt>
-                <dd class="col-8 mb-0{% if not post.agare.titel_familj %} d-none d-md-block{% endif %}">{{ post.agare.titel_familj }}</dd>
-                <dt class="col-4 pr-0{% if not post.maka1.namn %} d-none d-md-block{% endif %}">Maka 1</dt>
-                <dd class="col-8 mb-0{% if not post.maka1.namn %} d-none d-md-block{% endif %}">{{ post.maka1.namn }} {{ post.maka1.efternamn }}</dd>
-                <dt class="col-4 pr-0{% if not post.maka1.titel_tjanst %} d-none d-md-block{% endif %}">M1 titel tjänst</dt>
-                <dd class="col-8 mb-0{% if not post.maka1.titel_tjanst %} d-none d-md-block{% endif %}">{{ post.maka1.titel_tjanst }}</dd>
-                <dt class="col-4 pr-0{% if not post.maka1.titel_familj %} d-none d-md-block{% endif %}">M2 titel familj</dt>
-                <dd class="col-8 mb-0{% if not post.maka1.titel_familj %} d-none d-md-block{% endif %}">{{ post.maka1.titel_familj }}</dd>
-                <dt class="col-4 pr-0{% if not post.maka2.namn %} d-none d-md-block{% endif %}">Maka 2</dt>
-                <dd class="col-8 mb-0{% if not post.maka2.namn %} d-none d-md-block{% endif %}">{{ post.maka2.namn }} {{ post.maka2.efternamn }}</dt>
-                <dt class="col-4 pr-0{% if not post.maka2.titel_tjanst %} d-none d-md-block{% endif %}">M2 titel tjänst</dt>
-                <dd class="col-8 mb-0{% if not post.maka2.titel_tjanst %} d-none d-md-block{% endif %}">{{ post.maka2.titel_tjanst }}</dd>
-                <dt class="col-4 pr-0{% if not post.maka2.titel_familj %} d-none d-md-block{% endif %}">M2 titel familj</dt>
-                <dd class="col-8 mb-0{% if not post.maka2.titel_familj %} d-none d-md-block{% endif %}">{{ post.maka2.titel_familj }}</dd>
-                <dt class="col-4 pr-0{% if post.gods_mantal %} d-sm-block d-md-none{% else %} d-none{% endif %}">Mantal</dt>
-                <dd class="col-8 mb-0{% if post.gods_mantal %} d-sm-block d-md-none{% else %} d-none{% endif %}">{{ post.gods_mantal }}</dd>
-                <dt class="col-4 pr-0{% if post.gods_hektar %} d-sm-block d-md-none{% else %} d-none{% endif %}">Hektar</dt>
-                <dd class="col-8 mb-0{% if post.gods_hektar %} d-sm-block d-md-none{% else %} d-none{% endif %}">{{ post.gods_hektar }}</dd>
-                <dt class="col-4 pr-0{% if post.gods_aker_hektar %} d-sm-block d-md-none{% else %} d-none{% endif %}">Hektar åker</dt>
-                <dd class="col-8 mb-0{% if post.gods_aker_hektar %} d-sm-block d-md-none{% else %} d-none{% endif %}">{{ post.gods_aker_hektar }}</dd>
-                <dt class="col-4 pr-0{% if post.taxering %} d-sm-block d-md-none{% else %} d-none{% endif %}">Taxering</dt>
-                <dd class="col-8 mb-0{% if post.taxering %} d-sm-block d-md-none{% else %} d-none{% endif %}">{{ post.taxering }}</dd>
-            </dl>
-        </div>
-        <div class="col col-md-6 d-none d-md-block">
-            <dl class="row">
+                 </dd>
+                {% endif %}
+                
+                {% if post.typ %}
+                 <dt class="col-4 px-0">Typ</dt>
+                 <dd class="col-8 mb-0">{{ post.typ|capitalize }}</dd>
+                {% endif %}
+
+
+                {% if post.storlek_herrgard_mtl %}
                 <dt class="col-4 px-0">Herrgård mantal</dt>
                 <dd class="col-8 mb-0">{{ post.storlek_herrgard_mtl }}</dd>
+                {% endif %}
+
+                {% if post.storlek_har %}
                 <dt class="col-4 px-0">Herrgård har</dt>
                 <dd class="col-8 mb-0">{{ post.storlek_har }}</dd>
+                {% endif %}
+
+                {% if post.storlek_aker_har %}
                 <dt class="col-4 px-0">Herrgård har åker</dt>
                 <dd class="col-8 mb-0">{{ post.storlek_aker_har }}</dd>
+                {% endif %}
+
+                {% if post.gods_mantal %}
                 <dt class="col-4 px-0">Gods mantal</dt>
                 <dd class="col-8 mb-0">{{ post.gods_mantal }}</dd>
+                {% endif %}
+
+                {% if post.gods_hektar %}
                 <dt class="col-4 px-0">Gods har</dt>
                 <dd class="col-8 mb-0">{{ post.gods_hektar }}</dd>
+                {% endif %}
+
+                {% if post.gods_aker_hektar %}
                 <dt class="col-4 px-0">Gods har åker</dt>
                 <dd class="col-8 mb-0">{{ post.gods_aker_hektar }}</dd>
+                {% endif %}
+
+                {% if post.taxering %}
                 <dt class="col-4 px-0">Taxering</dt>
                 <dd class="col-8 mb-0">{{ post.taxering }}</dd>
+                {% endif %}
+
+                {% if post.brukareforhallande %}
                 <dt class="col-4 px-0">Brukareförhållande</dt>
                 <dd class="col-8 mb-0">{{ post.brukareforhallande }}</dd>
+                {% endif %}
+
+                {% if post.kommentar %}
                 <dt class="col-4 px-0">Kommentar</dt>
                 <dd class="col-8 mb-0">{{ post.kommentar }}</dd>
-                <dt class="col-4 px-0">Källa</dt>
-                <dd class="col-8 mb-0 text-break">{{ post.kalla.namn }}</dd>
+                {% endif %}
             </dl>
         </div>
+        <div class="col col-md-12 d-none d-md-block">
+            <dl class="row">
+                <dt class="col-2 pr-0 ">Källa</dt>
+                <dd class="col-10 mb-0 text-break">{{ post.kalla.namn }}</dd>
+            </dl>
+        </div>    
     </div>
 </li>
 {% endfor %}
