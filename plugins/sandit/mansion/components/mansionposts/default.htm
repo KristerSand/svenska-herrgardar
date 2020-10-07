@@ -1,8 +1,47 @@
 {% set gard = __SELF__.gard %}
+{% set status = __SELF__.status %}
+{% set format = __SELF__.format %}
+{% set suecia = __SELF__.suecia %}  
 
 
-<a class="btn btn-primary mb-3" role="button" href="/herrgardsdatabasen/sokresultat">Tillbaka till sökresultatet</a>
 
+<a class="btn btn-outline-primary mb-3" role="button" href="/herrgardsdatabasen/sokresultat">Tillbaka till sökresultatet</a>
+{% if format=="card" %}
+<div class="container p-0"> 
+    <div class="row d-flex w-100 align-items-center ml-0">
+        <div class="col-10 col-md-4 h5 mb-1 p-0">{{ gard.namn }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ gard.socken.harad.landskap.namn }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ gard.socken.harad.namn }}</div>
+        <div class="col-md-2 mb-0 d-none d-md-block">{{ gard.socken.namn }}</div>
+
+        {% set  color = '' %}
+        {% if status == 'Herrgård' %}
+            {% set  color = 'primary' %}
+        {% elseif status == 'Ståndsgård' %}
+            {% set  color = 'success' %}
+        {% elseif status == 'Bondgård' %}
+            {% set  color = 'danger' %}
+        {% elseif status == 'Inkorporerad' %}
+            {% set  color = 'info' %}
+        {% elseif status == 'Institution' %}
+            {% set  color = 'info' %}
+        {% elseif status != '' %}
+            {% set  color = 'dark' %}
+        {% endif %}
+        <div class="col-2 col-md-2 text-right p-0">
+            {% if status != '' %}
+                <span class="badge badge-{{ color }} d-none d-md-inline px-2">{{ status }}</span>    
+            {% endif %}
+            <span class="badge badge-secondary">{{ gard.post.count }}</span>
+        </div>
+    </div>
+    <div class="row mb-0 d-block d-md-none">
+        <div class="col">{{ gard.socken.harad.landskap.namn }}, {{ gard.socken.harad.namn }}, {{ gard.socken.namn }}</div>
+    </div>
+</div>
+
+{% partial '@gard-info' gard_data=gard suecia=suecia  %}
+{% else %}
 <div class="d-flex w-100 justify-content-start align-items-center mb-2">
     <h4 class="m-0 py-2">{{ gard.namn }}</h4>
     <div class="mt-1 py-2 ml-4">{{ gard.socken.namn }}, {{ gard.socken.harad.namn }}, {{ gard.socken.harad.landskap.namn }}</div>
@@ -85,3 +124,4 @@
         </tbody>
     </table>
 </div>
+{% endif %}
