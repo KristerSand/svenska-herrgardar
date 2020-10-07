@@ -64,6 +64,7 @@ class SingleMarkerMapByTORAID extends ComponentBase
     public function onRun()
     {
         $this->addJs('assets/node_modules/leaflet/dist/leaflet.js');
+        $this->addJs('assets/node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.js');
         $this->addCss('assets/node_modules/leaflet/dist/leaflet.css');
 
         $toraid = Input::get("toraid");

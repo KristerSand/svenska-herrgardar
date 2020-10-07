@@ -10,6 +10,7 @@
                 <dd class="col-8 mb-0">{{ gard_data.socken.harad.landskap.namn }}</dd>
             </dl>
         </div>
+        
         <div class="col-4">
             <dl class="row">
                 <dt class="col-5 pr-0">Toraid</dt>
@@ -20,22 +21,42 @@
         </div>
         <div class="col-4">
             <div class="row">
-                <a href="gard/{{ gard_data.id }}">Visa gårdens poster i tabellform</a>
+                <a href="/herrgardsdatabasen/gard/{{ gard_data.id }}">Visa gårdens poster i tabellform</a>
             </div>
-            {% if this.environment == 'test' %}
                 {% if gard_data.toraid %}
                 <div class="row">
-                    <a href="karta?toraid={{ gard_data.toraid }}">Visa gården på kartan</a>
+                    <a href="/herrgardsdatabasen/karta?toraid={{ gard_data.toraid }}">Visa gården på kartan</a>
                 </div>
+                <div class="row">
+                    <a href="#0" id="historical_maps_link" target="_blank" onclick="return construct_historical_map_search_url({{ gard_data.toraid }});">Sök historiska kartor på Lantmäteriet</a>
+                </div>
+                    {% if suecia %}
+                    <div class="row sueciarow">
+                        <a href="#0"  onclick="getSueciaImages({{ gard_data.toraid }}, getImagesSuccess)">Visa bilder från Suecia</a>
+                    </div>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
         </div>
     </div>
 </div>
 
 <ul class="list-group list-group-flush mb-0">
 {% for post in gard_data.poster %}
-<li class="list-group-item pb-0">
+<div class="modal" id="featureModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title text-primary" id="feature-title"></h4>
+          <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+        </div>
+        <div class="modal-body" id="feature-info"></div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+<li class="list-group-item  pb-0">
     <h6 class="border-bottom mb-2 pb-1 d-block d-md-none">
         {{ post.ar_borjan }}
         {% if post.ar_borjan_anm %}
@@ -215,3 +236,38 @@
 </li>
 {% endfor %}
 </ul>
+
+{% verbatim %}
+<script  id="sueciaCarousel" type="text/x-handlebars-template">
+    <div>
+    <div  class="carousel slide" data-ride="carousel" id="myCarousel">
+    <!-- Indicators -->
+    <ol class="carousel-indicators">
+        {{#each urls}}
+    <li data-target="#myCarousel" data-slide-to="{{ @index }}" class="{{#if @first}}active{{/if}}"></li>
+        {{/each}}
+    </ol>
+
+    <!-- Wrapper for slides -->
+    <div class="carousel-inner">
+        {{#each urls}}
+    <div class="carousel-item {{#if @first}}active{{/if}}">
+        <div class="desc"></div>
+        <img src="{{ this }}" alt="Los Angeles" class="d-block w-100">
+    </div>
+        {{/each}}
+    </div>
+
+    <!-- Left and right controls -->
+    <a class="carousel-control-prev" href="#myCarousel" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="carousel-control-next" href="#myCarousel" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+    </div>
+  </script>
+  {% endverbatim %}

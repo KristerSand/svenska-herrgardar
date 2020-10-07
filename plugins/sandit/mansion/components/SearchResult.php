@@ -7,6 +7,7 @@ use App;
 use Sandit\Mansion\Classes\Repositories\SearchRepositoryInterface;
 use October\Rain\Support\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
+use Sandit\Mansion\Classes\suecia\Suecia;
 
 
 class SearchResult extends ComponentBase
@@ -14,6 +15,7 @@ class SearchResult extends ComponentBase
     public $result;
     public $searchform;
     public $input;
+    public $gard_ids;
     
     public function componentDetails()
     {
@@ -39,13 +41,17 @@ class SearchResult extends ComponentBase
 
     public function onRun()
     {
+        $this->addJs("assets/node_modules/proj4/dist/proj4.js");
+        $this->addJs("assets/node_modules/handlebars/dist/handlebars.js");
+        $this->addJs("assets/tora.js");
         $input = Session::get('input');
 
         $this->searchform = $input['searchform'];
         $search_repo = App::make('SearchRepositoryInterface');
         $result = $search_repo->search($input);
         $result = new Collection($result);
-        
+        //Put results in session so that they can be shown on map later
+        Session::put("gard_resultset",$result);
         // Paginering
         $perPage = $this->property('postsPerPage');
         $currentPage = Input::get('page') ?: 1;
@@ -61,9 +67,10 @@ class SearchResult extends ComponentBase
         $gard_id = Input::get('gard_id');
         $search_repo = App::make('SearchRepositoryInterface');
         $gard_data = $search_repo->getGardar([$gard_id], 'id', ['post'])->first();
+        $suecia = Suecia::hasSueciaImages($gard_data->toraid);
         
         return [
-            '#gard-info-'.$gard_id => $this->renderPartial('@gard-info', ['gard_data' => $gard_data])
+            '#gard-info-'.$gard_id => $this->renderPartial('@gard-info', ['gard_data' => $gard_data, 'suecia' => $suecia])
         ];
     }
 }

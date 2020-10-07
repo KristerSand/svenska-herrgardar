@@ -12,3 +12,6 @@
 1.1.2:
     - 'Updated table initbiz_leafletpro_markers'
     - builder_table_update_initbiz_leafletpro_markers.php
+1.1.3:
+    - 'Updated table initbiz_leafletpro_markers'
+    - builder_table_update_initbiz_leafletpro_markers_2.php

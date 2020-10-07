@@ -12,5 +12,7 @@
     {{ mapVar }}.once('focus', function () {
         {{ mapVar }}.scrollWheelZoom.enable();
     });
+
+    L.control.locate().addTo({{ mapVar }});
 </script>
 {% endput %}

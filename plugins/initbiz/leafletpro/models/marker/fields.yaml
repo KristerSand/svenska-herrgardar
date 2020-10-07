@@ -12,6 +12,10 @@ fields:
         label: 'TORA ID'
         span: auto
         type: number
+    gard_id:
+        label: 'Gård id'
+        span: auto
+        type: number
     street:
         label: 'initbiz.leafletpro::lang.marker.street'
         commentAbove: 'initbiz.leafletpro::lang.marker.street_comment'

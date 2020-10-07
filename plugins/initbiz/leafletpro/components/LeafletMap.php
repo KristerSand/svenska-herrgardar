@@ -83,6 +83,7 @@ class LeafletMap extends ComponentBase
         $this->addJs($leafletJs);
 
         $this->addCss($leafletCss);
+        $this->addCss("assets/css/map.css");
 
         $this->page['activeLeafletPlugins'] = $activePlugins;
 
@@ -182,6 +183,12 @@ class LeafletMap extends ComponentBase
                 'description' => 'initbiz.leafletpro::lang.leafletmap_plugins.markercluster_desc',
                 'jsPath' => 'assets/node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js',
                 'cssPath' => 'assets/node_modules/leaflet.markercluster/dist/MarkerCluster.css',
+            ],
+            'locatecontrol' => [
+                'title' => 'initbiz.leafletpro::lang.leafletmap_plugins.locatecontrol_name',
+                'description' => 'initbiz.leafletpro::lang.leafletmap_plugins.locatecontrol_desc',
+                'jsPath' => 'assets/node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.js',
+                'cssPath' => 'assets/node_modules/leaflet.locatecontrol/dist/L.Control.Locate.min.css',
             ]
         ];
     }

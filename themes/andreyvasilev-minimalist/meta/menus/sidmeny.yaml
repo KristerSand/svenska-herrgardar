@@ -2,9 +2,22 @@ name: Sidmeny
 items:
     -
         title: 'All pages'
+        nesting: ''
         type: all-static-pages
+        url: ''
         code: ''
+        reference: ''
+        cmsPage: ''
         replace: '1'
+        viewBag:
+            isHidden: '0'
+            cssClass: ''
+            isExternal: '0'
+    -
+        title: 'Herrgårdskartan'
+        type: cms-page
+        code: ''
+        reference: kartan-alla
         viewBag:
             isHidden: '0'
             cssClass: ''

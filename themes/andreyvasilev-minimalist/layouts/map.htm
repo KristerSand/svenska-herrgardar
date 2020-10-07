@@ -1,0 +1,23 @@
+==
+<!doctype html>
+<html lang="en">
+    <head>
+        {% partial 'layout/head' %}
+    </head>
+    <body class="layout-{{ this.layout.id }} page-{{ this.page.id }}">
+        <div class="wrapper"> 
+
+            {% partial 'site/sidebar' %}
+            
+            <div id="content" class="px-3 px-md-4">
+
+                {% partial 'site/topbar' %}
+                {% partial 'site/breadcrumbs' %} 
+            
+                {% page %}
+
+            </div>
+        </div>
+                {% partial 'layout/js' %}
+    </body>
+</html>

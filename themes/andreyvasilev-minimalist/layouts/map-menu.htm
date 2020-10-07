@@ -1,0 +1,47 @@
+description = "Map menu"
+
+[staticPage]
+useContent = 1
+default = 1
+
+[staticMenu]
+code = "sidmeny"
+
+[leafletmap]
+centerLonLat = "51.505, -0.09"
+initialZoom = 12
+scrollProtection = 1
+getOverriding = 0
+markerclusterPluginEnabled = 1
+locatecontrolPluginEnabled = 1
+==
+<!doctype html>
+<html lang="en">
+    <head>
+        {% partial 'layout/head' %}
+        <style>
+    .leaflet-map {
+        min-height: 100%;
+    }
+</style>
+    </head>
+    <body class="layout-{{ this.layout.id }} page-{{ this.page.id }}">
+        <div class="wrapper">
+
+            <!-- Sidebar -->
+            {% partial 'site/sidebar' %}
+
+            <div id="content" class="px-3 px-md-4">
+
+                {% partial 'site/topbar' %}
+                {% partial 'site/breadcrumbs' %} 
+
+                       {% component 'leafletmap' %}
+                        
+                        
+
+            </div>
+        </div>
+        {% partial 'layout/js' %}
+    </body>
+</html>
