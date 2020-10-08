@@ -1,4 +1,5 @@
 {% set result = __SELF__.result %}
+{% set gard_ids = __SELF__.gard_ids %}
 {% set searchform = __SELF__.searchform %}
 
 <a class="btn btn-primary mb-3" role="button" href="/herrgardsdatabasen/sok-i-herrgardsdatabasen">
@@ -12,6 +13,7 @@
             gårdar
         {% endif %}
     </div>
+    <a class="mb-1" href="/herrgardsdatabasen/karta/sokresultat" >Visa Sökresultat på kartan</a>
     <div class="d-none d-md-block">
             Sida {{ result.currentPage }} av {{ result.lastPage }}
     </div>
