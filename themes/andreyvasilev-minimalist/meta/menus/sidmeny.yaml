@@ -13,12 +13,3 @@ items:
             isHidden: '0'
             cssClass: ''
             isExternal: '0'
-    -
-        title: 'Herrgårdskartan'
-        type: cms-page
-        code: ''
-        reference: kartan-alla
-        viewBag:
-            isHidden: '0'
-            cssClass: ''
-            isExternal: '0'
