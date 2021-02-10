@@ -398,7 +398,7 @@ class SearchRepository implements SearchRepositoryInterface
 
 	
 
-	public function getGardar($ids, $id_type, $relations, $offset, $limit)
+	public function getGardar($ids, $id_type, $relations, $offset=0, $limit=0)
     {
 		$gardar = collect();
 		
