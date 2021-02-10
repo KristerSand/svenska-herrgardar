@@ -3,7 +3,7 @@
 use Sandit\Mansion\Classes\Repositories\SearchRepositoryInterface;
 use Sandit\Mansion\Models\Gard;
 use Sandit\Mansion\Classes\Export\MansionExport;
-use Vdomah\Excel\Classes\Excel;
+use Maatwebsite\Excel\Facades\Excel;
 
 Route::group(['prefix' => 'api/v1', 'middleware' => ['\Barryvdh\Cors\HandleCors']], function(){
 
@@ -21,9 +21,11 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['\Barryvdh\Cors\HandleCors'
             }
             if (Input::has('with')) {
                 $relations = explode(',', Input::get('with'));
-            }            
+            }
+            $offset = Input::get('offset', 0);
+            $limit = Input::get('limit', 0);   
             $search_repo = App::make('SearchRepositoryInterface');
-            return $search_repo->getGardar($ids, $id_type, $relations);
+            return $search_repo->getGardar($ids, $id_type, $relations, $offset, $limit);
         });
 
         Route::get('gard/{id}', function($id) {
@@ -41,7 +43,5 @@ Route::get('downloadExcel/{id}', function($id) {
     $mansion_exporter = new MansionExport($id);
     $file_name = $mansion_exporter->makeFileName();
 
-    //dd($mansion_exporter->gard_id, $file_name);
-
-    return Excel::excel()->download($mansion_exporter, $file_name);
+    return Excel::download($mansion_exporter, $file_name);
 });
