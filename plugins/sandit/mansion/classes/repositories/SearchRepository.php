@@ -398,26 +398,34 @@ class SearchRepository implements SearchRepositoryInterface
 
 	
 
-	public function getGardar($ids, $id_type, $relations)
+	public function getGardar($ids, $id_type, $relations, $offset, $limit)
     {
 		$gardar = collect();
 		
 		if (empty($ids)) {
-			$gardar = Gard::with('socken.harad.landskap')->get();
+			$query = Gard::with('socken.harad.landskap');
+			if ($offset !== 0) {
+				$query->offset($offset);
+			}
+			if ($limit !== 0) {
+				$query->limit($limit);
+			}
 		} elseif ($id_type == 'id' || $id_type == 'toraid') {
-            $gardar = Gard::with('socken.harad.landskap')->whereIn($id_type, $ids)->get();
-        }
-        if ( ! empty($relations)) {
+            $query = Gard::with('socken.harad.landskap')->whereIn($id_type, $ids);
+		}
+		$gardar = $query->get();
+        if (empty($relations)) {
+			return $gardar;
+		}
+		if (in_array('post', $relations)) {
 
-            if (in_array('post', $relations)) {
-
-                foreach ($gardar as &$gard) {
-                    $gard->poster = Post::with('jordnatur','agare','maka1','maka2','status','kalla')
-                        ->where('gard_id','=',$gard->id)
-                        ->get();
-                }
-            }
-        }
+			foreach ($gardar as &$gard) {
+				$gard->poster = Post::with('jordnatur','agare','maka1','maka2','status','kalla')
+					->where('gard_id','=',$gard->id)
+					->get();
+			}
+		}
+        
         return $gardar;
     }
 
