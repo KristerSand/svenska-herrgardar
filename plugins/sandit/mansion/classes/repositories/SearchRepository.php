@@ -400,15 +400,15 @@ class SearchRepository implements SearchRepositoryInterface
 
 	public function getGardar($ids, $id_type, $relations, $offset=0, $limit=0)
     {		
-		if (in_array('post', $relations)) {
+		if (in_array('poster', $relations)) {
 			$query = Gard::with(
 				'socken.harad.landskap',
 				'position:id,gard_id,lon,lat',
-				'post.status',
-				'post.agare',
-				'post.maka1',
-				'post.maka2',
-				'post.kalla'
+				'poster.status',
+				'poster.agare',
+				'poster.maka1',
+				'poster.maka2',
+				'poster.kalla'
 			);
 		} else {
 			$query = Gard::with('socken.harad.landskap','position:id,gard_id,lon,lat');
