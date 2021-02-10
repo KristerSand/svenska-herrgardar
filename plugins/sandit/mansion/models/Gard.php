@@ -4,6 +4,8 @@ use Model;
 use Input;
 use DB;
 use Sandit\Mansion\Models\Post;
+use Initbiz\LeafletPro\Models\Marker;
+
 
 /**
  * Model
@@ -53,6 +55,7 @@ class Gard extends Model
 
     public $hasMany = [
         'post' => ['Sandit\Mansion\Models\Post'],
+        'position' => ['Initbiz\LeafletPro\Models\Marker', 'gard_id'],
     ];
 
 

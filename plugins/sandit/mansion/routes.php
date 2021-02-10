@@ -1,5 +1,6 @@
 <?php
-
+ini_set('memory_limit', '3000M');
+ini_set('max_execution_time', '0');
 use Sandit\Mansion\Classes\Repositories\SearchRepositoryInterface;
 use Sandit\Mansion\Models\Gard;
 use Sandit\Mansion\Classes\Export\MansionExport;
@@ -30,7 +31,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['\Barryvdh\Cors\HandleCors'
 
         Route::get('gard/{id}', function($id) {
             $relations = [];
-
+            
             if (Input::has('with')) {
                 $relations = explode(',', Input::get('with'));
             }

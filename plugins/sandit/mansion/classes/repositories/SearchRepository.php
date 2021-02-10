@@ -399,34 +399,31 @@ class SearchRepository implements SearchRepositoryInterface
 	
 
 	public function getGardar($ids, $id_type, $relations, $offset=0, $limit=0)
-    {
-		$gardar = collect();
-		
-		if (empty($ids)) {
-			$query = Gard::with('socken.harad.landskap');
-			if ($offset !== 0) {
-				$query->offset($offset);
-			}
-			if ($limit !== 0) {
-				$query->limit($limit);
-			}
-		} elseif ($id_type == 'id' || $id_type == 'toraid') {
-            $query = Gard::with('socken.harad.landskap')->whereIn($id_type, $ids);
-		}
-		$gardar = $query->get();
-        if (empty($relations)) {
-			return $gardar;
-		}
+    {		
 		if (in_array('post', $relations)) {
-
-			foreach ($gardar as &$gard) {
-				$gard->poster = Post::with('jordnatur','agare','maka1','maka2','status','kalla')
-					->where('gard_id','=',$gard->id)
-					->get();
-			}
+			$query = Gard::with(
+				'socken.harad.landskap',
+				'position:id,gard_id,lon,lat',
+				'post.status',
+				'post.agare',
+				'post.maka1',
+				'post.maka2',
+				'post.kalla'
+			);
+		} else {
+			$query = Gard::with('socken.harad.landskap','position:id,gard_id,lon,lat');
 		}
+		if ($offset !== 0) {
+			$query->offset($offset);
+		}
+		if ($limit !== 0) {
+			$query->limit($limit);
+		}
+		if ( ! empty($ids) && ($id_type == 'id' || $id_type == 'toraid')) {
+			$query->whereIn($id_type, $ids);
+		} 
         
-        return $gardar;
+        return $query->get();
     }
 
 
