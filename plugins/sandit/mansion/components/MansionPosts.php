@@ -45,7 +45,7 @@ class MansionPosts extends ComponentBase
         $this->gard = Gard::getGardPosts($gardId);
         $this->suecia = Suecia::hasSueciaImages($this->gard->toraid);
         $statuses  = [];
-        foreach($this->gard->post as $post) {
+        foreach($this->gard->poster as $post) {
             if($post->status) {
                 $statuses[]=$post->status->namn;
             }

@@ -396,14 +396,37 @@ class SearchRepository implements SearchRepositoryInterface
 		return $column;
 	}
 
-	
+
+	public function getGardarV1($ids, $id_type, $relations)
+    {
+		$gardar = collect();
+		
+		if (empty($ids)) {
+			$gardar = Gard::with('socken.harad.landskap')->get();
+		} elseif ($id_type == 'id' || $id_type == 'toraid') {
+            $gardar = Gard::with('socken.harad.landskap')->whereIn($id_type, $ids)->get();
+        }
+        if ( ! empty($relations)) {
+
+            if (in_array('post', $relations)) {
+
+                foreach ($gardar as &$gard) {
+                    $gard->poster = Post::with('jordnatur','agare','maka1','maka2','status','kalla')
+                        ->where('gard_id','=',$gard->id)
+                        ->get();
+                }
+            }
+        }
+        return $gardar;
+    }
+
 
 	public function getGardar($ids, $id_type, $relations, $offset=0, $limit=0)
     {		
 		if (in_array('poster', $relations)) {
 			$query = Gard::with(
 				'socken.harad.landskap',
-				'position:id,gard_id,lon,lat',
+				'position:id,gard_id,tora_id,lon,lat',
 				'poster.status',
 				'poster.agare',
 				'poster.maka1',
@@ -411,7 +434,7 @@ class SearchRepository implements SearchRepositoryInterface
 				'poster.kalla'
 			);
 		} else {
-			$query = Gard::with('socken.harad.landskap','position:id,gard_id,lon,lat');
+			$query = Gard::with('socken.harad.landskap','position:id,gard_id,tora_id,lon,lat');
 		}
 		if ($offset !== 0) {
 			$query->offset($offset);
@@ -422,8 +445,18 @@ class SearchRepository implements SearchRepositoryInterface
 		if ( ! empty($ids) && ($id_type == 'id' || $id_type == 'toraid')) {
 			$query->whereIn($id_type, $ids);
 		} 
-        
-        return $query->get();
+		$gardar = $query->get();
+		$result = collect(['totalt' => $gardar->count()]);
+
+		if ($limit !== 0) {
+			$result = $result->merge(['limit' => $limit]);
+		}
+		if ($offset !== 0) {
+			$result = $result->merge(['offset' => $offset]);
+		}
+		$result = $result->merge(['data' => $gardar]);
+
+		return $result;
     }
 
 

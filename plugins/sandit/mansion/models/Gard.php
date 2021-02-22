@@ -61,7 +61,6 @@ class Gard extends Model
 
     static function getGardPosts($id)
     {
-        //dd($id);
         $gard = Gard::with('socken.harad.landskap')->where('id','=',$id)->first();
         $gard->poster = Post::with('jordnatur','agare','maka1','maka2','status','kalla')
             ->where('gard_id','=',$id)
@@ -76,22 +75,11 @@ class Gard extends Model
         $socken = new Socken;
         $socken_id = $socken->get_socken_id($param);
 
-        /*if ( ! isset($param['tillhor_herrgard'])) {
-            $param['tillhor_herrgard'] = null;
-        }
-        if ( ! isset($param['nummer'])) {
-            $param['nummer'] = null;
-        }*/
         if ( ! isset($param['toraid'])) {
             $param['toraid'] = null;
         }
         $result = DB::table('sandit_mansion_gard')
                 ->where('id', '=', $param['id'])
-                //->where('toraid', '=', $param['toraid'])
-                //->where('namn', '=', $param['gard'])
-                //->where('socken_id', '=', $socken_id)
-                /*->where('tillhor_herrgard','=', $param['tillhor_herrgard'])
-                ->where('nummer','=', $param['nummer'])*/
                 ->get();
 
         if ($result->isNotEmpty()) {
@@ -101,8 +89,6 @@ class Gard extends Model
         $this->toraid = $param['toraid'];
         $this->namn = $param['gard'];
         $this->socken_id = $socken_id;
-        /*$this->tillhor_herrgard = $param['tillhor_herrgard'];
-        $this->nummer = $param['nummer'];*/
         $this->save();
 
         return $param['id'];
@@ -211,7 +197,6 @@ class Gard extends Model
         $data['harad'] = empty($input['harad']) ? null : $input['harad'];
         $data['landskap'] = empty($input['landskap']) ? null : $input['landskap'];
         $data['nummer'] = ( ! isset($input['nummer']) || empty($input['nummer'])) ? null : $input['nummer'];
-        //$data['tillhor_herrgard'] = ( ! isset($input['herrgard'])) ? null : $this->alterHerrgard($input, $gard->tillhor_herrgard);
         $data['herrgard'] = ( ! isset($input['herrgard']) || empty($input['herrgard'])) ? null : $input['herrgard'];
         $data['socken_herrgard'] = ( ! isset($input['socken_herrgard']) || empty($input['socken_herrgard'])) ? null : $input['socken_herrgard'];
         $data['harad_herrgard'] = ( ! isset($input['harad_herrgard']) || empty($input['harad_herrgard'])) ? null : $input['harad_herrgard'];
