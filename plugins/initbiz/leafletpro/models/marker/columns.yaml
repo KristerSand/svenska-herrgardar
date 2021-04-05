@@ -1,32 +1,22 @@
+# ===================================
+#  List Column Definitions
+# ===================================
+
 columns:
     is_published:
         label: 'initbiz.leafletpro::lang.marker.is_published'
         type: switch
     name:
         label: 'initbiz.leafletpro::lang.marker.name'
-        type: text
     lon:
         label: 'initbiz.leafletpro::lang.marker.lon'
-        type: text
     lat:
         label: 'initbiz.leafletpro::lang.marker.lat'
-        type: text
     street:
         label: 'initbiz.leafletpro::lang.marker.street'
-        type: text
     city:
         label: 'initbiz.leafletpro::lang.marker.city'
-        type: text
     country:
         label: 'initbiz.leafletpro::lang.marker.country'
-        type: text
-        select: name
         relation: country
-    tora_id:
-        label: 'TORA ID'
-        type: number
-        searchable: true
-    gard_id:
-        label: 'Gård id'
-        type: number
-        searchable: true
+        select: name

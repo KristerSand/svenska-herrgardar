@@ -1,55 +1,33 @@
 
 {% put scripts %}
-<script>
-
-    function createIconHTML(manorName) {
-                    var html = "<figure class=\"item\">\n" +
-                        "    <img src=\"{{ 'manor.png'|media }}\"/>" +
-                        "    <figcaption class=\"caption\">" + manorName + "</figcaption>\n" +
-                        "</figure>"
-                    return html;
-    }
-
     {% if 'markercluster' in plugins %}
+    {#
 
+        <script>
             var markers = L.markerClusterGroup();
-            {% for marker in __SELF__.markers %}
-        	  	var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}], {
-                    icon: L.divIcon({
-                    html: createIconHTML("{{ marker.name }}"),
-                    className: 'manor-icon'
-                    })
-                
-                });
-                markers.addLayer(marker);
-                //Put URL to post in popup
-                var mansion_url ="/herrgardsdatabasen/gard/" + {{ marker.gard_id }} + "?format=card";
-                var popup_html = "<a href=\"" + mansion_url + "\" >{{ marker.name }}</a>";
-                marker.bindPopup(popup_html);
+            markers.addLayer(L.marker)
+            {% for marker in markers %}
+        	  	var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}]).addTo({{ mapVar }});
+        		marker.bindPopup("{{ marker.name }}");
             {% endfor %}
-            {{ mapVar }}.addLayer(markers);
-            {{ mapVar }}.fitBounds(markers.getBounds().pad(0.1));
+        </script>
+
+    #}
     {% else %}
-            var leafletProIcon = L.icon({
-                iconUrl: '{{ __SELF__.getMarkerIconUrl() | app }}',
-                iconSize: [40, 40]
-            });
+        <script>
+            {% if __SELF__.getMarkerIconUrl() %}
+                let DefaultIcon = L.icon({
+                    iconUrl: '{{ __SELF__.getMarkerIconUrl() }}',
+                    iconSize: [40,40],
+                });
+                L.Marker.prototype.options.icon = DefaultIcon;
+            {% endif %}
 
             {% for marker in __SELF__.markers %}
-
-            var marker = L.marker([{{ marker.lat }}, {{ marker.lon }}], {
-                    icon: L.divIcon({
-                    html: createIconHTML("{{ marker.name }}"),
-                    className: 'manor-icon'
-                    })
-                });
-                //Put URL to post in popup
-                var mansion_url ="/herrgardsdatabasen/gard/" + {{ marker.gard_id }} + "?format=card";
-                var popup_html = "<a href=\"" + mansion_url + "\" >{{ marker.name }}</a>";
-                  marker
+                  L.marker([{{ marker.lat }}, {{ marker.lon }}])
                    .addTo({{ mapVar }})
-                   .bindPopup(popup_html);
+                   .bindPopup('{{ marker.popup_content |replace({"\n": " ","\r": " ",  "\t": " "}) | raw }}');
             {% endfor %}
+        </script>
     {% endif %}
-</script>
 {% endput %}

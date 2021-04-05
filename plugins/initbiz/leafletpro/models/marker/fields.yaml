@@ -1,3 +1,7 @@
+# ===================================
+#  Form Field Definitions
+# ===================================
+
 fields:
     name:
         label: 'initbiz.leafletpro::lang.marker.name'
@@ -8,14 +12,6 @@ fields:
         label: 'initbiz.leafletpro::lang.marker.popup_content'
         type: richeditor
         span: right
-    tora_id:
-        label: 'TORA ID'
-        span: auto
-        type: number
-    gard_id:
-        label: 'Gård id'
-        span: auto
-        type: number
     street:
         label: 'initbiz.leafletpro::lang.marker.street'
         commentAbove: 'initbiz.leafletpro::lang.marker.street_comment'
@@ -34,23 +30,20 @@ fields:
         emptyOption: 'initbiz.leafletpro::lang.marker.country_empty_option'
         span: left
         type: dropdown
-    is_published:
-        label: 'initbiz.leafletpro::lang.marker.is_published'
-        type: switch
-        span: left
+
 secondaryTabs:
     fields:
+        is_published:
+            label: 'initbiz.leafletpro::lang.marker.is_published'
+            type: switch
         refresh_lon_lat_button:
             label: 'initbiz.leafletpro::lang.marker.refresh_lon_lat_label'
             type: partial
-            tab: Misc
         lon:
             label: 'initbiz.leafletpro::lang.marker.lon'
             type: text
             required: 1
-            tab: Misc
         lat:
             label: 'initbiz.leafletpro::lang.marker.lat'
             type: text
             required: 1
-            tab: Misc
