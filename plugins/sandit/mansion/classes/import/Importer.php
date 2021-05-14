@@ -172,7 +172,7 @@ abstract class Importer
                 $message['message'] = "Det finns ingen ny data i '$file_name'. 0 poster sparade.";
             } else {
                 $message['message'] = '0 poster sparade.'.
-                    $this->getExtraInformation($required_posts, $duplicate_posts);
+                    $this->getExtraInformation($required_posts, $duplicate_posts, $duplicate_gard_ids);
             }
         }
         return $message;

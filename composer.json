@@ -15,12 +15,6 @@
             "name": "Samuel Georges",
             "email": "daftspunky@gmail.com",
             "role": "Co-founder"
-        },
-        {
-            "name": "Luke Towers",
-            "email": "octobercms@luketowers.ca",
-            "homepage": "https://luketowers.ca",
-            "role": "Maintainer"
         }
     ],
     "support": {
@@ -31,67 +25,44 @@
         "source": "https://github.com/octobercms/october"
     },
     "require": {
-        "php": ">=7.2",
-        "october/rain": "1.1.*",
-        "october/system": "1.1.*",
-        "october/backend": "1.1.*",
-        "october/cms": "1.1.*",
-        "laravel/framework": "~6.0",
-        "wikimedia/composer-merge-plugin": "1.4.1",
+        "php": ">=7.0.8",
+        "october/rain": "1.0.*",
+        "october/system": "1.0.*",
+        "october/backend": "1.0.*",
+        "october/cms": "1.0.*",
+        "laravel/framework": "~5.5.40",
         "maatwebsite/excel": "^3.1"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.0|^9.0",
-        "fzaninotto/faker": "~1.9",
+        "fzaninotto/faker": "~1.7",
+        "phpunit/phpunit": "~6.5",
+        "phpunit/phpunit-selenium": "~1.2",
+        "meyfa/phpunit-assert-gd": "1.1.0",
         "squizlabs/php_codesniffer": "3.*",
-        "php-parallel-lint/php-parallel-lint": "^1.0",
-        "meyfa/phpunit-assert-gd": "^2.0.0",
-        "dms/phpunit-arraysubset-asserts": "^0.1.0"
+        "php-parallel-lint/php-parallel-lint": "^1.0"
     },
     "autoload-dev": {
         "classmap": [
             "tests/concerns/InteractsWithAuthentication.php",
             "tests/fixtures/backend/models/UserFixture.php",
             "tests/TestCase.php",
+            "tests/UiTestCase.php",
             "tests/PluginTestCase.php"
         ]
     },
-    
     "scripts": {
         "post-create-project-cmd": [
             "php artisan key:generate",
             "php artisan package:discover"
         ],
         "post-update-cmd": [
-            "php artisan october:version",
+            "php artisan october:util set build",
             "php artisan package:discover"
-        ],
-        "test": [
-            "phpunit --stop-on-failure"
-        ],
-        "lint": [
-            "parallel-lint --exclude vendor --exclude storage --exclude tests/fixtures/plugins/testvendor/goto/Plugin.php ."
-        ],
-        "sniff": [
-            "phpcs --colors -nq --report=\"full\" --extensions=\"php\""
         ]
     },
     "config": {
-        "preferred-install": "dist",
-        "platform": {
-            "php": "7.2"
-        }
+        "preferred-install": "dist"
     },
     "minimum-stability": "dev",
-    "prefer-stable": true,
-    "extra": {
-        "merge-plugin": {
-            "include": [
-                "plugins/*/*/composer.json"
-            ],
-            "recurse": true,
-            "replace": false,
-            "merge-dev": false
-        }
-    }
+    "prefer-stable": true
 }

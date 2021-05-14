@@ -9,16 +9,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace maxh\Nominatim\Tests;
+namespace maxh\Nominatim\Test;
 
-use maxh\Nominatim\Exceptions\InvalidParameterException;
-use PHPUnit\Framework\TestCase;
-
-/**
- * @internal
- * @coversDefaultClass \maxh\Nominatim\Lookup
- */
-final class LookupTest extends TestCase
+class LookupTest extends \PHPUnit\Framework\TestCase
 {
     protected $url = 'http://nominatim.openstreetmap.org/';
 
@@ -32,36 +25,30 @@ final class LookupTest extends TestCase
     /**
      * @throws \maxh\Nominatim\Exceptions\NominatimException
      */
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->nominatim = new \maxh\Nominatim\Nominatim($this->url);
     }
 
     /**
-     * @throws InvalidParameterException
-     *
-     * @covers ::format
-     * @covers ::getQuery
-     * @covers ::getQueryString
-     * @covers ::osmIds
+     * @throws \maxh\Nominatim\Exceptions\InvalidParameterException
      */
-    public function testOsmIds(): void
+    public function testOsmIds()
     {
         /** @var \maxh\Nominatim\Lookup $lookup */
         $lookup = $this->nominatim->newLookup()
             ->format('xml')
-            ->osmIds('R146656,W104393803,N240109189')
-        ;
+            ->osmIds('R146656,W104393803,N240109189');
 
         $expected = [
-            'format' => 'xml',
+            'format'  => 'xml',
             'osm_ids' => 'R146656,W104393803,N240109189',
         ];
 
         $query = $lookup->getQuery();
-        self::assertSame($expected, $query);
+        $this->assertSame($expected, $query);
 
-        $expected = http_build_query($query);
-        self::assertSame($expected, $lookup->getQueryString());
+        $expected = \http_build_query($query);
+        $this->assertSame($expected, $lookup->getQueryString());
     }
 }

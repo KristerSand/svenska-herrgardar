@@ -5,6 +5,7 @@ Wrapper Nominatim API
 [![Build Status](https://travis-ci.org/maxhelias/php-nominatim.svg?branch=master)](https://travis-ci.org/maxhelias/php-nominatim)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/maxhelias/php-nominatim/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/maxhelias/php-nominatim/?branch=master)
 [![Total Downloads](https://poser.pugx.org/maxh/php-nominatim/downloads)](https://packagist.org/packages/maxh/php-nominatim)
+[![Join the chat at https://gitter.im/maxhelias/php-nominatim](https://badges.gitter.im/maxhelias-php-nominatim/Lobby.svg)](https://gitter.im/maxhelias/php-nominatim?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/maxhelias/php-nominatim/blob/master/LICENSE)
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/c54e5519-01fd-4855-980f-3a28c5f6ff12/big.png)](https://insight.sensiolabs.com/projects/c54e5519-01fd-4855-980f-3a28c5f6ff12)
@@ -13,6 +14,8 @@ A simple interface to OSM Nominatim.
 
 
 See [Nominatim documentation](http://wiki.openstreetmap.org/wiki/Nominatim) for info on the service.
+
+See the [PhpDoc](https://maxhelias.github.io/php-nominatim/) of the project.
 
 Installation
 ------------
@@ -78,27 +81,6 @@ $lookup = $nominatim->newLookup()
             ->nameDetails(true);
 
 $result = $nominatim->find($lookup);
-```
-
-Or do a details query (by place_id):
-
-```php
-$details = $nominatim->newDetails()
-            ->placeId(1234)
-            ->polygon('geojson');
-
-$result = $nominatim->find($details);
-```
-
-Or do a details query (by osm type and osm id):
-
-```php
-$details = $nominatim->newDetails()
-            ->osmType('R')
-            ->osmId(1234)
-            ->polygon('geojson');
-
-$result = $nominatim->find($details);
 ```
 
 By default, the output format of the request is json and the wrapper return a array of results. 

@@ -20,14 +20,13 @@ class Plugin extends PluginBase
         return [
             'Initbiz\LeafletPro\Components\LeafletMap'      => 'leafletmap',
             'Initbiz\LeafletPro\Components\SingleMarkerMap' => 'singleMarkerMap',
+            'Initbiz\LeafletPro\Components\SingleMarkerMapByTORAID' => 'singleMarkerMapByTORAID',
+            'Initbiz\LeafletPro\Components\MarkerMapFromResultSet' => 'markerMapFromResultSet',
+
         ];
     }
 
-    public function registerPageSnippets()
-    {
-        return [
-            'Initbiz\LeafletPro\Components\LeafletMap'      => 'leafletmap',
-            'Initbiz\LeafletPro\Components\SingleMarkerMap' => 'singleMarkerMap',
-        ];
+    public function register() {
+        $this->registerConsoleCommand('acme:importtoraids', 'initbiz\leafletpro\console\ImportTORACommand');
     }
 }

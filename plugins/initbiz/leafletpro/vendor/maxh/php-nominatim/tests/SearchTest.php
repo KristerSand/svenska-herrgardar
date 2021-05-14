@@ -9,15 +9,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace maxh\Nominatim\Tests;
+namespace maxh\Nominatim\Test;
 
-use PHPUnit\Framework\TestCase;
-
-/**
- * @internal
- * @coversDefaultClass \maxh\Nominatim\Search
- */
-final class SearchTest extends TestCase
+class SearchTest extends \PHPUnit\Framework\TestCase
 {
     protected $url = 'http://nominatim.openstreetmap.org/';
 
@@ -31,66 +25,52 @@ final class SearchTest extends TestCase
     /**
      * @throws \maxh\Nominatim\Exceptions\NominatimException
      */
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->nominatim = new \maxh\Nominatim\Nominatim($this->url);
     }
 
     /**
      * Search HelloWorld.
-     *
-     * @covers ::getQuery
-     * @covers ::getQueryString
-     * @covers ::query
      */
-    public function testQuery(): void
+    public function testQuery()
     {
         /** @var \maxh\Nominatim\Search $search */
         $search = $this->nominatim->newSearch()
-            ->query('HelloWorld')
-        ;
+            ->query('HelloWorld');
 
         $expected = [
             'format' => 'json',
-            'q' => 'HelloWorld',
+            'q'      => 'HelloWorld',
         ];
 
         $query = $search->getQuery();
-        self::assertSame($expected, $query);
+        $this->assertSame($expected, $query);
 
-        $expected = http_build_query($query);
-        self::assertSame($expected, $search->getQueryString());
+        $expected = \http_build_query($query);
+        $this->assertSame($expected, $search->getQueryString());
     }
 
-    /**
-     * @covers ::addressDetails
-     * @covers ::city
-     * @covers ::country
-     * @covers ::getQuery
-     * @covers ::getQueryString
-     * @covers ::postalCode
-     */
-    public function testAddress(): void
+    public function testAddress()
     {
         $search = $this->nominatim->newSearch()
             ->country('France')
             ->city('Bayonne')
             ->postalCode('64100')
-            ->addressDetails()
-        ;
+            ->addressDetails();
 
         $expected = [
-            'format' => 'json',
-            'country' => 'France',
-            'city' => 'Bayonne',
-            'postalcode' => '64100',
+            'format'         => 'json',
+            'country'        => 'France',
+            'city'           => 'Bayonne',
+            'postalcode'     => '64100',
             'addressdetails' => '1',
         ];
 
         $query = $search->getQuery();
-        self::assertSame($expected, $query);
+        $this->assertSame($expected, $query);
 
-        $expected = http_build_query($query);
-        self::assertSame($expected, $search->getQueryString());
+        $expected = \http_build_query($query);
+        $this->assertSame($expected, $search->getQueryString());
     }
 }

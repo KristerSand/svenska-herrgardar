@@ -5,7 +5,7 @@ use BackendMenu;
 use Sandit\Mansion\Classes\Repositories\ImportRepositoryInterface;
 use Sandit\Mansion\Classes\Import\MansionImporter;
 use Sandit\Mansion\Classes\Import\PostImport;
-use Vdomah\Excel\Classes\Excel;
+use Maatwebsite\Excel\Facades\Excel;
 use Input;
 use Request;
 use Redirect;
@@ -37,15 +37,12 @@ class Import extends Controller
 
     public function formAfterSave($model)
     {
-        
-        $repository = App::make('ImportRepositoryInterface');
-        
+        $repository = App::make('ImportRepositoryInterface');   
         $importer = new MansionImporter($repository, $model);
-        
         $postImport = new PostImport($importer);
         
         try {
-            Excel::excel()->import($postImport, $model->getExcelFilePath());
+            Excel::import($postImport, $model->getExcelFilePath());
             $message = $importer->getMessage();
         } catch (\Exception $e) {
             $message = ['message' => $e->getMessage(), 'message_type' => 'error'];

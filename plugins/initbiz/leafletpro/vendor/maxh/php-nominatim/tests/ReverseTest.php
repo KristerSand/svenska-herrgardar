@@ -9,15 +9,9 @@ declare(strict_types=1);
  * with this source code in the file LICENSE.
  */
 
-namespace maxh\Nominatim\Tests;
+namespace maxh\Nominatim\Test;
 
-use PHPUnit\Framework\TestCase;
-
-/**
- * @internal
- * @coversDefaultClass \maxh\Nominatim\Reverse
- */
-final class ReverseTest extends TestCase
+class ReverseTest extends \PHPUnit\Framework\TestCase
 {
     protected $url = 'http://nominatim.openstreetmap.org/';
 
@@ -31,33 +25,27 @@ final class ReverseTest extends TestCase
     /**
      * @throws \maxh\Nominatim\Exceptions\NominatimException
      */
-    protected function setUp(): void
+    protected function setUp()
     {
         $this->nominatim = new \maxh\Nominatim\Nominatim($this->url);
     }
 
-    /**
-     * @covers ::getQuery
-     * @covers ::getQueryString
-     * @covers ::latlon
-     */
-    public function testAddress(): void
+    public function testAddress()
     {
         /** @var \maxh\Nominatim\Reverse $reverse */
         $reverse = $this->nominatim->newReverse()
-            ->latlon(43.4843941, -1.4960842)
-        ;
+            ->latlon(43.4843941, -1.4960842);
 
         $expected = [
             'format' => 'json',
-            'lat' => 43.4843941,
-            'lon' => -1.4960842,
+            'lat'    => 43.4843941,
+            'lon'    => -1.4960842,
         ];
 
         $query = $reverse->getQuery();
-        self::assertSame($expected, $query);
+        $this->assertSame($expected, $query);
 
-        $expected = http_build_query($query);
-        self::assertSame($expected, $reverse->getQueryString());
+        $expected = \http_build_query($query);
+        $this->assertSame($expected, $reverse->getQueryString());
     }
 }

@@ -1,6 +1,4 @@
-<?php
-
-namespace Initbiz\LeafletPro\Models;
+<?php namespace Initbiz\LeafletPro\Models;
 
 use Lang;
 use Model;
@@ -10,7 +8,6 @@ use Initbiz\CumulusCore\Models\Cluster;
 use Initbiz\LeafletPro\Classes\AddressResolver;
 use October\Rain\Exception\ApplicationException;
 use Initbiz\LeafletPro\Contracts\AddressObjectInterface;
-use Initbiz\LeafletPro\Contracts\AddressResolverInterface;
 
 /**
  * Marker Model
@@ -86,7 +83,7 @@ class Marker extends Model implements AddressObjectInterface
         // When popup content empty after save than seed it with contents of _default_popup_content partial
         if (empty($this->popup_content)) {
             $this->addViewPath($this->guessViewPath());
-            $this->addViewPath(Theme::getActiveTheme()->getPath() . '/partials');
+            $this->addViewPath(Theme::getActiveTheme()->getPath().'/partials');
             $this->popup_content = $this->makePartial('default_popup_content', ['model' => $this]);
             $this->save();
         }
@@ -94,7 +91,7 @@ class Marker extends Model implements AddressObjectInterface
 
     public function getCountryIdOptions()
     {
-        return Country::getNameList();
+        return Country::all()->pluck('name', 'id')->toArray();
     }
 
     /**
@@ -108,15 +105,12 @@ class Marker extends Model implements AddressObjectInterface
     }
 
     /**
-     * Refresh this object's longitude and latitude attributes using address
-     * resolver and address specified in this object
+     * Refresh this object's longitude and latitude attributes using address resolver and address specified in this object
      * @return void
      */
-    public function refreshLatLon(AddressResolverInterface $addressResolver = null)
+    public function refreshLonLat()
     {
-        if (is_null($addressResolver)) {
-            $addressResolver = new AddressResolver();
-        }
+        $addressResolver = new AddressResolver();
 
         $response = $addressResolver->resolv($this);
 
@@ -130,7 +124,7 @@ class Marker extends Model implements AddressObjectInterface
      * Get array of this models lon and lat params
      * @return array longitude and latitude of this marker
      */
-    public function getLatLonArray(): array
+    public function getLonLat(): array
     {
         return [
             'lon' => $this->lon,
@@ -178,34 +172,5 @@ class Marker extends Model implements AddressObjectInterface
         }
 
         return "";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLat(): string
-    {
-        return $this->lat ?? "";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLon(): string
-    {
-        return $this->lon ?? "";
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getLatLon(string $delimiter = ' '): string
-    {
-        $lat = $this->getLat();
-        $lon = $this->getLon();
-
-        if (!empty($lat) && !empty($lon)) {
-            return $lat . $delimiter . $lon;
-        }
     }
 }

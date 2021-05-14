@@ -12,23 +12,16 @@ plugins/**
 !plugins/initbiz/
 !plugins/rainlab/blog/components/post/default.htm
 !plugins/rainlab/blog/components/posts/default.htm
-#themes/andreyvasilev-minimalist/content/
 
-#!themes/andreyvasilev-minimalist/assets/
-#!themes/andreyvasilev-minimalist/assets/*
-#themes/
-#themes/
 **/themes/andreyvasilev-minimalist/content/static-pages
 **/themes/demo/**
 
 !.gitignore
 
 LICENSE
-composer.json
-composer.lock
 phpcs.xml
 phpunit.xml
-tests/
+#tests/
 README.md
 
 # Vagrant files #
