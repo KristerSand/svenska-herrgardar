@@ -67,7 +67,7 @@ class SearchResult extends ComponentBase
         $gard_id = Input::get('gard_id');
         $search_repo = App::make('SearchRepositoryInterface');
         $result = $search_repo->getGardar([$gard_id], 'id', ['post']);
-        $gard_data = $result->get('data')->first();
+        $gard_data = $result->first();
         $suecia = Suecia::hasSueciaImages($gard_data->tora_id);
         
         return [
