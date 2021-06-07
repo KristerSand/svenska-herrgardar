@@ -24,7 +24,7 @@ Route::group(['prefix' => 'api/v1', 'middleware' => ['\Barryvdh\Cors\HandleCors'
             }
          
             $search_repo = App::make('SearchRepositoryInterface');
-            return $search_repo->getGardarApiV1($ids, $id_type, $relations);
+            return $search_repo->getGardar($ids, $id_type, $relations);
         });
 
         Route::get('gard/{id}', function($id) {
