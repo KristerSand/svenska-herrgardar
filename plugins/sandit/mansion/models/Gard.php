@@ -55,7 +55,7 @@ class Gard extends Model
 
     public $hasMany = [
         'poster' => ['Sandit\Mansion\Models\Post'],
-        'position' => ['Initbiz\LeafletPro\Models\Marker', 'gard_id'],
+        'koordinater' => ['Initbiz\LeafletPro\Models\Marker', 'gard_id'],
     ];
 
 
