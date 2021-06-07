@@ -398,7 +398,7 @@ class SearchRepository implements SearchRepositoryInterface
 	}
 
 
-	public function getGardarApiV1(array $ids, string $id_type, array $relations): Collection
+	public function getGardar($ids, $id_type, $relations)
     {
 		$gardar = collect();
 		
@@ -408,9 +408,7 @@ class SearchRepository implements SearchRepositoryInterface
             $gardar = Gard::with('socken.harad.landskap')->whereIn($id_type, $ids)->get();
         }
         if ( ! empty($relations)) {
-
             if (in_array('post', $relations)) {
-
                 foreach ($gardar as &$gard) {
                     $gard->poster = Post::with('jordnatur','agare','maka1','maka2','status','kalla')
                         ->where('gard_id','=',$gard->id)
