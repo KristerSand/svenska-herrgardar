@@ -2,6 +2,7 @@
 
 use DB;
 use Input;
+use Illuminate\Support\Collection;
 use Sandit\Mansion\Classes\Repositories\SearchRepositoryInterface;
 use Sandit\Mansion\Models\Import;
 use Sandit\Mansion\Models\Status;
@@ -397,7 +398,7 @@ class SearchRepository implements SearchRepositoryInterface
 	}
 
 
-	public function getGardarV1($ids, $id_type, $relations)
+	public function getGardarApiV1(array $ids, string $id_type, array $relations): Collection
     {
 		$gardar = collect();
 		
@@ -421,12 +422,15 @@ class SearchRepository implements SearchRepositoryInterface
     }
 
 
-	public function getGardar($ids, $id_type, $relations, $offset=0, $limit=0)
+	public function getGardarApiV2(string $url, array $input, ?string $id = null): Collection
     {		
-		if (in_array('poster', $relations)) {
+		$max_load = 0;
+
+		if (isset($input['with']) && $input['with'] == 'poster') {
+			$max_load = 500;
 			$query = Gard::with(
 				'socken.harad.landskap',
-				'position:id,gard_id,tora_id,lon,lat',
+				'koordinater:gard_id,lon,lat',
 				'poster.status',
 				'poster.agare',
 				'poster.maka1',
@@ -434,31 +438,151 @@ class SearchRepository implements SearchRepositoryInterface
 				'poster.kalla'
 			);
 		} else {
-			$query = Gard::with('socken.harad.landskap','position:id,gard_id,tora_id,lon,lat');
+			$query = Gard::with(['socken.harad.landskap','koordinater:gard_id,lon,lat']);
 		}
-		if ($offset !== 0) {
-			$query->offset($offset);
+		if ( ! is_null($id)) {
+			$query->where('id', $id);
+			return $query->get();
+		} 
+		if (isset($input['toraid']) && ! empty($input['toraid'])) {
+			$query->where('toraid', $input['toraid']);
+			return $query->get();
+		} 
+		if (isset($input['require']) && $input['require'] == 'koordinater') {
+			$query = $query->has('koordinater');
 		}
-		if ($limit !== 0) {
+		if (isset($input['require']) && $input['require'] == 'toraid') {
+			$query = $query->where('toraid', '<>', 'null');
+		}
+		$total = $query->count();
+		$limit = $this->getLimit($input, $total, $max_load);
+		$offset = $this->getIntegerAttribute($input, 'offset');
+
+		if ( ! is_null($limit)) {
 			$query->limit($limit);
 		}
-		if ( ! empty($ids) && ($id_type == 'id' || $id_type == 'toraid')) {
-			$query->whereIn($id_type, $ids);
-		} 
-		$gardar = $query->get();
-		$result = collect(['totalt' => $gardar->count()]);
-
-		if ($limit !== 0) {
-			$result = $result->merge(['limit' => $limit]);
+		if ( ! is_null($offset)) {
+			$query->offset($offset);
 		}
-		if ($offset !== 0) {
-			$result = $result->merge(['offset' => $offset]);
-		}
-		$result = $result->merge(['data' => $gardar]);
+		$result = $query->get();
+		$count = $result->count();
+		$input['limit'] = $limit;
+		$paginationUrls = $this->getPaginationUrls($url, $input, $total);
 
-		return $result;
+		$respond = collect([]);
+		$respond = $respond->merge(['total' => $total]);
+		$respond = $respond->merge(['count' => $count]);
+		$respond = $respond->merge(['limit' => $limit]);
+		$respond = $respond->merge(['offset' => $offset]);
+		$respond = $respond->merge(['nextUrl' => $paginationUrls['next']]);
+		$respond = $respond->merge(['prevUrl' => $paginationUrls['prev']]);
+		$respond = $respond->merge(['items' => $result]);
+
+		return $respond;
     }
 
+
+	private function getPaginationUrls(string $url, array $input, $total): array
+	{
+		$nextOffset = $this->getNextOffset($input, $total);
+		$prevOffset = $this->getPrevOffset($input, $total);
+
+		$nextUrl = null;
+		$prevUrl = null;
+
+		if ( ! is_null($nextOffset)) {
+			$query = http_build_query(array_merge($input, ['offset' => $nextOffset]));
+			$nextUrl = $url.'?'.$query;
+		}
+		if ( ! is_null($prevOffset)) {
+			$query = http_build_query(array_merge($input, ['offset' => $prevOffset]));
+			$prevUrl = $url.'?'. $query;
+		}
+		return ['next' => $nextUrl, 'prev' => $prevUrl]; 
+	}
+
+	private function getLimit(array $input, int $total, int $max_load): ?int
+	{
+		$limit = $this->getIntegerAttribute($input, 'limit');
+
+		if (is_null($limit) && $max_load == 0) {
+			return null;
+		}
+		if ($total > $max_load && (is_null($limit) || $limit > $max_load)) {
+			return $max_load;
+		}
+		return $limit;
+	}
+
+	private function getNextOffset(array $input, int $total): ?int
+	{
+		$offset = $this->getIntegerAttribute($input, 'offset');
+		$limit = $input['limit'];
+
+		if ($total == 0) {
+			return null;
+		}
+		if (is_null($limit)) {
+			return null;
+		}
+		if ($limit > $total) {
+			return null;
+		}
+		if (is_null($offset)) {
+			return $limit+1;
+		}
+		if ($offset+$limit > $total) {
+			return null;
+		}
+		
+		return $offset+$limit;
+	}
+
+	private function getPrevOffset(array $input, int $total): ?int
+	{
+		$offset = $this->getIntegerAttribute($input, 'offset');
+		$limit = $input['limit'];
+
+		if ($total == 0) {
+			return null;
+		}
+		if (is_null($limit)) {
+			return null;
+		}
+		if ($limit > $total) {
+			return null;
+		}
+		if (is_null($offset)) {
+			return null;
+		}
+		if ($offset <= $limit) {
+			return null;
+		}
+		return $offset-$limit;
+	}
+
+	private function getIntegerAttribute($input, $attribute)
+	{
+		if ( ! isset($input[$attribute])) {
+			return null;
+		} 
+		if (empty($input[$attribute])) {
+			return null;
+		} 
+		if ( ! is_numeric($input[$attribute])) {
+			return null;
+		}
+		if ( ! ctype_digit(strval($input[$attribute]))) {
+			return null;
+		}
+		$value = (int)$input[$attribute];
+
+		if ($value <= 0) {
+			return null;
+		}
+
+		return $value;
+	}
 
 	public function getLandskap($search_type = '')
 	{
