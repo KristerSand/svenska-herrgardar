@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "85f4cbed292dba134511c3c8bf27b9ed",
+    "content-hash": "8fab3e578790a2835cd8e7d3a1c07c22",
     "packages": [
         {
             "name": "composer/installers",
-            "version": "v1.11.0",
+            "version": "v1.12.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/installers.git",
-                "reference": "ae03311f45dfe194412081526be2e003960df74b"
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/installers/zipball/ae03311f45dfe194412081526be2e003960df74b",
-                "reference": "ae03311f45dfe194412081526be2e003960df74b",
+                "url": "https://api.github.com/repos/composer/installers/zipball/d20a64ed3c94748397ff5973488761b22f6d3f19",
+                "reference": "d20a64ed3c94748397ff5973488761b22f6d3f19",
                 "shasum": ""
             },
             "require": {
@@ -116,6 +116,7 @@
                 "modx",
                 "moodle",
                 "osclass",
+                "pantheon",
                 "phpbb",
                 "piwik",
                 "ppi",
@@ -136,7 +137,25 @@
                 "zend",
                 "zikula"
             ],
-            "time": "2021-04-28T06:42:17+00:00"
+            "support": {
+                "issues": "https://github.com/composer/installers/issues",
+                "source": "https://github.com/composer/installers/tree/v1.12.0"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2021-09-13T08:19:44+00:00"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -2431,22 +2450,21 @@
         },
         {
             "name": "october/system",
-            "version": "v1.0.472",
+            "version": "v1.1.12",
             "source": {
                 "type": "git",
                 "url": "https://github.com/octoberrain/system.git",
-                "reference": "f23b2b17e09dd2b4c94362046e90bea4715487a3"
+                "reference": "cffaaaf12075302089995fd795677a16bef94787"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/octoberrain/system/zipball/f23b2b17e09dd2b4c94362046e90bea4715487a3",
-                "reference": "f23b2b17e09dd2b4c94362046e90bea4715487a3",
+                "url": "https://api.github.com/repos/octoberrain/system/zipball/cffaaaf12075302089995fd795677a16bef94787",
+                "reference": "cffaaaf12075302089995fd795677a16bef94787",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "~1.0",
-                "october/rain": "~1.0.469",
-                "php": ">=7.0"
+                "php": ">=7.2"
             },
             "type": "october-module",
             "extra": {
@@ -2466,17 +2484,13 @@
             "authors": [
                 {
                     "name": "Alexey Bobkov",
-                    "email": "aleksey.bobkov@gmail.com"
+                    "email": "aleksey.bobkov@gmail.com",
+                    "role": "Co-founder"
                 },
                 {
                     "name": "Samuel Georges",
-                    "email": "daftspunky@gmail.com"
-                },
-                {
-                    "name": "Luke Towers",
-                    "email": "octobercms@luketowers.ca",
-                    "homepage": "https://luketowers.ca",
-                    "role": "Maintainer"
+                    "email": "daftspunky@gmail.com",
+                    "role": "Co-founder"
                 }
             ],
             "description": "System module for October CMS",
@@ -2486,7 +2500,10 @@
                 "october cms",
                 "system"
             ],
-            "time": "2021-04-15T22:30:42+00:00"
+            "support": {
+                "source": "https://github.com/octoberrain/system/tree/v1.1.12"
+            },
+            "time": "2022-02-20T01:54:45+00:00"
         },
         {
             "name": "paragonie/random_compat",
@@ -6394,5 +6411,6 @@
     "platform": {
         "php": ">=7.0.8"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.3.0"
 }
