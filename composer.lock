@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "85f4cbed292dba134511c3c8bf27b9ed",
+    "content-hash": "fc75140660eaeca90faa9dade5d71788",
     "packages": [
         {
             "name": "composer/installers",
@@ -135,6 +135,24 @@
                 "yawik",
                 "zend",
                 "zikula"
+            ],
+            "support": {
+                "issues": "https://github.com/composer/installers/issues",
+                "source": "https://github.com/composer/installers/tree/v1.11.0"
+            },
+            "funding": [
+                {
+                    "url": "https://packagist.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/composer",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/composer/composer",
+                    "type": "tidelift"
+                }
             ],
             "time": "2021-04-28T06:42:17+00:00"
         },
@@ -2208,22 +2226,21 @@
         },
         {
             "name": "october/backend",
-            "version": "v1.0.472",
+            "version": "v1.1.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/octoberrain/backend.git",
-                "reference": "8a109293ee4c838d5219c0edd60ca5902c51322a"
+                "reference": "1a2bf28e94833ad412c68ec50b66d619eb090f1e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/octoberrain/backend/zipball/8a109293ee4c838d5219c0edd60ca5902c51322a",
-                "reference": "8a109293ee4c838d5219c0edd60ca5902c51322a",
+                "url": "https://api.github.com/repos/octoberrain/backend/zipball/1a2bf28e94833ad412c68ec50b66d619eb090f1e",
+                "reference": "1a2bf28e94833ad412c68ec50b66d619eb090f1e",
                 "shasum": ""
             },
             "require": {
                 "composer/installers": "~1.0",
-                "october/rain": "~1.0.469",
-                "php": ">=7.0"
+                "php": ">=7.2"
             },
             "type": "october-module",
             "extra": {
@@ -2243,17 +2260,13 @@
             "authors": [
                 {
                     "name": "Alexey Bobkov",
-                    "email": "aleksey.bobkov@gmail.com"
+                    "email": "aleksey.bobkov@gmail.com",
+                    "role": "Co-founder"
                 },
                 {
                     "name": "Samuel Georges",
-                    "email": "daftspunky@gmail.com"
-                },
-                {
-                    "name": "Luke Towers",
-                    "email": "octobercms@luketowers.ca",
-                    "homepage": "https://luketowers.ca",
-                    "role": "Maintainer"
+                    "email": "daftspunky@gmail.com",
+                    "role": "Co-founder"
                 }
             ],
             "description": "Backend module for October CMS",
@@ -2263,7 +2276,10 @@
                 "october",
                 "october cms"
             ],
-            "time": "2020-09-11T08:12:28+00:00"
+            "support": {
+                "source": "https://github.com/octoberrain/backend/tree/v1.1.5"
+            },
+            "time": "2021-04-15T02:25:56+00:00"
         },
         {
             "name": "october/cms",
@@ -6394,5 +6410,6 @@
     "platform": {
         "php": ">=7.0.8"
     },
-    "platform-dev": []
+    "platform-dev": [],
+    "plugin-api-version": "2.0.0"
 }
